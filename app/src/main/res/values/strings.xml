@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">NavigatorAppAndroid</string>
+    <string name="app_name_logo"><u>Navigator App</u></string>
+    <string name="login_text_button">Log In</string>
+    <string name="sign_up_text_button">Sign Up</string>
+    <string name="info_button">\?</string>
+    <string name="enter_your_data_for_registration">Enter your data for registration</string>
+    <string name="enter_text_from_the_picture">Enter text from the picture</string>
+    <string name="first_and_last_name">First and last name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="social_networks_links">Social networks links</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="choose_your_role">Choose your role</string>
+    <string name="i_am_looking_for_a_job">I am looking for a job</string>
+    <string name="i_am_looking_for_employees">I am looking for employees</string>
+    <string name="text_from_the_picture">Text from the picture</string>
+    <string name="confirm"><u>Confirm</u></string>
+    <string name="back">Back</string>
+    <string name="note_about_settings">* Pay attention to some of important settings will be
+        available only after registration in your profile</string>
+    <string name="registration_success_message">Your registration is almost finished.To registration\'s
+        finish a mail with confirmation has been sent to your email.You can close this page</string>
+    <string name="search_by_profession">Search by profession</string>
+    <string name="search_the_nearest_by_profession">Search the nearest by profession</string>
+    <string name="search_the_best_by_profession">Search the best by profession</string>
+    <string name="choose_profession">Choose profession for the search</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="is_auto">Is auto?</string>
+    <string name="limit">Limit</string>
+    <string name="language">Language</string>
+    <string name="consider_match_language">Consider selected communication language in the search?</string>
+    <string name="is_auto_required">Is auto required?</string>
+    <string name="auto_is_required">Auto is required</string>
+    <string name="auto_is_not_required">Auto is not required</string>
+    <string name="ok"><u>OK</u></string>
+    <string name="settings">Settings</string>
+    <string name="upload">Upload…</string>
+    <string name="set_avatar">Set avatar</string>
+    <string name="employee_work_requirements">Your work requirements</string>
+    <string name="do_you_have_the_drivers_license">Do you have the driver\'s license?</string>
+    <string name="do_you_have_the_auto">Do you have the auto?</string>
+    <string name="interface_language">Interface language</string>
+    <string name="communication_languages">Communication languages</string>
+    <string name="your_professions_and_info">Your professions and possible additional info about it</string>
+    <string name="additional_info">Additional info</string>
+    <string name="your_status">Your status</string>
+    <string name="active_status_description">Active - you are opened for another users in search</string>
+    <string name="temporarily_inactive_status_description">Temporarily inactive - you will be active from designated date by you</string>
+    <string name="inactive_status_description">Inactive - you are closed for another users in search</string>
+    <string name="firm_name">Firm name</string>
+</resources>
