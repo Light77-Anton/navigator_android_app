@@ -51,4 +51,5 @@
     <string name="temporarily_inactive_status_description">Temporarily inactive - you will be active from designated date by you</string>
     <string name="inactive_status_description">Inactive - you are closed for another users in search</string>
     <string name="firm_name">Firm name</string>
+    <string name="choose_your_interface_language">Choose your interface language</string>
 </resources>

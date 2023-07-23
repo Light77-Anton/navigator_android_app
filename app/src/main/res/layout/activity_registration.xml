@@ -44,6 +44,13 @@
                 android:paddingStart="15dp"
                 android:drawableEnd="@drawable/ic_star"
                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/choose_your_interface_language"
+                android:textColor="@color/white"
+                android:textSize="40sp" />
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -98,7 +105,7 @@
                 android:layout_marginTop="30dp"
                 android:text="@string/choose_your_role"
                 android:textColor="@color/white"
-                android:textSize="50sp"
+                android:textSize="40sp"
                 app:drawableEndCompat="@drawable/ic_star" />
             <CheckBox
                 android:layout_width="match_parent"
