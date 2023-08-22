@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class RetrofitService {
 
-    private Retrofit retrofit;
+    private @Getter Retrofit retrofit;
 
     public RetrofitService() {
         initializeRetrofit();
@@ -18,5 +18,13 @@ public class RetrofitService {
                 .baseUrl("http://10.1.1.214:8080")
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
+    }
+
+    public Retrofit getRetrofit() {
+        return retrofit;
+    }
+
+    public void setRetrofit(Retrofit retrofit) {
+        this.retrofit = retrofit;
     }
 }

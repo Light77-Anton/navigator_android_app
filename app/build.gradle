@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.navigatorappandroid'
-    compileSdk 33
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.example.navigatorappandroid"
         minSdk 27
-        targetSdk 33
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 
@@ -44,5 +44,6 @@ dependencies {
     implementation "androidx.fragment:fragment:1.6.0"
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.11.0'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp-ws', version: '3.4.2'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
 }

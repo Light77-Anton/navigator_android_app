@@ -5,21 +5,36 @@
     <string name="sign_up_text_button">Sign Up</string>
     <string name="info_button">\?</string>
     <string name="enter_your_data_for_registration">Enter your data for registration</string>
+    <string name="enter_your_data_for_registration_java">ENTER_YOUR_DATA_FOR_REGISTRATION</string>
     <string name="enter_text_from_the_picture">Enter text from the picture</string>
+    <string name="enter_text_from_the_picture_java">ENTER_TEXT_FROM_THE_PICTURE</string>
     <string name="first_and_last_name">First and last name</string>
+    <string name="first_and_last_name_java">FIRST_AND_LAST_NAME</string>
     <string name="email">Email</string>
+    <string name="email_java">EMAIL</string>
     <string name="phone">Phone</string>
+    <string name="phone_java">PHONE</string>
     <string name="social_networks_links">Social networks links</string>
+    <string name="social_networks_links_java">SOCIAL_NETWORKS_LINKS</string>
     <string name="password">Password</string>
+    <string name="password_java">PASSWORD</string>
     <string name="repeat_password">Repeat password</string>
+    <string name="repeat_password_java">REPEAT_PASSWORD</string>
     <string name="choose_your_role">Choose your role</string>
+    <string name="choose_your_role_java">CHOOSE_YOUR_ROLE</string>
     <string name="i_am_looking_for_a_job">I am looking for a job</string>
+    <string name="i_am_looking_for_a_job_java">I_AM_LOOKING_FOR_A_JOB</string>
     <string name="i_am_looking_for_employees">I am looking for employees</string>
+    <string name="i_am_looking_for_employees_java">I_AM_LOOKING_FOR_EMPLOYEES</string>
     <string name="text_from_the_picture">Text from the picture</string>
+    <string name="text_from_the_picture_java">TEXT_FROM_THE_PICTURE</string>
     <string name="confirm"><u>Confirm</u></string>
+    <string name="confirm_java">CONFIRM</string>
     <string name="back">Back</string>
+    <string name="back_java">BACK</string>
     <string name="note_about_settings">* Pay attention to some of important settings will be
         available only after registration in your profile</string>
+    <string name="note_about_settings_java">NOTE_ABOUT_SETTINGS</string>
     <string name="registration_success_message">Your registration is almost finished.To registration\'s
         finish a mail with confirmation has been sent to your email.You can close this page</string>
     <string name="search_by_profession">Search by profession</string>
@@ -52,4 +67,6 @@
     <string name="inactive_status_description">Inactive - you are closed for another users in search</string>
     <string name="firm_name">Firm name</string>
     <string name="choose_your_interface_language">Choose your interface language</string>
+    <string name="choose_your_interface_language_java">CHOOSE_YOUR_INTERFACE_LANGUAGE</string>
+    <string name="registration_success_message_java">REGISTRATION_SUCCESS_MESSAGE</string>
 </resources>

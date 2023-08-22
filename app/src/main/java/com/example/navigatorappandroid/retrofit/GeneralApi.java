@@ -8,11 +8,14 @@ import com.example.navigatorappandroid.retrofit.request.ModeratorDecision;
 import com.example.navigatorappandroid.retrofit.request.PasswordRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
+import com.example.navigatorappandroid.retrofit.request.TextListInSpecifiedLanguageRequest;
 import com.example.navigatorappandroid.retrofit.request.VoteRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
 import com.example.navigatorappandroid.retrofit.response.JobListResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.StringResponse;
+import com.example.navigatorappandroid.retrofit.response.MapTextResponse;
+import com.example.navigatorappandroid.retrofit.response.TextListResponse;
 import com.example.navigatorappandroid.retrofit.response.VoteResponse;
 import java.security.Principal;
 import retrofit2.Call;
@@ -96,4 +99,13 @@ public interface GeneralApi {
 
     @GET("api/language/get")
     Call<StringResponse> getUsersInterfaceLanguage();
+
+    @GET("api/system/text/get")
+    Call<MapTextResponse> checkAndGetTextListInSpecifiedLanguage(@Body TextListInSpecifiedLanguageRequest textList);
+
+    @GET("api/languages/list/get")
+    Call<TextListResponse> getLanguagesList();
+
+    @GET("api/system/message/get")
+    Call<StringResponse> getMessageInSpecifiedLanguage(@Body InProgramMessageRequest inProgramMessageRequest);
 }
