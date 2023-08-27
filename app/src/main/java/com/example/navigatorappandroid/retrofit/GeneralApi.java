@@ -8,6 +8,7 @@ import com.example.navigatorappandroid.retrofit.request.ModeratorDecision;
 import com.example.navigatorappandroid.retrofit.request.PasswordRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
+import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.request.TextListInSpecifiedLanguageRequest;
 import com.example.navigatorappandroid.retrofit.request.VoteRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
@@ -108,4 +109,7 @@ public interface GeneralApi {
 
     @GET("api/system/message/get")
     Call<StringResponse> getMessageInSpecifiedLanguage(@Body InProgramMessageRequest inProgramMessageRequest);
+
+    @PUT("api/auth/account/activate/{id}")
+    Call<StringResponse> activateAccount(@Path("id") Long email);
 }
