@@ -10,4 +10,28 @@ public class LoginResponse {
     private Long userId;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String blockMessage;
+
+    public boolean isResult() {
+        return result;
+    }
+
+    public void setResult(boolean result) {
+        this.result = result;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getBlockMessage() {
+        return blockMessage;
+    }
+
+    public void setBlockMessage(String blockMessage) {
+        this.blockMessage = blockMessage;
+    }
 }
