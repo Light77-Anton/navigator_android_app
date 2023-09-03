@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.NavigatorAppAndroid"
-        tools:targetApi="31">
+        tools:targetApi="32">
 
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
@@ -38,20 +38,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="http" />
-                <data android:host="localhost" />
-                <data android:port="8080" />
-                <data android:pathPrefix="/account/activate" />
-            </intent-filter>
         </activity>
         <activity android:name=".StartVideoActivity" />
-
         <meta-data
             android:name="android.app.lib_name"
             android:value="" />

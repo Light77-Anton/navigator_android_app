@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/custom_gray_blue"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    tools:context=".LoginActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:id="@+id/app_name_logo"
         android:layout_width="wrap_content"
