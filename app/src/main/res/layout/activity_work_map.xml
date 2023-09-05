@@ -2,17 +2,20 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".websocket.MapsActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView
+    <androidx.fragment.app.FragmentContainerView xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ea1ddfbd25d1e33e"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
+        tools:context=".websocket.MapsActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MapsFragment" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        map:uiZoomControls="true"
+        map:uiRotateGestures="true" />
 
     <android.widget.Button
         android:id="@+id/search_button"
@@ -29,6 +32,7 @@
         android:layout_alignParentTop="true"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:onClick="onSettingsClick"
         android:background="@color/custom_gray_blue"
         android:drawableLeft="@drawable/ic_settings"
         android:drawableRight="@drawable/ic_settings2"/>

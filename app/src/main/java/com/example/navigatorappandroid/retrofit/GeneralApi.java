@@ -17,6 +17,7 @@ import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.MapTextResponse;
 import com.example.navigatorappandroid.retrofit.response.TextListResponse;
+import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.VoteResponse;
 import java.security.Principal;
 import retrofit2.Call;
@@ -112,4 +113,7 @@ public interface GeneralApi {
 
     @PUT("api/auth/account/activate/{id}")
     Call<StringResponse> activateAccount(@Path("id") Long email);
+
+    @GET("api/user/get")
+    Call<UserInfoResponse> getUserInfo(Principal principal);
 }
