@@ -21,6 +21,7 @@
                 android:textColor="@color/white"
                 android:textSize="70sp" />
             <ImageView
+                android:id="@+id/avatar"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerInside"
@@ -29,6 +30,7 @@
                 android:layout_marginRight="70dp"
                 android:background="@color/white"/>
             <android.widget.Button
+                android:id="@+id/avatar_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -38,6 +40,7 @@
                 android:textColor="@color/white"
                 android:textSize="40sp"/>
             <android.widget.Button
+                android:id="@+id/set_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -47,6 +50,7 @@
                 android:textColor="@color/red"
                 android:textSize="40sp"/>
             <EditText
+                android:id="@+id/first_and_last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
@@ -59,6 +63,7 @@
                 android:paddingStart="15dp"
                 app:drawableEndCompat="@drawable/ic_star"/>
             <EditText
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -71,6 +76,7 @@
                 android:paddingStart="15dp"
                 app:drawableEndCompat="@drawable/ic_star"/>
             <EditText
+                android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -82,6 +88,7 @@
                 android:inputType="text"
                 android:paddingStart="15dp" />
             <EditText
+                android:id="@+id/social_networks_links"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -93,6 +100,7 @@
                 android:inputType="text"
                 android:paddingStart="15dp" />
             <EditText
+                android:id="@+id/work_requirements"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -104,6 +112,7 @@
                 android:inputType="text"
                 android:paddingStart="15dp" />
             <CheckBox
+                android:id="@+id/drivers_license"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -112,6 +121,7 @@
                 android:textSize="40sp"
                 android:background="@drawable/edit_text"/>
             <CheckBox
+                android:id="@+id/auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -128,6 +138,7 @@
                 android:textColor="@color/white"
                 android:textSize="40sp" />
             <Spinner
+                android:id="@+id/interface_language"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
@@ -142,12 +153,14 @@
                 android:textColor="@color/white"
                 android:textSize="40sp" />
             <Spinner
+                android:id="@+id/communication_language_first"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/spinner"
                 android:textAlignment="center"/>
             <android.widget.Button
+                android:id="@+id/remove_language_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -157,6 +170,7 @@
                 android:textColor="@color/white"
                 android:textSize="40sp"/>
             <android.widget.Button
+                android:id="@+id/add_language_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -174,12 +188,14 @@
                 android:textColor="@color/white"
                 android:textSize="40sp" />
             <Spinner
+                android:id="@+id/profession_first"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/spinner"
                 android:textAlignment="center"/>
             <EditText
+                android:id="@+id/profession_info_first"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -191,6 +207,7 @@
                 android:inputType="text"
                 android:paddingStart="15dp" />
             <android.widget.Button
+                android:id="@+id/remove_profession_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -200,6 +217,7 @@
                 android:textColor="@color/white"
                 android:textSize="40sp"/>
             <android.widget.Button
+                android:id="@+id/add_profession_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -241,12 +259,14 @@
                 android:textColor="@color/white"
                 android:textSize="40sp" />
             <Spinner
+                android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/spinner"
                 android:textAlignment="center"/>
             <android.widget.Button
+                android:id="@+id/confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
@@ -255,6 +275,7 @@
                 android:textColor="@color/red"
                 android:textSize="50sp"/>
             <android.widget.Button
+                android:id="@+id/back"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"

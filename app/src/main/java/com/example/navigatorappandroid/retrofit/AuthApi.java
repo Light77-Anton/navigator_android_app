@@ -30,6 +30,6 @@ public interface AuthApi {
     Call<ResultErrorsResponse> registration(@Body RegistrationRequest registrationRequest);
 
     @DELETE("api/auth/delete")
-    Call<DeleteAccountResponse> deleteAccount(Principal principal);
+    Call<DeleteAccountResponse> deleteAccount();
 
 }

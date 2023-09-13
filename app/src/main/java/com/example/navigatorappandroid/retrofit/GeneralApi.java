@@ -8,7 +8,6 @@ import com.example.navigatorappandroid.retrofit.request.ModeratorDecision;
 import com.example.navigatorappandroid.retrofit.request.PasswordRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
-import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.request.TextListInSpecifiedLanguageRequest;
 import com.example.navigatorappandroid.retrofit.request.VoteRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
@@ -33,25 +32,25 @@ import retrofit2.http.Query;
 public interface GeneralApi {
 
     @PUT("api/moderator")
-    Call<ResultErrorsResponse> setModerator(Principal principal);
+    Call<ResultErrorsResponse> setModerator();
 
     @POST("api/system/code/add")
-    Call<ResultErrorsResponse> addMessageCodeName(@Query("code") String codeName, Principal principal);
+    Call<ResultErrorsResponse> addMessageCodeName(@Query("code") String codeName);
 
     @POST("api/system/message/add")
-    Call<ResultErrorsResponse> addInProgramMessage(@Body InProgramMessageRequest inProgramMessageRequest, Principal principal);
+    Call<ResultErrorsResponse> addInProgramMessage(@Body InProgramMessageRequest inProgramMessageRequest);
 
     @POST("api/language/add")
-    Call<ResultErrorsResponse> addLanguage(@Query("language") String language, Principal principal);
+    Call<ResultErrorsResponse> addLanguage(@Query("language") String language);
 
     @PUT("api/profile/avatar")
-    Call<AvatarResponse> profileAvatar(@Query("avatar") Multipart avatar, Principal principal);
+    Call<AvatarResponse> profileAvatar(@Query("avatar") Multipart avatar);
 
     @PUT("api/profile")
-    Call<ResultErrorsResponse> profile(@Body ProfileRequest profileRequest, Principal principal);
+    Call<ResultErrorsResponse> profile(@Body ProfileRequest profileRequest);
 
     @POST("api/professions/name/add")
-    Call<ResultErrorsResponse> addProfessionInSpecifiedLanguage(@Body ProfessionRequest professionRequest, Principal principal);
+    Call<ResultErrorsResponse> addProfessionInSpecifiedLanguage(@Body ProfessionRequest professionRequest);
 
     @POST("api/professions/new/add")
     Call<ResultErrorsResponse> addNewProfessionId();
@@ -78,14 +77,14 @@ public interface GeneralApi {
     Call<VoteResponse> dislike(@Body VoteRequest voteRequest);
 
     @POST("api/comment")
-    Call<ResultErrorsResponse> comment(@Body CommentRequest commentRequest, Principal principal);
+    Call<ResultErrorsResponse> comment(@Body CommentRequest commentRequest);
 
     @POST("api/employer/search/passive")
-    Call<ResultErrorsResponse> setPassiveSearch(@Body JobRequest jobRequest, Principal principal);
+    Call<ResultErrorsResponse> setPassiveSearch(@Body JobRequest jobRequest);
 
     @POST("api/user/{id}/blacklist/{decision}")
     Call<ResultErrorsResponse> blacklist(@Query("favoriteId") String favoriteId,
-                                        @Query("decision") String decision, Principal principal);
+                                        @Query("decision") String decision);
 
     @GET("api/user/sender/get")
     Call<User> getSender(Principal principal);
@@ -94,7 +93,7 @@ public interface GeneralApi {
     Call<User> getRecipient(@Path("recipientId") long recipientId);
 
     @GET("api/jobs")
-    Call<JobListResponse> getJobList(Principal principal);
+    Call<JobListResponse> getJobList();
 
     @DELETE("api/delete")
     Call<ResultErrorsResponse> checkAndDeleteNotConfirmedJobs();
@@ -115,5 +114,5 @@ public interface GeneralApi {
     Call<StringResponse> activateAccount(@Path("id") Long email);
 
     @GET("api/user/get")
-    Call<UserInfoResponse> getUserInfo(Principal principal);
+    Call<UserInfoResponse> getUserInfo();
 }

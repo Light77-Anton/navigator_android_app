@@ -13,20 +13,20 @@ import retrofit2.http.Path;
 public interface SearchApi {
 
     @GET("api/search/professions")
-    Call<ProfessionsResponse> getProfessionList(Principal principal);
+    Call<ProfessionsResponse> getProfessionList();
 
     @GET("api/search/employees")
     Call<EmployeesListResponse> getEmployeesOfChosenProfession(
-            @Body RequestForEmployees requestForEmployees, Principal principal);
+            @Body RequestForEmployees requestForEmployees);
 
     @GET("api/search/employees/nearest")
     Call<EmployeesListResponse> getTheNearestEmployeeOfChosenProfession(
-            @Body RequestForEmployees requestForEmployees, Principal principal);
+            @Body RequestForEmployees requestForEmployees);
 
     @GET("api/search/employees/best")
     Call<EmployeesListResponse> getTheBestEmployees(
-            @Body RequestForEmployees requestForEmployees, Principal principal);
+            @Body RequestForEmployees requestForEmployees);
 
     @GET("api/search/employee/info/{id}")
-    Call<EmployeeInfoResponse> getEmployeeInfo(@Path("id") long id, Principal principal);
+    Call<EmployeeInfoResponse> getEmployeeInfo(@Path("id") long id);
 }

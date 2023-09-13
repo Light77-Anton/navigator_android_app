@@ -1,21 +1,23 @@
 package com.example.navigatorappandroid.websocket;
-
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import com.example.navigatorappandroid.BuildConfig;
+import com.example.navigatorappandroid.MainActivity;
 import com.example.navigatorappandroid.R;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
+import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -46,6 +48,10 @@ import com.google.android.libraries.places.api.model.PlaceLikelihood;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import java.security.Principal;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MapsActivity extends AppCompatActivity implements OnCameraMoveCanceledListener,
@@ -178,13 +184,39 @@ public class MapsActivity extends AppCompatActivity implements OnCameraMoveCance
         User user;
         RetrofitService retrofitService = new RetrofitService();
         GeneralApi generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        generalApi.getUserInfo()
-        if () {
+        Intent intent = new Intent(this, EmployeeSettings.class);
+        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
+            @Override
+            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
+                String role = response.body().getRole();
+                if (role.equals("Employee")) {
+                    fillIntentWithGeneralData(intent, response);
+                    intent.putExtra("work_requirements",response.body().getEmployeeData().getEmployeesWorkRequirements());
+                    intent.putExtra("is_drivers_license", response.body().getEmployeeData().isDriverLicense());
+                    intent.putExtra("is_auto", response.body().getEmployeeData().isAuto());
+                    intent.putExtra("professions", response.body().getEmployeeData().getProfessionToUserList());
+                    intent.putExtra("status", response.body().getEmployeeData().getStatus());
+                } else if (role.equals("Employer")) {
+                    fillIntentWithGeneralData(intent, response);
+                    intent.putExtra("firm_name", response.body().getEmployerRequests().getFirmName());
+                } else {
+                    fillIntentWithGeneralData(intent, response);
+                }
+            }
 
-        } else if () {
+            @Override
+            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
+                Toast.makeText(MapsActivity.this, "fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
-        } else {
-
-        }
+    private void fillIntentWithGeneralData(Intent intent, Response<UserInfoResponse> response) {
+        intent.putExtra("avatar", response.body().getAvatar());
+        intent.putExtra("name", response.body().getName());
+        intent.putExtra("phone", response.body().getPhone());
+        intent.putExtra("social_networks_links", response.body().getSocialNetworksLinks());
+        intent.putExtra("interface_language", response.body().getEndonymInterfaceLanguage());
+        intent.putExtra("communication_language", response.body().getCommunicationLanguages());
     }
 }
