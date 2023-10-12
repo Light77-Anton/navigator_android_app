@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MapsActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.fragment.app.FragmentContainerView xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ea1ddfbd25d1e33e"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        tools:context=".MapsActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        map:uiZoomControls="true"
+        map:uiRotateGestures="true" />
+    <android.widget.Button
+        android:id="@+id/search_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/search"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:background="@color/custom_gray_blue"
+        android:drawableEnd="@drawable/ic_search"/>
+    <android.widget.Button
+        android:id="@+id/status_button"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="250dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="@string/inactive"
+        android:background="@color/custom_gray_blue"
+        android:drawableEnd="@drawable/inactive"/>
+    <android.widget.Button
+        android:id="@+id/settings_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="onSettingsClick"
+        android:background="@color/custom_gray_blue"
+        android:drawableLeft="@drawable/ic_settings"
+        android:drawableRight="@drawable/ic_settings2"/>
+</RelativeLayout>

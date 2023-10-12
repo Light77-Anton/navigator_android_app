@@ -14,7 +14,7 @@ import lombok.Data;
 public class UserInfoResponse {
 
     private String socialNetworksLinks;
-    private ArrayList<Language> communicationLanguages;
+    private ArrayList<String> communicationLanguages;
     private String endonymInterfaceLanguage;
     private ArrayList<Vote> votes;
     private double ranking;

@@ -1,19 +1,14 @@
-package com.example.navigatorappandroid.websocket;
-import android.Manifest;
+package com.example.navigatorappandroid;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import com.example.navigatorappandroid.BuildConfig;
-import com.example.navigatorappandroid.MainActivity;
-import com.example.navigatorappandroid.R;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
@@ -29,26 +24,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.CancelableCallback;
-import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener;
 import com.google.android.gms.maps.GoogleMap.OnCameraMoveCanceledListener;
-import com.google.android.gms.maps.GoogleMap.OnCameraMoveListener;
-import com.google.android.gms.maps.GoogleMap.OnCameraMoveStartedListener;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import java.security.Principal;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,7 +57,7 @@ public class MapsActivity extends AppCompatActivity implements OnCameraMoveCance
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
-        setContentView(R.layout.activity_work_map);
+        setContentView(R.layout.activity_work_map_employee);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         placesClient = Places.createClient(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -184,23 +163,28 @@ public class MapsActivity extends AppCompatActivity implements OnCameraMoveCance
         User user;
         RetrofitService retrofitService = new RetrofitService();
         GeneralApi generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        Intent intent = new Intent(this, EmployeeSettings.class);
         generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
             @Override
             public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
                 String role = response.body().getRole();
                 if (role.equals("Employee")) {
+                    Intent intent = new Intent(this, EmployeeSettingsActivity.class);
                     fillIntentWithGeneralData(intent, response);
                     intent.putExtra("work_requirements",response.body().getEmployeeData().getEmployeesWorkRequirements());
                     intent.putExtra("is_drivers_license", response.body().getEmployeeData().isDriverLicense());
                     intent.putExtra("is_auto", response.body().getEmployeeData().isAuto());
                     intent.putExtra("professions", response.body().getEmployeeData().getProfessionToUserList());
                     intent.putExtra("status", response.body().getEmployeeData().getStatus());
+                    startActivity(intent);
                 } else if (role.equals("Employer")) {
+                    Intent intent = new Intent(this, EmployerSettingsActivity.class);
                     fillIntentWithGeneralData(intent, response);
                     intent.putExtra("firm_name", response.body().getEmployerRequests().getFirmName());
+                    startActivity(intent);
                 } else {
+                    Intent intent = new Intent(this, ModeratorSettingsActivity.class);
                     fillIntentWithGeneralData(intent, response);
+                    startActivity(intent);
                 }
             }
 

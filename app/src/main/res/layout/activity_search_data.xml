@@ -16,7 +16,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/choose_profession"
+                android:text="@string/choose_profession_for_the_search"
                 android:textColor="@color/white"
                 android:textSize="40sp" />
             <Spinner

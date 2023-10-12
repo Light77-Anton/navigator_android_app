@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    tools:context=".EmployeeSettingsActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -147,38 +148,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:layout_marginLeft="50dp"
+                android:layout_marginTop="30dp"
                 android:text="@string/communication_languages"
                 android:textColor="@color/white"
                 android:textSize="40sp" />
-            <Spinner
+            <com.jaredrummler.materialspinner.MaterialSpinner
                 android:id="@+id/communication_language_first"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/spinner"
                 android:textAlignment="center"/>
-            <android.widget.Button
-                android:id="@+id/remove_language_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="160dp"
-                android:background="@drawable/rectangle_button"
-                android:text="-"
-                android:textColor="@color/white"
-                android:textSize="40sp"/>
-            <android.widget.Button
-                android:id="@+id/add_language_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="160dp"
-                android:background="@drawable/rectangle_button"
-                android:text="+"
-                android:textColor="@color/white"
-                android:textSize="40sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -187,79 +168,39 @@
                 android:text="@string/your_professions_and_info"
                 android:textColor="@color/white"
                 android:textSize="40sp" />
-            <Spinner
-                android:id="@+id/profession_first"
+            <android.widget.Button
+                android:id="@+id/profession_button"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/spinner"
-                android:textAlignment="center"/>
-            <EditText
-                android:id="@+id/profession_info_first"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/edit_text"
-                android:hint="@string/additional_info"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white"
+                android:text="@string/set_professions"
                 android:textSize="35sp"
-                android:inputType="text"
-                android:paddingStart="15dp" />
-            <android.widget.Button
-                android:id="@+id/remove_profession_field"
+                android:textColor="@color/white"
+                android:background="@drawable/edit_text"
+                android:textAlignment="center"/>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="160dp"
+                android:paddingStart="40dp"
+                android:textSize="20sp"
+                android:text="@string/limit_of_positions_in_the_search"/>
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:min="1"
+                android:progress="25"/>
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_button"
-                android:text="-"
-                android:textColor="@color/white"
-                android:textSize="40sp"/>
-            <android.widget.Button
-                android:id="@+id/add_profession_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="160dp"
-                android:background="@drawable/rectangle_button"
-                android:text="+"
-                android:textColor="@color/white"
-                android:textSize="40sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="50dp"
-                android:text="@string/your_status"
-                android:textColor="@color/white"
-                android:textSize="40sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="50dp"
-                android:text="@string/active_status_description"
-                android:textColor="@color/white"
-                android:textSize="40sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="50dp"
-                android:text="@string/temporarily_inactive_status_description"
-                android:textColor="@color/white"
-                android:textSize="40sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="50dp"
-                android:text="@string/inactive_status_description"
-                android:textColor="@color/white"
-                android:textSize="40sp" />
+                android:textSize="20sp"
+                android:text="@string/ignore_matched_communication_language_in_the_search"
+                android:textColor="@color/black"/>
             <Spinner
-                android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
@@ -275,10 +216,19 @@
                 android:textColor="@color/red"
                 android:textSize="50sp"/>
             <android.widget.Button
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/rectangle_button"
+                android:text="@string/logout"
+                android:textColor="@color/white"
+                android:textSize="50sp"/>
+            <android.widget.Button
                 android:id="@+id/back"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="100dp"
                 android:background="@drawable/rectangle_button"
                 android:text="@string/back"
                 android:textColor="@color/white"

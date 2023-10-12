@@ -254,6 +254,5 @@ public class RegistrationActivity extends AppCompatActivity {
                 Toast.makeText(RegistrationActivity.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

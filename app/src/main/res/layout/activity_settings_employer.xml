@@ -125,6 +125,43 @@
                 android:text="@string/communication_languages"
                 android:textColor="@color/white"
                 android:textSize="40sp" />
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/communication_language_first"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/spinner"
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="50dp"
+                android:text="@string/search_settings"
+                android:textColor="@color/white"
+                android:textSize="40sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:paddingStart="40dp"
+                android:textSize="20sp"
+                android:text="@string/limit_of_positions_in_the_search"/>
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:min="1"
+                android:progress="25"/>
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_button"
+                android:layout_marginTop="30dp"
+                android:textSize="20sp"
+                android:text="@string/ignore_matched_communication_language_in_the_search"
+                android:textColor="@color/black"/>
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -132,24 +169,7 @@
                 android:background="@drawable/spinner"
                 android:textAlignment="center"/>
             <android.widget.Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="160dp"
-                android:background="@drawable/rectangle_button"
-                android:text="-"
-                android:textColor="@color/white"
-                android:textSize="40sp"/>
-            <android.widget.Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="160dp"
-                android:background="@drawable/rectangle_button"
-                android:text="+"
-                android:textColor="@color/white"
-                android:textSize="40sp"/>
-            <android.widget.Button
+                android:id="@+id/confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
@@ -158,9 +178,19 @@
                 android:textColor="@color/red"
                 android:textSize="50sp"/>
             <android.widget.Button
+                android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/rectangle_button"
+                android:text="@string/logout"
+                android:textColor="@color/white"
+                android:textSize="50sp"/>
+            <android.widget.Button
+                android:id="@+id/back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
                 android:background="@drawable/rectangle_button"
                 android:text="@string/back"
                 android:textColor="@color/white"
