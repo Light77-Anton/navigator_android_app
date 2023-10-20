@@ -99,4 +99,7 @@
     <string name="search_settings">Search settings</string>
     <string name="limit_of_positions_in_the_search">Limit of positions in the search</string>
     <string name="ignore_matched_communication_language_in_the_search">Ignore matched communication language in the search</string>
+    <string name="comments_list">Comments list</string>
+    <string name="open_chat">Open chat</string>
+    <string name="give_offer">Give offer</string>
 </resources>

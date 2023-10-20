@@ -22,9 +22,9 @@
         android:layout_width="240dp"
         android:layout_height="50dp"
         android:onClick="onOffersAndEmployeesInfoClick"
-        android:text="@string/show_info_about_my_vacancies"
+        android:text="@string/inactive"
         android:background="@drawable/gray_blue_rectangle"
-        android:drawableEnd="@drawable/offers_and_employees_info_icon"/>
+        android:drawableEnd="@drawable/inactive"/>
     <android.widget.Button
         android:id="@+id/settings_button"
         android:layout_alignParentRight="true"
@@ -46,6 +46,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_button"
+                android:text="Vadims Baumans      8/10     0.5km"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_button"
+                android:text="Вася Пупкин      5/10     3.9km"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
             <!--
             <Button
                 android:layout_width="match_parent"

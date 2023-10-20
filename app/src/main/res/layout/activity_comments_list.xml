@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/custom_gray_blue"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.widget.Button
+        android:id="@+id/back"
+        android:onClick="onBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/rectangle_button"
+        android:text="@string/back"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:drawableStart="@drawable/ic_arrow_back"/>
+    <TextView
+        android:id="@+id/comments_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/comments_list"
+        android:layout_below="@id/back"
+        android:layout_marginTop="30dp"
+        android:paddingStart="70dp"
+        android:textColor="@color/white"
+        android:textSize="40sp" />
+    <!--
+    -->
+    <ImageView
+        android:id="@+id/vadims_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/avatar_example_round"
+        android:layout_marginTop="60dp"
+        android:layout_below="@id/comments_list"/>
+    <TextView
+        android:id="@+id/vadims_username"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:paddingStart="10dp"
+        android:paddingTop="15dp"
+        android:layout_marginTop="60dp"
+        android:layout_below="@id/comments_list"
+        android:layout_toRightOf="@id/vadims_avatar"
+        android:text="Vadims Baumans"
+        android:textColor="@color/black"
+        android:textSize="30sp"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/message_sign"
+        android:layout_marginTop="60dp"
+        android:layout_toRightOf="@id/vadims_username"
+        android:layout_below="@id/comments_list"/>
+    <TextView
+        android:id="@+id/vadims_comment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingStart="130dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/vadims_avatar"
+        android:background="@drawable/comment_background"
+        android:text="Comment's text"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+
+    <ImageView
+        android:id="@+id/antons_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/default_user_avatar"
+        android:layout_marginTop="60dp"
+        android:layout_below="@id/vadims_comment"/>
+    <TextView
+        android:id="@+id/antons_username"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:paddingStart="10dp"
+        android:paddingTop="15dp"
+        android:layout_marginTop="60dp"
+        android:layout_below="@id/vadims_comment"
+        android:layout_toRightOf="@id/antons_avatar"
+        android:text="Antons Baumans"
+        android:textColor="@color/black"
+        android:textSize="30sp"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/message_sign"
+        android:layout_marginTop="60dp"
+        android:layout_toRightOf="@id/antons_username"
+        android:layout_below="@id/vadims_comment"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingStart="130dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/antons_avatar"
+        android:background="@drawable/comment_background"
+        android:text="Comment's text"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+
+</RelativeLayout>
