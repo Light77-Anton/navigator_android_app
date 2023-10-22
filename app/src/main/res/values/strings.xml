@@ -79,7 +79,7 @@
     <string name="search">Search</string>
     <string name="logout">Logout</string>
     <string name="show_info_about_my_vacancies">Show info about my vacancies</string>
-    <string name="required_professions">Required professions :</string>
+    <string name="required_profession">Required profession :</string>
     <string name="job_address">Job address :</string>
     <string name="start_date">Start date :</string>
     <string name="payment_and_additional_info">Payment and additional info :</string>
@@ -101,5 +101,9 @@
     <string name="ignore_matched_communication_language_in_the_search">Ignore matched communication language in the search</string>
     <string name="comments_list">Comments list</string>
     <string name="open_chat">Open chat</string>
-    <string name="give_offer">Give offer</string>
+    <string name="send_offer">Send offer</string>
+    <string name="choose_start_date">Choose start date :</string>
+    <string name="choose_start_time">Choose start time :</string>
+    <string name="send"><u>Send</u></string>
+    <string name="enter_message">Enter message...</string>
 </resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/chat_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/custom_gray_blue"
+        android:textAlignment="center"
+        android:text="Vadims Baumans"
+        android:textColor="@color/white"
+        android:textSize="40sp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:padding="15dp"
+                android:background="@drawable/other_person_chat_message_background"
+                android:text="Привет!"
+                android:textColor="@color/black"
+                android:textSize="30sp"/>
+        </LinearLayout>
+    </ScrollView>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:hint="@string/enter_message"
+        android:background="@color/custom_gray_blue"
+        android:textColor="@color/black"
+        android:textSize="40sp"/>
+</RelativeLayout>

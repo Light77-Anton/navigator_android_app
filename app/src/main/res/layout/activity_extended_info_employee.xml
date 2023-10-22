@@ -21,58 +21,50 @@
             android:layout_height="200dp"
             android:layout_alignParentEnd="true"
             android:src="@drawable/default_user_avatar" />
-        <TextView
+        <android.widget.Button
             android:id="@+id/rating"
-            android:layout_width="200dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
             android:layout_marginTop="30dp"
-            android:text="Rating 0/10"
-            android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:background="@color/custom_gray_blue"
+            android:text="Rating -10/10"
+            android:textColor="@color/red"
+            android:textSize="25sp" />
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="40dp"
+            android:layout_toRightOf="@id/rating"
+            android:src="@drawable/rate_star" />
         <TextView
             android:id="@+id/status"
-            android:layout_width="match_parent"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/rating"
             android:layout_marginTop="60dp"
-            android:text="Status: active"
+            android:text="Status: will active since 22.10.2023"
             android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:drawableEnd="@drawable/temporarily_inactive"/>
         <TextView
             android:id="@+id/professions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/status"
             android:layout_marginTop="60dp"
-            android:text="Professions : "
-            android:textColor="@color/black"
-            android:textSize="30sp" />
-        <TextView
-            android:id="@+id/first_profession"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/professions"
-            android:layout_marginTop="10dp"
-            android:text="first profession : additional info"
-            android:textColor="@color/black"
-            android:textSize="30sp" />
-        <TextView
-            android:id="@+id/second_profession"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/first_profession"
-            android:layout_marginTop="10dp"
-            android:text="second profession: no additional info"
+            android:text="Professions : first, second, third"
             android:textColor="@color/black"
             android:textSize="30sp" />
         <TextView
             android:id="@+id/works_requiremnets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/second_profession"
+            android:layout_below="@id/professions"
             android:layout_marginTop="60dp"
-            android:text="Employee's work requirements : "
+            android:text="Employee's additional info : "
             android:textColor="@color/black"
             android:textSize="30sp" />
         <TextView
@@ -111,24 +103,14 @@
             android:text="Social networks links: not specified"
             android:textColor="@color/black"
             android:textSize="30sp" />
-        <Button
-            android:id="@+id/comments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/social_networks_links"
-            android:background="@color/custom_gray_blue"
-            android:layout_marginTop="30dp"
-            android:text="Show comments..."
-            android:textColor="@color/white"
-            android:textSize="30sp" />
         <android.widget.Button
             android:id="@+id/give_offer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/comments"
+            android:layout_below="@id/social_networks_links"
             android:background="@drawable/rectangle_button"
             android:layout_marginTop="60dp"
-            android:text="@string/give_offer"
+            android:text="@string/send_offer"
             android:textColor="@color/white"
             android:textSize="50sp" />
         <Button
