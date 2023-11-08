@@ -38,8 +38,17 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.body().getBlockMessage() != null) {
                     Toast.makeText(LoginActivity.this, response.body().getBlockMessage(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent(coreView.getContext(), );
-                    startActivity(intent);
+                    Intent intent;
+                    if (response.body().getUserRole().equals("Employee")) {
+                        intent = new Intent(coreView.getContext(), WorkMapEmployeeActivity.class);
+                        startActivity(intent);
+                    } else if (response.body().getUserRole().equals("Employer")) {
+                        intent = new Intent(coreView.getContext(), WorkMapEmployerActivity.class);
+                        startActivity(intent);
+                    } else {
+                        intent = new Intent(coreView.getContext(), );
+                        startActivity(intent);
+                    }
                 }
             }
 

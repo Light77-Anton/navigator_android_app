@@ -33,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MapsActivity extends AppCompatActivity implements OnCameraMoveCanceledListener,
+public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCameraMoveCanceledListener,
         OnMapReadyCallback {
 
     private LatLng latLngMyLocation;
@@ -69,6 +69,9 @@ public class MapsActivity extends AppCompatActivity implements OnCameraMoveCance
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+        if () {
+            Bundle arguments = getIntent().getExtras();
+        }
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();
@@ -168,7 +171,7 @@ public class MapsActivity extends AppCompatActivity implements OnCameraMoveCance
             public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
                 String role = response.body().getRole();
                 if (role.equals("Employee")) {
-                    Intent intent = new Intent(this, EmployeeSettingsActivity.class);
+                    Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
                     fillIntentWithGeneralData(intent, response);
                     intent.putExtra("work_requirements",response.body().getEmployeeData().getEmployeesWorkRequirements());
                     intent.putExtra("is_drivers_license", response.body().getEmployeeData().isDriverLicense());
@@ -177,12 +180,12 @@ public class MapsActivity extends AppCompatActivity implements OnCameraMoveCance
                     intent.putExtra("status", response.body().getEmployeeData().getStatus());
                     startActivity(intent);
                 } else if (role.equals("Employer")) {
-                    Intent intent = new Intent(this, EmployerSettingsActivity.class);
+                    Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
                     fillIntentWithGeneralData(intent, response);
                     intent.putExtra("firm_name", response.body().getEmployerRequests().getFirmName());
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(this, ModeratorSettingsActivity.class);
+                    Intent intent = new Intent(view.getContext(), ModeratorSettingsActivity.class);
                     fillIntentWithGeneralData(intent, response);
                     startActivity(intent);
                 }
@@ -190,7 +193,7 @@ public class MapsActivity extends AppCompatActivity implements OnCameraMoveCance
 
             @Override
             public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(MapsActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -202,5 +205,10 @@ public class MapsActivity extends AppCompatActivity implements OnCameraMoveCance
         intent.putExtra("social_networks_links", response.body().getSocialNetworksLinks());
         intent.putExtra("interface_language", response.body().getEndonymInterfaceLanguage());
         intent.putExtra("communication_language", response.body().getCommunicationLanguages());
+    }
+
+    public void onSearchClick(View view) {
+        Intent intent = new Intent(this, );
+        startActivity(intent);
     }
 }

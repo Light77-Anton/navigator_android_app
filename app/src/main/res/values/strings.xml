@@ -106,4 +106,6 @@
     <string name="choose_start_time">Choose start time :</string>
     <string name="send"><u>Send</u></string>
     <string name="enter_message">Enter message...</string>
+    <string name="do_not_show_my_email">Do not show my email to other users</string>
+    <string name="do_not_show_my_phone">Do not show my phone to other users</string>
 </resources>

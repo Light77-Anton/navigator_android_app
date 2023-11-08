@@ -50,8 +50,17 @@
                 android:textSize="40sp"
                 android:inputType="textEmailAddress"
                 android:paddingStart="15dp"
-                android:drawableEnd="@drawable/ic_star"
-                />
+                android:drawableEnd="@drawable/ic_star" />
+            <CheckBox
+                android:id="@+id/email_hide_checkbox"
+                android:onClick="checkRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/do_not_show_my_email"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:background="@drawable/edit_text"/>
             <TextView
                 android:id="@+id/second_text_view"
                 android:layout_width="wrap_content"
@@ -78,6 +87,16 @@
                 android:textColor="@color/white"
                 android:textSize="40sp"
                 android:paddingStart="15dp"/>
+            <CheckBox
+                android:id="@+id/phone_hide_checkbox"
+                android:onClick="checkRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/do_not_show_my_phone"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:background="@drawable/edit_text"/>
             <EditText
                 android:id="@+id/fourth_edit_text"
                 android:layout_width="match_parent"

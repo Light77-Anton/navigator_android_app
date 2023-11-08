@@ -8,6 +8,17 @@ public class LoginResponse {
     private boolean result;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long userId;
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String userRole;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String blockMessage;
 

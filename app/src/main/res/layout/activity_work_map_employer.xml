@@ -2,13 +2,13 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MapsActivity"
+    tools:context=".WorkMapEmployerActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <androidx.fragment.app.FragmentContainerView xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ea1ddfbd25d1e33e"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        tools:context=".MapsActivity"
+        tools:context=".WorkMapEmployeeActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
