@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid.model;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,10 +10,10 @@ import lombok.Setter;
 public class Location {
 
     private Long id;
+
+    private LocalDateTime lastUpdateTime;
     private double latitude;
     private double longitude;
-    private String country;
-    private String city;
     private User user;
 
     public Long getId() {
@@ -39,20 +40,12 @@ public class Location {
         this.longitude = longitude;
     }
 
-    public String getCountry() {
-        return country;
+    public LocalDateTime getLastUpdateTime() {
+        return lastUpdateTime;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
+    public void setLastUpdateTime(LocalDateTime lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
     }
 
     public User getUser() {

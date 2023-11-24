@@ -12,6 +12,10 @@ import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
+import com.example.navigatorappandroid.retrofit.SearchApi;
+import com.example.navigatorappandroid.retrofit.request.RequestForEmployees;
+import com.example.navigatorappandroid.retrofit.response.EmployeeInfoResponse;
+import com.example.navigatorappandroid.retrofit.response.EmployeesListResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -72,6 +76,38 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();
+        Bundle arguments = getIntent().getExtras();
+        if (arguments.get("profession") != null) {
+            RetrofitService retrofitService = new RetrofitService();
+            SearchApi searchApi = retrofitService.getRetrofit().create(SearchApi.class);
+            UserInfoResponse userInfoResponse = searchApi.getEmployeeInfo().enqueue(new Callback<EmployeeInfoResponse>() {
+                @Override
+                public void onResponse(Call<EmployeeInfoResponse> call, Response<EmployeeInfoResponse> response) {}
+
+                @Override
+                public void onFailure(Call<EmployeeInfoResponse> call, Throwable t) {
+                    Toast.makeText(WorkMapEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                }
+            });
+            RequestForEmployees requestForEmployees = new RequestForEmployees();
+            requestForEmployees.setProfessionName(arguments.getString("profession"));
+            requestForEmployees.setLimit(userInfoResponse.getLimitForTheSearch());
+            requestForEmployees.setAuto(userInfoResponse.getEmployeeData().isAuto());
+            requestForEmployees.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
+            requestForEmployees.setInRadiusOf(userInfoResponse.getLimitForTheSearch());
+            searchApi.getEmployeesOfChosenProfession(requestForEmployees).enqueue(new Callback<EmployeesListResponse>() {
+                @Override
+                public void onResponse(Call<EmployeesListResponse> call, Response<EmployeesListResponse> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<EmployeesListResponse> call, Throwable t) {
+
+                }
+            });
+
+        }
     }
 
     private void getLocationPermission() {

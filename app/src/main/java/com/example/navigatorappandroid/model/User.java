@@ -32,6 +32,10 @@ public class User {
 
     private String lastRequest;
 
+    private int limitForTheSearch;
+
+    private boolean areLanguagesMatched;
+
     private List<ChatNotification> notifications;
 
     private List<ChatMessage> sentMessages;

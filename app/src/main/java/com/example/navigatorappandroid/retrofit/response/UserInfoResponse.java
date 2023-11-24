@@ -14,6 +14,7 @@ import lombok.Data;
 public class UserInfoResponse {
 
     private String socialNetworksLinks;
+
     private ArrayList<String> communicationLanguages;
     private String endonymInterfaceLanguage;
     private ArrayList<Vote> votes;
@@ -22,6 +23,10 @@ public class UserInfoResponse {
     private String name;
     private String email;
     private String phone;
+
+    private int limitForTheSearch;
+
+    private boolean areLanguagesMatched;
     private String lastRequest;
     private EmployeeData employeeData;
     private EmployerRequests employerRequests;
@@ -32,20 +37,36 @@ public class UserInfoResponse {
     private ArrayList<User> favorites;
     private Location location;
 
+    public ArrayList<String> getCommunicationLanguages() {
+        return communicationLanguages;
+    }
+
+    public void setCommunicationLanguages(ArrayList<String> communicationLanguages) {
+        this.communicationLanguages = communicationLanguages;
+    }
+
+    public int getLimitForTheSearch() {
+        return limitForTheSearch;
+    }
+
+    public void setLimitForTheSearch(int limitForTheSearch) {
+        this.limitForTheSearch = limitForTheSearch;
+    }
+
+    public boolean isAreLanguagesMatched() {
+        return areLanguagesMatched;
+    }
+
+    public void setAreLanguagesMatched(boolean areLanguagesMatched) {
+        this.areLanguagesMatched = areLanguagesMatched;
+    }
+
     public String getSocialNetworksLinks() {
         return socialNetworksLinks;
     }
 
     public void setSocialNetworksLinks(String socialNetworksLinks) {
         this.socialNetworksLinks = socialNetworksLinks;
-    }
-
-    public ArrayList<Language> getCommunicationLanguages() {
-        return communicationLanguages;
-    }
-
-    public void setCommunicationLanguages(ArrayList<Language> communicationLanguages) {
-        this.communicationLanguages = communicationLanguages;
     }
 
     public String getEndonymInterfaceLanguage() {

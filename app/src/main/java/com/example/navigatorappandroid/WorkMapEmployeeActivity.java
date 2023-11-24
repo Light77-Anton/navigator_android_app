@@ -9,9 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
+import com.example.navigatorappandroid.retrofit.SearchApi;
+import com.example.navigatorappandroid.retrofit.request.RequestForEmployees;
+import com.example.navigatorappandroid.retrofit.response.EmployeeInfoResponse;
+import com.example.navigatorappandroid.retrofit.response.EmployeesListResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +36,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Path;
 
 
 public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCameraMoveCanceledListener,
@@ -48,6 +54,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
     private CameraPosition cameraPosition;
+    private LocationUpdateHandler locationUpdateHandler;
 
 
     @Override
@@ -64,17 +71,59 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.ea1ddfbd25d1e33e);
         mapFragment.getMapAsync(this);
+        locationUpdateHandler = new LocationUpdateHandler();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        locationUpdateHandler.startLocationUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationUpdateHandler.stopLocationUpdates();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        if () {
-            Bundle arguments = getIntent().getExtras();
-        }
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();
+        Bundle arguments = getIntent().getExtras();
+        if (arguments.get("profession") != null) {
+            RetrofitService retrofitService = new RetrofitService();
+            SearchApi searchApi = retrofitService.getRetrofit().create(SearchApi.class);
+            UserInfoResponse userInfoResponse = searchApi.getEmployeeInfo().enqueue(new Callback<EmployeeInfoResponse>() {
+                @Override
+                public void onResponse(Call<EmployeeInfoResponse> call, Response<EmployeeInfoResponse> response) {}
+
+                @Override
+                public void onFailure(Call<EmployeeInfoResponse> call, Throwable t) {
+                    Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                }
+            });
+            RequestForEmployees requestForEmployees = new RequestForEmployees();
+            requestForEmployees.setProfessionName(arguments.getString("profession"));
+            requestForEmployees.setLimit(userInfoResponse.getLimitForTheSearch());
+            requestForEmployees.setAuto(userInfoResponse.getEmployeeData().isAuto());
+            requestForEmployees.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
+            requestForEmployees.setInRadiusOf(userInfoResponse.getLimitForTheSearch());
+            searchApi.getEmployeesOfChosenProfession(requestForEmployees).enqueue(new Callback<EmployeesListResponse>() {
+                @Override
+                public void onResponse(Call<EmployeesListResponse> call, Response<EmployeesListResponse> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<EmployeesListResponse> call, Throwable t) {
+
+                }
+            });
+
+        }
     }
 
     private void getLocationPermission() {
@@ -158,9 +207,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
     }
 
     @Override
-    public void onCameraMoveCanceled() {
-
-    }
+    public void onCameraMoveCanceled() {}
 
     public void onSettingsClick(View view) {
         User user;
@@ -208,7 +255,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
     }
 
     public void onSearchClick(View view) {
-        Intent intent = new Intent(this, );
+        Intent intent = new Intent(this, SearchVacanciesActivity.class);
         startActivity(intent);
     }
 }
