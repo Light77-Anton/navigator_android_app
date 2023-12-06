@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/info_popup_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/custom_gray_blue"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.widget.Button
+        android:id="@+id/close_button"
+        android:onClick="onClose"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/info_popup_close_button" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:src="@drawable/default_user_avatar"/>
+    <TextView
+        android:id="@+id/status_or_start_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/custom_dark_green"
+        android:textAlignment="center"
+        android:textSize="40sp"/>
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="40sp"/>
+    <TextView
+        android:id="@+id/rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/custom_dark_green"
+        android:textAlignment="center"
+        android:textSize="40sp"/>
+    <TextView
+        android:id="@+id/caution"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/custom_dark_green"
+        android:textAlignment="center"
+        android:textSize="40sp"/>
+    <android.widget.Button
+        android:id="@+id/extended_info_button"
+        android:onClick="onExtendedInfo"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="150dp"
+        android:text="@string/show_extended_info"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="40sp"
+        android:background="@drawable/rectangle_button" />
+
+</LinearLayout>

@@ -7,21 +7,29 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestForEmployees {
+public class SearchRequest {
 
     @JsonProperty("profession")
     private String professionName;
     @JsonProperty("limit")
     private int limit;
 
+    @JsonProperty("sort_type")
+    private String SortType;
     @JsonProperty("is_auto")
     private boolean isAuto;
-    @JsonProperty("language")
-    private String languageName;
     @JsonProperty("are_languages_match")
     private boolean areLanguagesMatch;
     @JsonProperty("in_radius_of")
     private int inRadiusOf;
+
+    public String getSortType() {
+        return SortType;
+    }
+
+    public void setSortType(String sortType) {
+        SortType = sortType;
+    }
 
     public String getProfessionName() {
         return professionName;
@@ -61,14 +69,6 @@ public class RequestForEmployees {
 
     public void setInRadiusOf(int inRadiusOf) {
         this.inRadiusOf = inRadiusOf;
-    }
-
-    public String getLanguageName() {
-        return languageName;
-    }
-
-    public void setLanguageName(String languageName) {
-        this.languageName = languageName;
     }
 
 }

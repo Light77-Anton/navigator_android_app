@@ -8,16 +8,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EmployerPassiveSearchData {
+public class Vacancy {
 
     private Long id;
     private List<Profession> professions;
-    private String jobAddress;
-    private LocalDateTime designatedDateTime;
+
+    private JobLocation jobLocation;
     private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
     private String paymentAndAdditionalInfo;
     private EmployerRequests employerRequests;
+
+    public JobLocation getJobLocation() {
+        return jobLocation;
+    }
+
+    public void setJobLocation(JobLocation jobLocation) {
+        this.jobLocation = jobLocation;
+    }
 
     public Long getId() {
         return id;
@@ -35,22 +42,6 @@ public class EmployerPassiveSearchData {
         this.professions = professions;
     }
 
-    public String getJobAddress() {
-        return jobAddress;
-    }
-
-    public void setJobAddress(String jobAddress) {
-        this.jobAddress = jobAddress;
-    }
-
-    public LocalDateTime getDesignatedDateTime() {
-        return designatedDateTime;
-    }
-
-    public void setDesignatedDateTime(LocalDateTime designatedDateTime) {
-        this.designatedDateTime = designatedDateTime;
-    }
-
     public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
@@ -58,15 +49,6 @@ public class EmployerPassiveSearchData {
     public void setStartDateTime(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
-
-    public LocalDateTime getEndDateTime() {
-        return endDateTime;
-    }
-
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
-    }
-
     public String getPaymentAndAdditionalInfo() {
         return paymentAndAdditionalInfo;
     }

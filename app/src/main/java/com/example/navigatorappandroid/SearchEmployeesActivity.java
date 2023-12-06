@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SearchVacanciesActivity extends AppCompatActivity {
+public class SearchEmployeesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,16 +16,16 @@ public class SearchVacanciesActivity extends AppCompatActivity {
 
     public void onConfirm(View view) {
         LayoutInflater inflater = getLayoutInflater();
-        View coreView = inflater.inflate(R.layout.activity_search_vacancies, null);
-        AutoCompleteTextView autoCompleteTextView = coreView.findViewById(R.id.search_vacancies_autocomplete);
+        View coreView = inflater.inflate(R.layout.activity_search_employees, null);
+        AutoCompleteTextView autoCompleteTextView = coreView.findViewById(R.id.search_employees_autocomplete);
         String profession = autoCompleteTextView.getText().toString();
-        Intent intent = new Intent(this, WorkMapEmployeeActivity.class);
+        Intent intent = new Intent(this, WorkMapEmployerActivity.class);
         intent.putExtra("profession", profession);
         startActivity(intent);
     }
 
     public void onBack(View view) {
-        Intent intent = new Intent(this, WorkMapEmployeeActivity.class);
+        Intent intent = new Intent(this, WorkMapEmployerActivity.class);
         startActivity(intent);
     }
 }

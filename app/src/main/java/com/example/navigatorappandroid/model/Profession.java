@@ -14,7 +14,7 @@ public class Profession {
 
     private List<Job> jobs;
 
-    private List<EmployerPassiveSearchData> passiveSearches;
+    private List<Vacancy> passiveSearches;
 
     private List<ProfessionName> professionNames;
 
@@ -42,11 +42,11 @@ public class Profession {
         this.jobs = jobs;
     }
 
-    public List<EmployerPassiveSearchData> getPassiveSearches() {
+    public List<Vacancy> getPassiveSearches() {
         return passiveSearches;
     }
 
-    public void setPassiveSearches(List<EmployerPassiveSearchData> passiveSearches) {
+    public void setPassiveSearches(List<Vacancy> passiveSearches) {
         this.passiveSearches = passiveSearches;
     }
 

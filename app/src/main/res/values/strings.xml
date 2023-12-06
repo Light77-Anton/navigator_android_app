@@ -94,7 +94,7 @@
     <string name="sort_by"><u>Sort by :</u></string>
     <string name="sort_by_persons_name">Sort by person\'s name</string>
     <string name="sort_by_reputation">Sort by reputation</string>
-    <string name="sort_by_location">Sort by location</string>
+    <string name="sort_by_location">Sort by userLocation</string>
     <string name="in_radius_of">In radius of(km) </string>
     <string name="search_settings">Search settings</string>
     <string name="limit_of_positions_in_the_search">Limit of positions in the search</string>
@@ -108,4 +108,8 @@
     <string name="enter_message">Enter message...</string>
     <string name="do_not_show_my_email">Do not show my email to other users</string>
     <string name="do_not_show_my_phone">Do not show my phone to other users</string>
+    <string name="save_request">+save request</string>
+    <string name="saved_requests">Saved requests</string>
+    <string name="saved_persons">Saved persons</string>
+    <string name="show_extended_info">Show extended info</string>
 </resources>

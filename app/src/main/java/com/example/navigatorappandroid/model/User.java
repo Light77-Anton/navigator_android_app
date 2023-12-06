@@ -20,7 +20,7 @@ public class User {
 
     private List<Vote> votes;
 
-    private double ranking;
+    private Double ranking;
 
     private boolean isBlocked;
 
@@ -64,7 +64,7 @@ public class User {
 
     private List<User> favoriteOf;
 
-    private Location location;
+    private UserLocation userLocation;
 
     public Long getId() {
         return id;
@@ -106,11 +106,11 @@ public class User {
         this.votes = votes;
     }
 
-    public double getRanking() {
+    public Double getRanking() {
         return ranking;
     }
 
-    public void setRanking(double ranking) {
+    public void setRanking(Double ranking) {
         this.ranking = ranking;
     }
 
@@ -266,11 +266,11 @@ public class User {
         this.favoriteOf = favoriteOf;
     }
 
-    public Location getLocation() {
-        return location;
+    public UserLocation getLocation() {
+        return userLocation;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(UserLocation userLocation) {
+        this.userLocation = userLocation;
     }
 }

@@ -61,8 +61,8 @@ public interface GeneralApi {
     @PUT("api/unblock")
     Call<ResultErrorsResponse> unblockUser(@Body ModeratorDecision moderatorDecision);
 
-    @PUT("api/location/{id}")
-    Call<ResultErrorsResponse> updateLocation(@Path("id") long id, @Body LocationRequest locationRequest);
+    @PUT("api/location")
+    Call<ResultErrorsResponse> updateLocation(@Body LocationRequest locationRequest);
 
     @POST("api/restore")
     Call<ResultErrorsResponse> getRecoveryCode(@Query("email") String email);

@@ -1,24 +1,23 @@
 package com.example.navigatorappandroid.retrofit.response;
 import com.example.navigatorappandroid.model.EmployeeData;
 import com.example.navigatorappandroid.model.EmployerRequests;
-import com.example.navigatorappandroid.model.Language;
-import com.example.navigatorappandroid.model.Location;
+import com.example.navigatorappandroid.model.UserLocation;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.model.Vote;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import lombok.Data;
 
 @Data
 public class UserInfoResponse {
 
+    private Long id;
     private String socialNetworksLinks;
 
     private ArrayList<String> communicationLanguages;
     private String endonymInterfaceLanguage;
     private ArrayList<Vote> votes;
-    private double ranking;
+    private Double ranking;
     private boolean isBlocked;
     private String name;
     private String email;
@@ -35,7 +34,15 @@ public class UserInfoResponse {
     private String avatar;
     private ArrayList<User> blackList;
     private ArrayList<User> favorites;
-    private Location location;
+    private UserLocation userLocation;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public ArrayList<String> getCommunicationLanguages() {
         return communicationLanguages;
@@ -85,11 +92,11 @@ public class UserInfoResponse {
         this.votes = votes;
     }
 
-    public double getRanking() {
+    public Double getRanking() {
         return ranking;
     }
 
-    public void setRanking(double ranking) {
+    public void setRanking(Double ranking) {
         this.ranking = ranking;
     }
 
@@ -189,11 +196,11 @@ public class UserInfoResponse {
         this.favorites = favorites;
     }
 
-    public Location getLocation() {
-        return location;
+    public UserLocation getLocation() {
+        return userLocation;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(UserLocation userLocation) {
+        this.userLocation = userLocation;
     }
 }

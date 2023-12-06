@@ -3,19 +3,28 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.User;
+import com.example.navigatorappandroid.model.UserLocation;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
-import com.example.navigatorappandroid.retrofit.request.RequestForEmployees;
-import com.example.navigatorappandroid.retrofit.response.EmployeeInfoResponse;
-import com.example.navigatorappandroid.retrofit.response.EmployeesListResponse;
+import com.example.navigatorappandroid.retrofit.request.SearchRequest;
+import com.example.navigatorappandroid.retrofit.response.SearchResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +32,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,10 +42,13 @@ import com.google.android.gms.maps.GoogleMap.OnCameraMoveCanceledListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+
+import java.util.HashMap;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 public class WorkMapEmployerActivity extends AppCompatActivity implements OnCameraMoveCanceledListener,
         OnMapReadyCallback {
@@ -52,6 +65,12 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
     private CameraPosition cameraPosition;
+    private LocationUpdateHandler locationUpdateHandler;
+    LinearLayout linearLayout = findViewById(R.id.work_map_employer_sort_request_layout);
+    RetrofitService retrofitService;
+    GeneralApi generalApi;
+    SearchApi searchApi;
+    UserInfoResponse userInfoResponse;
 
 
     @Override
@@ -68,6 +87,32 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.ea1ddfbd25d1e33e);
         mapFragment.getMapAsync(this);
+        changeSortRequestFieldCondition();
+        retrofitService = new RetrofitService();
+        searchApi = retrofitService.getRetrofit().create(SearchApi.class);
+        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
+        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
+            @Override
+            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
+                userInfoResponse = response.body();
+            }
+            @Override
+            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
+                Toast.makeText(WorkMapEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        locationUpdateHandler.startLocationUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationUpdateHandler.stopLocationUpdates();
     }
 
     @Override
@@ -76,37 +121,11 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();
+        locationUpdateHandler = new LocationUpdateHandler(lastKnownLocation.getLatitude(),
+                lastKnownLocation.getLongitude(), userInfoResponse.getId());
         Bundle arguments = getIntent().getExtras();
         if (arguments.get("profession") != null) {
-            RetrofitService retrofitService = new RetrofitService();
-            SearchApi searchApi = retrofitService.getRetrofit().create(SearchApi.class);
-            UserInfoResponse userInfoResponse = searchApi.getEmployeeInfo().enqueue(new Callback<EmployeeInfoResponse>() {
-                @Override
-                public void onResponse(Call<EmployeeInfoResponse> call, Response<EmployeeInfoResponse> response) {}
-
-                @Override
-                public void onFailure(Call<EmployeeInfoResponse> call, Throwable t) {
-                    Toast.makeText(WorkMapEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
-                }
-            });
-            RequestForEmployees requestForEmployees = new RequestForEmployees();
-            requestForEmployees.setProfessionName(arguments.getString("profession"));
-            requestForEmployees.setLimit(userInfoResponse.getLimitForTheSearch());
-            requestForEmployees.setAuto(userInfoResponse.getEmployeeData().isAuto());
-            requestForEmployees.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
-            requestForEmployees.setInRadiusOf(userInfoResponse.getLimitForTheSearch());
-            searchApi.getEmployeesOfChosenProfession(requestForEmployees).enqueue(new Callback<EmployeesListResponse>() {
-                @Override
-                public void onResponse(Call<EmployeesListResponse> call, Response<EmployeesListResponse> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<EmployeesListResponse> call, Throwable t) {
-
-                }
-            });
-
+            executeSearchForEmployees(arguments.getString("profession"), searchApi, generalApi);
         }
     }
 
@@ -196,47 +215,149 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
     }
 
     public void onSettingsClick(View view) {
-        User user;
-        RetrofitService retrofitService = new RetrofitService();
-        GeneralApi generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
+        String role = userInfoResponse.getRole();
+        if (role.equals("Employee")) {
+            Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
+            fillIntentWithGeneralData(intent, userInfoResponse);
+            intent.putExtra("work_requirements",userInfoResponse.getEmployeeData().getEmployeesWorkRequirements());
+            intent.putExtra("is_drivers_license", userInfoResponse.getEmployeeData().isDriverLicense());
+            intent.putExtra("is_auto", userInfoResponse.getEmployeeData().isAuto());
+            intent.putExtra("professions", userInfoResponse.getEmployeeData().getProfessionToUserList());
+            intent.putExtra("status", userInfoResponse.getEmployeeData().getStatus());
+            startActivity(intent);
+        } else if (role.equals("Employer")) {
+            Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
+            fillIntentWithGeneralData(intent, userInfoResponse);
+            intent.putExtra("firm_name", userInfoResponse.getEmployerRequests().getFirmName());
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(view.getContext(), ModeratorSettingsActivity.class);
+            fillIntentWithGeneralData(intent, userInfoResponse);
+            startActivity(intent);
+        }
+    }
+
+    private void fillIntentWithGeneralData(Intent intent, UserInfoResponse userInfoResponse) {
+        intent.putExtra("avatar", userInfoResponse.getAvatar());
+        intent.putExtra("name", userInfoResponse.getName());
+        intent.putExtra("phone", userInfoResponse.getPhone());
+        intent.putExtra("social_networks_links", userInfoResponse.getSocialNetworksLinks());
+        intent.putExtra("interface_language", userInfoResponse.getEndonymInterfaceLanguage());
+        intent.putExtra("communication_language", userInfoResponse.getCommunicationLanguages());
+    }
+
+    public void onSearchClick(View view) {
+        Intent intent = new Intent(this, SearchEmployeesActivity.class);
+        startActivity(intent);
+    }
+
+    private void enableLinearLayout() {
+        linearLayout.setEnabled(true);
+        for (int i = 0; i < linearLayout.getChildCount(); i++) {
+            View child = linearLayout.getChildAt(i);
+            child.setEnabled(true);
+        }
+    }
+
+    private void disableLinearLayout() {
+        linearLayout.setEnabled(false);
+        for (int i = 0; i < linearLayout.getChildCount(); i++) {
+            View child = linearLayout.getChildAt(i);
+            child.setEnabled(false);
+        }
+    }
+
+    private void changeSortRequestFieldCondition() {
+        if (linearLayout.isEnabled()) {
+            disableLinearLayout();
+        } else {
+            enableLinearLayout();
+        }
+    }
+
+    private void executeSearchForEmployees(String profession, SearchApi searchApi,
+                                           GeneralApi generalApi){
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setProfessionName(profession);
+        RadioGroup radioGroup = linearLayout.findViewById(R.id.radio_group);
+        radioGroup.setOnCheckedChangeListener((radiogroup, id)-> {
+            RadioButton radio = findViewById(id);
+            switch (radio.getText().toString()) {
+                case "Sort by person\\'s name":
+                    searchRequest.setSortType("name");
+                    break;
+                case "Sort by reputation":
+                    searchRequest.setSortType("rating");
+                    break;
+                case "Sort by location":
+                    searchRequest.setSortType("location");
+                    break;
+                default:
+                    searchRequest.setSortType("");
+                    break;
+            }
+        });
+        SeekBar seekBar = linearLayout.findViewById(R.id.seekbar);
+        searchRequest.setInRadiusOf(seekBar.getProgress());
+        CheckBox checkBox = linearLayout.findViewById(R.id.is_auto_checkbox);
+        searchRequest.setAuto(checkBox.isChecked());
+        searchRequest.setLimit(userInfoResponse.getLimitForTheSearch());
+        searchRequest.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
+        searchApi.getEmployeesOfChosenProfession(searchRequest).enqueue(new Callback<SearchResponse>() {
             @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                String role = response.body().getRole();
-                if (role.equals("Employee")) {
-                    Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
-                    fillIntentWithGeneralData(intent, response);
-                    intent.putExtra("work_requirements",response.body().getEmployeeData().getEmployeesWorkRequirements());
-                    intent.putExtra("is_drivers_license", response.body().getEmployeeData().isDriverLicense());
-                    intent.putExtra("is_auto", response.body().getEmployeeData().isAuto());
-                    intent.putExtra("professions", response.body().getEmployeeData().getProfessionToUserList());
-                    intent.putExtra("status", response.body().getEmployeeData().getStatus());
-                    startActivity(intent);
-                } else if (role.equals("Employer")) {
-                    Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
-                    fillIntentWithGeneralData(intent, response);
-                    intent.putExtra("firm_name", response.body().getEmployerRequests().getFirmName());
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(view.getContext(), ModeratorSettingsActivity.class);
-                    fillIntentWithGeneralData(intent, response);
-                    startActivity(intent);
+            public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
+                List<User> employees = response.body().getEmployeeList();
+                HashMap<Marker, User> map = new HashMap<>();
+                for (User employee : employees) {
+                    LatLng userLocation = new LatLng(employee.getLocation().getLatitude(),
+                            employee.getLocation().getLongitude());
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(userLocation.latitude, userLocation.longitude), DEFAULT_ZOOM));
+                    Marker marker = googleMap.addMarker( new MarkerOptions()
+                            .position(userLocation)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.other_user_icon)));
+                    map.put(marker, employee);
                 }
+                googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(map));
             }
 
             @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
+            public void onFailure(Call<SearchResponse> call, Throwable t) {
                 Toast.makeText(WorkMapEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
-    private void fillIntentWithGeneralData(Intent intent, Response<UserInfoResponse> response) {
-        intent.putExtra("avatar", response.body().getAvatar());
-        intent.putExtra("name", response.body().getName());
-        intent.putExtra("phone", response.body().getPhone());
-        intent.putExtra("social_networks_links", response.body().getSocialNetworksLinks());
-        intent.putExtra("interface_language", response.body().getEndonymInterfaceLanguage());
-        intent.putExtra("communication_language", response.body().getCommunicationLanguages());
+    public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        private final LinearLayout layout;
+        HashMap<Marker, User> map;
+
+        public CustomInfoWindowAdapter(HashMap<Marker, User> map) {
+            this.map = map;
+            this.layout = (LinearLayout) getLayoutInflater().inflate(R.layout.info_popup, null);
+        }
+
+        @Nullable
+        @Override
+        public View getInfoContents(@NonNull Marker marker) {
+            User employee = map.get(marker);
+            TextView name = layout.findViewById(R.id.name);
+            TextView rating = layout.findViewById(R.id.rating);
+            TextView status = layout.findViewById(R.id.status_or_start_date);
+            name.setText(employee.getName());
+            rating.setText(employee.getRanking().toString());
+            status.setText(employee.getEmployeeData().getStatus());
+
+            return layout;
+        }
+
+        @Nullable
+        @Override
+        public View getInfoWindow(@NonNull Marker marker) {
+
+            return null;
+        }
     }
 }
