@@ -6,15 +6,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".EmployeeSettingsActivity">
+    tools:context=".EmployeeProfessionListActivity">
     <android.widget.Button
         android:id="@+id/first_profession"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_button"
         android:layout_marginTop="30dp"
-        android:text="profession_name"
-        android:textColor="@color/white"
+        android:text="+"
+        android:textColor="@color/dark_yellow"
         android:textSize="30sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -27,15 +27,15 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="30dp"
         android:background="@drawable/delete_sign"
-        android:onClick="onRemoveProfession" />
+        android:onClick="onRemoveClick" />
     <android.widget.Button
         android:id="@+id/second_profession"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_button"
         android:layout_marginTop="30dp"
-        android:text="profession_name"
-        android:textColor="@color/white"
+        android:text="+"
+        android:textColor="@color/dark_yellow"
         android:textSize="30sp"
         android:layout_below="@id/first_profession"
         android:layout_alignLeft="@id/first_profession"
@@ -48,15 +48,15 @@
         android:layout_below="@id/first_remove_button"
         android:layout_alignRight="@id/first_remove_button"
         android:background="@drawable/delete_sign"
-        android:onClick="onRemoveProfession"/>
+        android:onClick="onRemoveClick"/>
     <android.widget.Button
         android:id="@+id/third_profession"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_button"
         android:layout_marginTop="30dp"
-        android:text="profession_name"
-        android:textColor="@color/white"
+        android:text="+"
+        android:textColor="@color/dark_yellow"
         android:textSize="30sp"
         android:layout_below="@id/second_profession"
         android:layout_alignLeft="@id/second_profession"
@@ -69,15 +69,15 @@
         android:layout_below="@id/second_remove_button"
         android:layout_alignRight="@id/second_remove_button"
         android:background="@drawable/delete_sign"
-        android:onClick="onRemoveProfession"/>
+        android:onClick="onRemoveClick"/>
     <android.widget.Button
         android:id="@+id/fought_profession"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_button"
         android:layout_marginTop="30dp"
-        android:text="profession_name"
-        android:textColor="@color/white"
+        android:text="+"
+        android:textColor="@color/dark_yellow"
         android:textSize="30sp"
         android:layout_below="@id/third_profession"
         android:layout_alignLeft="@id/third_profession"
@@ -90,15 +90,15 @@
         android:layout_below="@id/third_remove_button"
         android:layout_alignRight="@id/third_remove_button"
         android:background="@drawable/delete_sign"
-        android:onClick="onRemoveProfession"/>
+        android:onClick="onRemoveClick"/>
     <android.widget.Button
         android:id="@+id/fifth_profession"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_button"
         android:layout_marginTop="30dp"
-        android:text="profession_name"
-        android:textColor="@color/white"
+        android:text="+"
+        android:textColor="@color/dark_yellow"
         android:textSize="30sp"
         android:layout_below="@id/fought_profession"
         android:layout_alignLeft="@id/fought_profession"
@@ -111,7 +111,7 @@
         android:layout_below="@id/fought_remove_button"
         android:layout_alignRight="@id/fought_remove_button"
         android:background="@drawable/delete_sign"
-        android:onClick="onRemoveProfession"/>
+        android:onClick="onRemoveClick"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

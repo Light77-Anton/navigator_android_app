@@ -7,11 +7,15 @@ import com.example.navigatorappandroid.retrofit.request.LocationRequest;
 import com.example.navigatorappandroid.retrofit.request.ModeratorDecision;
 import com.example.navigatorappandroid.retrofit.request.PasswordRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionRequest;
+import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
+import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.request.TextListInSpecifiedLanguageRequest;
 import com.example.navigatorappandroid.retrofit.request.VoteRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
+import com.example.navigatorappandroid.retrofit.response.IdResponse;
 import com.example.navigatorappandroid.retrofit.response.JobListResponse;
+import com.example.navigatorappandroid.retrofit.response.ProfessionToUserResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.MapTextResponse;
@@ -19,6 +23,8 @@ import com.example.navigatorappandroid.retrofit.response.TextListResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.VoteResponse;
 import java.security.Principal;
+
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -26,10 +32,13 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface GeneralApi {
+
+
 
     @PUT("api/moderator")
     Call<ResultErrorsResponse> setModerator();
@@ -42,9 +51,9 @@ public interface GeneralApi {
 
     @POST("api/language/add")
     Call<ResultErrorsResponse> addLanguage(@Query("language") String language);
-
+    @Multipart
     @PUT("api/profile/avatar")
-    Call<AvatarResponse> profileAvatar(@Query("avatar") Multipart avatar);
+    Call<AvatarResponse> profileAvatar(@Part MultipartBody.Part avatar);
 
     @PUT("api/profile")
     Call<ResultErrorsResponse> profile(@Body ProfileRequest profileRequest);
@@ -106,6 +115,21 @@ public interface GeneralApi {
 
     @GET("api/languages/list/get")
     Call<TextListResponse> getLanguagesList();
+
+    @GET("api/professions/names/list/get")
+    Call<TextListResponse> getProfessionsNamesInSpecifiedLanguage(@Body StringRequest stringRequest);
+
+    @GET("api/profession/get/by/name")
+    Call<IdResponse> getProfessionIdByName(@Body StringRequest stringRequest);
+
+    @GET("api/profession/to/user/get")
+    Call<ProfessionToUserResponse> getProfessionToUser(@Body ProfessionToUserRequest professionToUserRequest);
+
+    @POST("api/profession/to/user/post")
+    Call<ResultErrorsResponse> postProfessionToUser(@Body ProfessionToUserRequest professionToUserRequest);
+
+    @DELETE("api/profession/to/user/delete")
+    Call<ResultErrorsResponse> deleteProfessionToUser(@Body ProfessionToUserRequest professionToUserRequest);
 
     @GET("api/system/message/get")
     Call<StringResponse> getMessageInSpecifiedLanguage(@Body InProgramMessageRequest inProgramMessageRequest);

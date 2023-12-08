@@ -21,7 +21,10 @@ public class UserInfoResponse {
     private boolean isBlocked;
     private String name;
     private String email;
+
+    private boolean isEmailHidden;
     private String phone;
+    private boolean isPhoneHidden;
 
     private int limitForTheSearch;
 
@@ -202,5 +205,21 @@ public class UserInfoResponse {
 
     public void setLocation(UserLocation userLocation) {
         this.userLocation = userLocation;
+    }
+
+    public boolean isEmailHidden() {
+        return isEmailHidden;
+    }
+
+    public void setEmailHidden(boolean emailHidden) {
+        isEmailHidden = emailHidden;
+    }
+
+    public boolean isPhoneHidden() {
+        return isPhoneHidden;
+    }
+
+    public void setPhoneHidden(boolean phoneHidden) {
+        isPhoneHidden = phoneHidden;
     }
 }

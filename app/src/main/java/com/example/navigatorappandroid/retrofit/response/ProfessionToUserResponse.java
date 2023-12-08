@@ -1,35 +1,17 @@
-package com.example.navigatorappandroid.model;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+package com.example.navigatorappandroid.retrofit.response;
+import com.example.navigatorappandroid.model.EmployeeData;
+import com.example.navigatorappandroid.model.Profession;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class ProfessionToUser {
+@Data
+public class ProfessionToUserResponse {
 
-    public ProfessionToUser() {
-
-    }
-
-    public ProfessionToUser(Profession profession, EmployeeData employee) {
-        this.profession = profession;
-        this.employee = employee;
-    }
-
-    private ProfessionToUserId id;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Profession profession;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private EmployeeData employee;
-    private String extendedInfoFromEmployee;
-
-    public ProfessionToUserId getId() {
-        return id;
-    }
-
-    public void setId(ProfessionToUserId id) {
-        this.id = id;
-    }
 
     public Profession getProfession() {
         return profession;
@@ -54,4 +36,7 @@ public class ProfessionToUser {
     public void setExtendedInfoFromEmployee(String extendedInfoFromEmployee) {
         this.extendedInfoFromEmployee = extendedInfoFromEmployee;
     }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String extendedInfoFromEmployee;
 }

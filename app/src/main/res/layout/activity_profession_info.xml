@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".EmployeeSettingsActivity"
+    tools:context=".EmployeeProfessionInfoActivity"
     android:background="@color/custom_gray_blue"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -30,6 +30,7 @@
         android:textColor="@color/white"
         android:textSize="40sp" />
     <EditText
+        android:id="@+id/profession_info"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginTop="30dp"

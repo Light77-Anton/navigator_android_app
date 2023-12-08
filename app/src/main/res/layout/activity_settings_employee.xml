@@ -88,6 +88,24 @@
                 android:textSize="40sp"
                 android:inputType="text"
                 android:paddingStart="15dp" />
+            <CheckBox
+                android:id="@+id/is_phone_hidden"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/do_not_show_my_phone"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:background="@drawable/edit_text"/>
+            <CheckBox
+                android:id="@+id/is_email_hidden"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/do_not_show_my_email"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:background="@drawable/edit_text"/>
             <EditText
                 android:id="@+id/social_networks_links"
                 android:layout_width="match_parent"
@@ -160,6 +178,15 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/spinner"
                 android:textAlignment="center"/>
+            <CheckBox
+                android:id="@+id/are_languages_matched"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_button"
+                android:layout_marginTop="30dp"
+                android:textSize="40sp"
+                android:text="@string/ignore_matched_communication_language_in_the_search"
+                android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -173,6 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="30dp"
+                android:onClick="onProfessionListClick"
                 android:text="@string/set_professions"
                 android:textSize="35sp"
                 android:textColor="@color/white"
@@ -192,20 +220,6 @@
                 android:max="100"
                 android:min="1"
                 android:progress="25"/>
-            <CheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_button"
-                android:layout_marginTop="30dp"
-                android:textSize="20sp"
-                android:text="@string/ignore_matched_communication_language_in_the_search"
-                android:textColor="@color/black"/>
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/spinner"
-                android:textAlignment="center"/>
             <android.widget.Button
                 android:id="@+id/confirm"
                 android:layout_width="match_parent"

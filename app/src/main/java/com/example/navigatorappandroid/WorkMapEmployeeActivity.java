@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
-import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.model.Vacancy;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
@@ -97,7 +96,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
             }
             @Override
             public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(WorkMapEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -214,9 +213,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
     }
 
     public void onSettingsClick(View view) {
-        User user;
-        RetrofitService retrofitService = new RetrofitService();
-        GeneralApi generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
+        retrofitService = new RetrofitService();
         generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
             @Override
             public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
@@ -253,9 +250,13 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
         intent.putExtra("avatar", response.body().getAvatar());
         intent.putExtra("name", response.body().getName());
         intent.putExtra("phone", response.body().getPhone());
+        intent.putExtra("is_phone_hidden", response.body().isPhoneHidden());
+        intent.putExtra("is_email_hidden", response.body().isEmailHidden());
         intent.putExtra("social_networks_links", response.body().getSocialNetworksLinks());
         intent.putExtra("interface_language", response.body().getEndonymInterfaceLanguage());
         intent.putExtra("communication_language", response.body().getCommunicationLanguages());
+        intent.putExtra("are_languages_matched", response.body().isAreLanguagesMatched());
+        intent.putExtra("limit_in_the_search", response.body().getLimitForTheSearch());
     }
 
     public void onSearchClick(View view) {
