@@ -59,7 +59,6 @@
     <string name="do_you_have_the_auto">Do you have the auto?</string>
     <string name="interface_language">Interface language</string>
     <string name="communication_languages">Communication languages</string>
-    <string name="your_professions_and_info">Your professions and possible additional info about it</string>
     <string name="additional_info">Additional info</string>
     <string name="your_status">Your status</string>
     <string name="active_status_description">Active - you are opened for another users in search</string>
@@ -92,9 +91,9 @@
     <string name="sort_request">Sort request</string>
     <string name="filters"><u>Filters :</u></string>
     <string name="sort_by"><u>Sort by :</u></string>
-    <string name="sort_by_persons_name">Sort by person\'s name</string>
+    <string name="sort_by_persons_name">Sort by user\'s name</string>
     <string name="sort_by_reputation">Sort by reputation</string>
-    <string name="sort_by_location">Sort by userLocation</string>
+    <string name="sort_by_location">Sort by user\'s location</string>
     <string name="in_radius_of">In radius of(km) </string>
     <string name="search_settings">Search settings</string>
     <string name="limit_of_positions_in_the_search">Limit of positions in the search</string>

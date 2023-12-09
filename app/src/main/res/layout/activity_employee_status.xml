@@ -1,66 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_employee_status_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".EmployeeStatusActivity"
     android:background="@color/custom_gray_blue">
-    <CheckBox
-        android:id="@+id/active"
-        android:layout_width="330dp"
+    <RadioGroup
+        android:id="@+id/radios"
+        android:layout_width="333dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/active"
-        android:textColor="@color/white"
-        android:textSize="40sp"
-        android:background="@drawable/edit_text"/>
+        android:orientation="vertical">
+        <RadioButton
+            android:id="@+id/active"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/edit_text"
+            android:text="@string/active"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+        <RadioButton
+            android:id="@+id/inactive"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/active"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/edit_text"
+            android:text="@string/inactive"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+        <RadioButton
+            android:id="@+id/custom"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/inactive"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/edit_text"
+            android:text="@string/temporarily_inactive"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+    </RadioGroup>
     <android.widget.Button
         android:id="@+id/active_help_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_toRightOf="@id/active"
+        android:layout_toRightOf="@id/radios"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
         android:background="@drawable/help_sign" />
-    <CheckBox
-        android:id="@+id/inactive"
-        android:layout_below="@id/active"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/inactive"
-        android:textColor="@color/white"
-        android:textSize="40sp"
-        android:background="@drawable/edit_text"/>
     <android.widget.Button
         android:id="@+id/inactive_help_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_toRightOf="@id/inactive"
+        android:layout_toRightOf="@id/radios"
         android:layout_marginTop="110dp"
         android:layout_marginLeft="20dp"
         android:background="@drawable/help_sign" />
-    <CheckBox
-        android:id="@+id/custom"
-        android:layout_below="@id/inactive"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/temporarily_inactive"
-        android:textColor="@color/white"
-        android:textSize="40sp"
-        android:background="@drawable/edit_text"/>
     <android.widget.Button
         android:id="@+id/custom_help_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_toRightOf="@id/custom"
+        android:layout_toRightOf="@id/radios"
         android:layout_marginTop="200dp"
         android:layout_marginLeft="20dp"
         android:background="@drawable/help_sign" />
     <TextView
+        android:id="@+id/helper_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:clickable="false"
         android:layout_below="@id/custom_help_button"
         android:text="@string/temporarily_inactive_status_description"
@@ -70,9 +79,10 @@
         android:id="@+id/datePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:clickable="false"
         android:layout_above="@id/back"
+        android:layout_marginLeft="30dp"
         android:layout_marginBottom="20dp"/>
     <android.widget.Button
         android:id="@+id/back"
@@ -80,6 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/rectangle_button"
+        android:onClick="onBackClick"
         android:text="@string/back"
         android:textColor="@color/white"
         android:textSize="50sp"

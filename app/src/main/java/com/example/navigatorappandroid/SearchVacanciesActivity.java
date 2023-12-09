@@ -17,15 +17,28 @@ public class SearchVacanciesActivity extends AppCompatActivity {
     public void onConfirm(View view) {
         LayoutInflater inflater = getLayoutInflater();
         View coreView = inflater.inflate(R.layout.activity_search_vacancies, null);
-        AutoCompleteTextView autoCompleteTextView = coreView.findViewById(R.id.search_vacancies_autocomplete);
+        AutoCompleteTextView autoCompleteTextView = coreView.findViewById(R.id.search_employees_autocomplete);
         String profession = autoCompleteTextView.getText().toString();
-        Intent intent = new Intent(this, WorkMapEmployeeActivity.class);
+        Intent intent;
+        Bundle arguments = getIntent().getExtras();
+        if (arguments.getString("activity").equals("map")) {
+            intent = new Intent(this, WorkMapEmployeeActivity.class);
+            intent.putExtra("profession", profession);
+            startActivity(intent);
+        }
+        intent = new Intent(this, WorkListEmployeeActivity.class);
         intent.putExtra("profession", profession);
         startActivity(intent);
     }
 
     public void onBack(View view) {
-        Intent intent = new Intent(this, WorkMapEmployeeActivity.class);
+        Intent intent;
+        Bundle arguments = getIntent().getExtras();
+        if (arguments.getString("activity").equals("map")) {
+            intent = new Intent(this, WorkMapEmployeeActivity.class);
+            startActivity(intent);
+        }
+        intent = new Intent(this, WorkListEmployeeActivity.class);
         startActivity(intent);
     }
 }

@@ -13,6 +13,7 @@ public class EmployeeData {
     private boolean isAuto;
     private String employeesWorkRequirements;
     private String status;
+    private Long activeStatusStartDate;
     private User employee;
 
     private ArrayList<ProfessionToUser> professionToUserList;
@@ -24,7 +25,13 @@ public class EmployeeData {
     public void setProfessionToUserList(ArrayList<ProfessionToUser> professionToUserList) {
         this.professionToUserList = professionToUserList;
     }
+    public Long getActiveStatusStartDate() {
+        return activeStatusStartDate;
+    }
 
+    public void setActiveStatusStartDate(Long activeStatusStartDate) {
+        this.activeStatusStartDate = activeStatusStartDate;
+    }
     public Long getId() {
         return id;
     }

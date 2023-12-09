@@ -9,6 +9,7 @@ import com.example.navigatorappandroid.retrofit.request.PasswordRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
+import com.example.navigatorappandroid.retrofit.request.StatusRequest;
 import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.request.TextListInSpecifiedLanguageRequest;
 import com.example.navigatorappandroid.retrofit.request.VoteRequest;
@@ -57,6 +58,9 @@ public interface GeneralApi {
 
     @PUT("api/profile")
     Call<ResultErrorsResponse> profile(@Body ProfileRequest profileRequest);
+
+    @PUT("api/status/check")
+    Call<ResultErrorsResponse> checkEmployeeStatus();
 
     @POST("api/professions/name/add")
     Call<ResultErrorsResponse> addProfessionInSpecifiedLanguage(@Body ProfessionRequest professionRequest);

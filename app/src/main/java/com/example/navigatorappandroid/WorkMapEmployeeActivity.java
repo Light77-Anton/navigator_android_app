@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.example.navigatorappandroid.handler.EmployeeStatusHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.Vacancy;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
@@ -63,8 +65,8 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
     private static final String KEY_LOCATION = "location";
     private CameraPosition cameraPosition;
     private LocationUpdateHandler locationUpdateHandler;
+    private EmployeeStatusHandler employeeStatusHandler;
     LinearLayout linearLayout = findViewById(R.id.work_map_employee_sort_request_layout);
-
     RetrofitService retrofitService;
     GeneralApi generalApi;
     SearchApi searchApi;
@@ -104,12 +106,14 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
     @Override
     protected void onResume() {
         super.onResume();
+        employeeStatusHandler.startStatusChecking();
         locationUpdateHandler.startLocationUpdates();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        employeeStatusHandler.stopStatusChecking();
         locationUpdateHandler.stopLocationUpdates();
     }
 
@@ -119,6 +123,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();
+        employeeStatusHandler = new EmployeeStatusHandler();
         locationUpdateHandler = new LocationUpdateHandler(lastKnownLocation.getLatitude(),
                 lastKnownLocation.getLongitude(), userInfoResponse.getId());
         Bundle arguments = getIntent().getExtras();
@@ -212,55 +217,34 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
 
     }
 
-    public void onSettingsClick(View view) {
-        retrofitService = new RetrofitService();
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
-            @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                String role = response.body().getRole();
-                if (role.equals("Employee")) {
-                    Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
-                    fillIntentWithGeneralData(intent, response);
-                    intent.putExtra("work_requirements",response.body().getEmployeeData().getEmployeesWorkRequirements());
-                    intent.putExtra("is_drivers_license", response.body().getEmployeeData().isDriverLicense());
-                    intent.putExtra("is_auto", response.body().getEmployeeData().isAuto());
-                    intent.putExtra("professions", response.body().getEmployeeData().getProfessionToUserList());
-                    intent.putExtra("status", response.body().getEmployeeData().getStatus());
-                    startActivity(intent);
-                } else if (role.equals("Employer")) {
-                    Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
-                    fillIntentWithGeneralData(intent, response);
-                    intent.putExtra("firm_name", response.body().getEmployerRequests().getFirmName());
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(view.getContext(), ModeratorSettingsActivity.class);
-                    fillIntentWithGeneralData(intent, response);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void onStatusClick(View view) {
+        Intent intent = new Intent(this, EmployeeStatusActivity.class);
+        intent.putExtra("activity", "map");
+        startActivity(intent);
     }
 
-    private void fillIntentWithGeneralData(Intent intent, Response<UserInfoResponse> response) {
-        intent.putExtra("avatar", response.body().getAvatar());
-        intent.putExtra("name", response.body().getName());
-        intent.putExtra("phone", response.body().getPhone());
-        intent.putExtra("is_phone_hidden", response.body().isPhoneHidden());
-        intent.putExtra("is_email_hidden", response.body().isEmailHidden());
-        intent.putExtra("social_networks_links", response.body().getSocialNetworksLinks());
-        intent.putExtra("interface_language", response.body().getEndonymInterfaceLanguage());
-        intent.putExtra("communication_language", response.body().getCommunicationLanguages());
-        intent.putExtra("are_languages_matched", response.body().isAreLanguagesMatched());
-        intent.putExtra("limit_in_the_search", response.body().getLimitForTheSearch());
+    public void onSettingsClick(View view) {
+        Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
+        intent.putExtra("avatar", userInfoResponse.getAvatar());
+        intent.putExtra("name", userInfoResponse.getName());
+        intent.putExtra("phone", userInfoResponse.getPhone());
+        intent.putExtra("is_phone_hidden", userInfoResponse.isPhoneHidden());
+        intent.putExtra("is_email_hidden", userInfoResponse.isEmailHidden());
+        intent.putExtra("social_networks_links", userInfoResponse.getSocialNetworksLinks());
+        intent.putExtra("interface_language", userInfoResponse.getEndonymInterfaceLanguage());
+        intent.putExtra("communication_language", userInfoResponse.getCommunicationLanguages());
+        intent.putExtra("are_languages_matched", userInfoResponse.isAreLanguagesMatched());
+        intent.putExtra("limit_in_the_search", userInfoResponse.getLimitForTheSearch());
+        intent.putExtra("activity", "map");
+        intent.putExtra("work_requirements", userInfoResponse.getEmployeeData().getEmployeesWorkRequirements());
+        intent.putExtra("is_drivers_license", userInfoResponse.getEmployeeData().isDriverLicense());
+        intent.putExtra("is_auto", userInfoResponse.getEmployeeData().isAuto());
+        startActivity(intent);
     }
 
     public void onSearchClick(View view) {
         Intent intent = new Intent(this, SearchVacanciesActivity.class);
+        intent.putExtra("activity", "map");
         startActivity(intent);
     }
 

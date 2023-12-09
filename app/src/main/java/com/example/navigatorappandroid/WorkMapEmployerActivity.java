@@ -215,39 +215,23 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
     }
 
     public void onSettingsClick(View view) {
-        String role = userInfoResponse.getRole();
-        if (role.equals("Employee")) {
-            Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
-            fillIntentWithGeneralData(intent, userInfoResponse);
-            intent.putExtra("work_requirements",userInfoResponse.getEmployeeData().getEmployeesWorkRequirements());
-            intent.putExtra("is_drivers_license", userInfoResponse.getEmployeeData().isDriverLicense());
-            intent.putExtra("is_auto", userInfoResponse.getEmployeeData().isAuto());
-            intent.putExtra("professions", userInfoResponse.getEmployeeData().getProfessionToUserList());
-            intent.putExtra("status", userInfoResponse.getEmployeeData().getStatus());
-            startActivity(intent);
-        } else if (role.equals("Employer")) {
-            Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
-            fillIntentWithGeneralData(intent, userInfoResponse);
-            intent.putExtra("firm_name", userInfoResponse.getEmployerRequests().getFirmName());
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(view.getContext(), ModeratorSettingsActivity.class);
-            fillIntentWithGeneralData(intent, userInfoResponse);
-            startActivity(intent);
-        }
-    }
-
-    private void fillIntentWithGeneralData(Intent intent, UserInfoResponse userInfoResponse) {
+        Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
+        intent.putExtra("firm_name", userInfoResponse.getEmployerRequests().getFirmName());
         intent.putExtra("avatar", userInfoResponse.getAvatar());
         intent.putExtra("name", userInfoResponse.getName());
         intent.putExtra("phone", userInfoResponse.getPhone());
         intent.putExtra("social_networks_links", userInfoResponse.getSocialNetworksLinks());
         intent.putExtra("interface_language", userInfoResponse.getEndonymInterfaceLanguage());
         intent.putExtra("communication_language", userInfoResponse.getCommunicationLanguages());
+        intent.putExtra("are_languages_matched", userInfoResponse.isAreLanguagesMatched());
+        intent.putExtra("limit_in_the_search", userInfoResponse.getLimitForTheSearch());
+        intent.putExtra("activity", "map");
+        startActivity(intent);
     }
 
     public void onSearchClick(View view) {
         Intent intent = new Intent(this, SearchEmployeesActivity.class);
+        intent.putExtra("activity", "map");
         startActivity(intent);
     }
 

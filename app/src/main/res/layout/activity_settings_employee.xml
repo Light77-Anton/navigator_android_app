@@ -178,23 +178,6 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/spinner"
                 android:textAlignment="center"/>
-            <CheckBox
-                android:id="@+id/are_languages_matched"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_button"
-                android:layout_marginTop="30dp"
-                android:textSize="40sp"
-                android:text="@string/ignore_matched_communication_language_in_the_search"
-                android:textColor="@color/white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="50dp"
-                android:text="@string/your_professions_and_info"
-                android:textColor="@color/white"
-                android:textSize="40sp" />
             <android.widget.Button
                 android:id="@+id/profession_button"
                 android:layout_width="match_parent"
@@ -206,6 +189,23 @@
                 android:textColor="@color/white"
                 android:background="@drawable/edit_text"
                 android:textAlignment="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="50dp"
+                android:text="@string/search_settings"
+                android:textColor="@color/white"
+                android:textSize="40sp" />
+            <CheckBox
+                android:id="@+id/are_languages_matched"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_button"
+                android:layout_marginTop="30dp"
+                android:textSize="40sp"
+                android:text="@string/ignore_matched_communication_language_in_the_search"
+                android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -227,6 +227,7 @@
                 android:layout_marginTop="100dp"
                 android:background="@drawable/rectangle_button"
                 android:text="@string/confirm"
+                android:onClick="onConfirmClick"
                 android:textColor="@color/red"
                 android:textSize="50sp"/>
             <android.widget.Button
@@ -235,6 +236,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/rectangle_button"
+                android:onClick="onLogoutClick"
                 android:text="@string/logout"
                 android:textColor="@color/white"
                 android:textSize="50sp"/>
@@ -244,6 +246,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/rectangle_button"
+                android:onClick="onBackClick"
                 android:text="@string/back"
                 android:textColor="@color/white"
                 android:textSize="50sp"

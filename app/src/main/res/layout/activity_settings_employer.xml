@@ -21,6 +21,7 @@
                 android:textColor="@color/white"
                 android:textSize="70sp" />
             <ImageView
+                android:id="@+id/avatar"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerInside"
@@ -29,6 +30,7 @@
                 android:layout_marginRight="70dp"
                 android:background="@color/white"/>
             <android.widget.Button
+                android:id="@+id/avatar_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -38,6 +40,7 @@
                 android:textColor="@color/white"
                 android:textSize="40sp"/>
             <android.widget.Button
+                android:id="@+id/set_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -47,6 +50,7 @@
                 android:textColor="@color/red"
                 android:textSize="40sp"/>
             <EditText
+                android:id="@+id/first_and_last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
@@ -59,6 +63,7 @@
                 android:paddingStart="15dp"
                 app:drawableEndCompat="@drawable/ic_star"/>
             <EditText
+                android:id="@+id/firm_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -70,6 +75,7 @@
                 android:inputType="text"
                 android:paddingStart="15dp" />
             <EditText
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -82,6 +88,7 @@
                 android:paddingStart="15dp"
                 app:drawableEndCompat="@drawable/ic_star"/>
             <EditText
+                android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -92,7 +99,26 @@
                 android:textSize="40sp"
                 android:inputType="text"
                 android:paddingStart="15dp" />
+            <CheckBox
+                android:id="@+id/is_phone_hidden"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/do_not_show_my_phone"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:background="@drawable/edit_text"/>
+            <CheckBox
+                android:id="@+id/is_email_hidden"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/do_not_show_my_email"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:background="@drawable/edit_text"/>
             <EditText
+                android:id="@+id/social_networks_links"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -112,6 +138,7 @@
                 android:textColor="@color/white"
                 android:textSize="40sp" />
             <Spinner
+                android:id="@+id/interface_language"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
@@ -155,6 +182,7 @@
                 android:min="1"
                 android:progress="25"/>
             <CheckBox
+                android:id="@+id/are_languages_matched"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_button"
@@ -162,18 +190,13 @@
                 android:textSize="20sp"
                 android:text="@string/ignore_matched_communication_language_in_the_search"
                 android:textColor="@color/black"/>
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/spinner"
-                android:textAlignment="center"/>
             <android.widget.Button
                 android:id="@+id/confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/rectangle_button"
+                android:onClick="onConfirmClick"
                 android:text="@string/confirm"
                 android:textColor="@color/red"
                 android:textSize="50sp"/>
@@ -183,6 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/rectangle_button"
+                android:onClick="onLogoutClick"
                 android:text="@string/logout"
                 android:textColor="@color/white"
                 android:textSize="50sp"/>
@@ -192,6 +216,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/rectangle_button"
+                android:onClick="onBackClick"
                 android:text="@string/back"
                 android:textColor="@color/white"
                 android:textSize="50sp"
