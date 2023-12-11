@@ -1,18 +1,23 @@
 package com.example.navigatorappandroid.retrofit;
+import com.example.navigatorappandroid.retrofit.request.JobRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.EmployeeInfoResponse;
+import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
 import com.example.navigatorappandroid.retrofit.response.ProfessionsResponse;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface SearchApi {
 
     @GET("api/search/professions")
     Call<ProfessionsResponse> getProfessionList();
+
+    @POST("api/search/employer/vacancy/set")
+    Call<ResultErrorsResponse> setVacancy(@Body JobRequest jobRequest);
 
     @GET("api/search/employees")
     Call<SearchResponse> getEmployeesOfChosenProfession(@Body SearchRequest searchRequest);

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scroll_view"
+    android:id="@+id/activity_vacancy_edit_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/custom_gray_blue">
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:id="@+id/activity_vacancy_edit_layout"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -16,6 +17,15 @@
             android:text="@string/required_profession"
             android:textColor="@color/white"
             android:textSize="40sp"/>
+        <Spinner
+            android:id="@+id/required_profession"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/spinner"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,6 +33,14 @@
             android:text="@string/job_address"
             android:textColor="@color/white"
             android:textSize="40sp"/>
+        <AutoCompleteTextView
+            android:id="@+id/job_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle_button"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,6 +48,12 @@
             android:text="@string/start_date"
             android:textColor="@color/white"
             android:textSize="40sp"/>
+        <DatePicker
+            android:id="@+id/start_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +61,14 @@
             android:text="@string/payment_and_additional_info"
             android:textColor="@color/white"
             android:textSize="40sp"/>
+        <EditText
+            android:id="@+id/payment_and_additional_info"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle_button"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
         <CheckBox
             android:onClick="OnIsPermanentlyActive"
             android:layout_width="match_parent"
@@ -48,7 +80,7 @@
             android:background="@drawable/edit_text"/>
         <android.widget.Button
             android:id="@+id/first_button"
-            android:onClick="onConfirm"
+            android:onClick="onConfirmClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -58,7 +90,7 @@
             android:textSize="50sp"/>
         <android.widget.Button
             android:id="@+id/delete"
-            android:onClick="onDelete"
+            android:onClick="onDeleteClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="150dp"
@@ -68,7 +100,7 @@
             android:textSize="40sp" />
         <android.widget.Button
             android:id="@+id/back"
-            android:onClick="onBack"
+            android:onClick="onBackClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"

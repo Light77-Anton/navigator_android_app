@@ -1,60 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/scroll_view"
+<ScrollView android:id="@+id/activity_vacancies_setting_scroll_view"
+    tools:context=".EmployerVacanciesSettingActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/custom_gray_blue">
+    android:background="@color/custom_gray_blue"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-        <RelativeLayout
+        <android.widget.Button
+            android:id="@+id/back"
+            android:onClick="onBackClick"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/my_vacancies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_alignParentTop="true"
-                android:text="@string/my_vacancies"
-                android:textColor="@color/white"
-                android:textSize="60sp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_below="@id/my_vacancies"
-                android:background="@drawable/rectangle_button"
-                android:text=" 1. edit vacancy"
-                android:textColor="@color/white"
-                android:textSize="40sp">
-            </EditText>
-            <android.widget.Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="onAddVacancy"
-                android:layout_marginTop="60dp"
-                android:layout_marginBottom="60dp"
-                android:background="@drawable/rectangle_button"
-                android:layout_above="@id/back"
-                android:text="+"
-                android:textColor="@color/white"
-                android:textSize="50sp"/>
-            <android.widget.Button
-                android:id="@+id/back"
-                android:onClick="onBack"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/rectangle_button"
-                android:text="@string/back"
-                android:textColor="@color/white"
-                android:textSize="50sp"
-                android:drawableStart="@drawable/ic_arrow_back"/>
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle_button"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:drawableStart="@drawable/ic_arrow_back"/>
+        <android.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onAddVacancy"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle_button"
+            android:text="+"
+            android:textColor="@color/white"
+            android:textSize="40sp"/>
+        <TextView
+            android:id="@+id/my_vacancies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/my_vacancies"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="50sp"/>
+        <android.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle_button"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
     </LinearLayout>
 </ScrollView>

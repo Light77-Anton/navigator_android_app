@@ -121,7 +121,7 @@ public interface GeneralApi {
     Call<TextListResponse> getLanguagesList();
 
     @GET("api/professions/names/list/get")
-    Call<TextListResponse> getProfessionsNamesInSpecifiedLanguage(@Body StringRequest stringRequest);
+    Call<TextListResponse> getProfessionsNamesInSpecifiedLanguage();
 
     @GET("api/profession/get/by/name")
     Call<IdResponse> getProfessionIdByName(@Body StringRequest stringRequest);
