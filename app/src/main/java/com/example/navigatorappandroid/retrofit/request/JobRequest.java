@@ -30,19 +30,19 @@ public class JobRequest {
         this.jobAddress = jobAddress;
     }
 
-    public Long getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Long latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Long getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Long longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -63,9 +63,9 @@ public class JobRequest {
     }
 
     @JsonProperty("latitude")
-    private Long latitude;
+    private Double latitude;
     @JsonProperty("longitude")
-    private Long longitude;
+    private Double longitude;
     @JsonProperty("timestamp")
     private Long timestamp;
     @JsonProperty("payment_and_additional_info")

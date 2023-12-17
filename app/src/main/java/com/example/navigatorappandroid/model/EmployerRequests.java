@@ -12,7 +12,7 @@ public class EmployerRequests {
 
     private Long id;
     private String firmName;
-    private ArrayList<Vacancy> employerPassiveSearchData;
+    private ArrayList<Vacancy> vacancies;
     private ArrayList<Job> jobs;
     private User employer;
 
@@ -32,12 +32,12 @@ public class EmployerRequests {
         this.firmName = firmName;
     }
 
-    public List<Vacancy> getEmployerPassiveSearchData() {
-        return employerPassiveSearchData;
+    public List<Vacancy> getVacancies() {
+        return vacancies;
     }
 
-    public void setEmployerPassiveSearchData(ArrayList<Vacancy> employerPassiveSearchData) {
-        this.employerPassiveSearchData = employerPassiveSearchData;
+    public void setVacancies(ArrayList<Vacancy> vacancies) {
+        this.vacancies = vacancies;
     }
 
     public List<Job> getJobs() {

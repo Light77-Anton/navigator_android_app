@@ -3,7 +3,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -19,7 +18,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.User;
-import com.example.navigatorappandroid.model.UserLocation;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
@@ -38,20 +36,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap.OnCameraMoveCanceledListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
-
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WorkMapEmployerActivity extends AppCompatActivity implements OnCameraMoveCanceledListener,
-        OnMapReadyCallback {
+public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private LatLng latLngMyLocation;
     private Location lastKnownLocation;
@@ -66,11 +61,12 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
     private static final String KEY_LOCATION = "location";
     private CameraPosition cameraPosition;
     private LocationUpdateHandler locationUpdateHandler;
-    LinearLayout linearLayout = findViewById(R.id.work_map_employer_sort_request_layout);
-    RetrofitService retrofitService;
-    GeneralApi generalApi;
-    SearchApi searchApi;
-    UserInfoResponse userInfoResponse;
+    private LinearLayout linearLayout = findViewById(R.id.work_map_employer_sort_request_layout);
+    private RetrofitService retrofitService;
+    private GeneralApi generalApi;
+    private SearchApi searchApi;
+    private UserInfoResponse userInfoResponse;
+    private HashSet<Marker> currentMarkers = new HashSet<>();
 
 
     @Override
@@ -101,6 +97,7 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
                 Toast.makeText(WorkMapEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     @Override
@@ -125,7 +122,7 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
                 lastKnownLocation.getLongitude(), userInfoResponse.getId());
         Bundle arguments = getIntent().getExtras();
         if (arguments.get("profession") != null) {
-            executeSearchForEmployees(arguments.getString("profession"), searchApi, generalApi);
+            executeSearchForEmployees(arguments.getString("profession"), searchApi);
         }
     }
 
@@ -209,11 +206,6 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
         }
     }
 
-    @Override
-    public void onCameraMoveCanceled() {
-
-    }
-
     public void onSettingsClick(View view) {
         Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
         intent.putExtra("firm_name", userInfoResponse.getEmployerRequests().getFirmName());
@@ -259,8 +251,18 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
         }
     }
 
-    private void executeSearchForEmployees(String profession, SearchApi searchApi,
-                                           GeneralApi generalApi){
+    public void onVacanciesSettingClick(View view) {
+        Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
+        intent.putExtra("activity", "map");
+        startActivity(intent);
+    }
+
+    private void executeSearchForEmployees(String profession, SearchApi searchApi) {
+        if (!currentMarkers.isEmpty()) {
+            for (Marker marker : currentMarkers) {
+                marker.remove();
+            }
+        }
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.setProfessionName(profession);
         RadioGroup radioGroup = linearLayout.findViewById(R.id.radio_group);
@@ -301,6 +303,7 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
                             .position(userLocation)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.other_user_icon)));
                     map.put(marker, employee);
+                    currentMarkers.add(marker);
                 }
                 googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(map));
             }
@@ -310,7 +313,6 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnCame
                 Toast.makeText(WorkMapEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {

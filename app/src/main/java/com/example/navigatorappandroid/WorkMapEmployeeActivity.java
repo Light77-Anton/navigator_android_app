@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import com.example.navigatorappandroid.handler.EmployeeStatusHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.Vacancy;
@@ -38,7 +37,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap.OnCameraMoveCanceledListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -48,9 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCameraMoveCanceledListener,
-        OnMapReadyCallback {
+public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private LatLng latLngMyLocation;
     private Location lastKnownLocation;
@@ -71,7 +67,6 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
     GeneralApi generalApi;
     SearchApi searchApi;
     UserInfoResponse userInfoResponse;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +123,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
                 lastKnownLocation.getLongitude(), userInfoResponse.getId());
         Bundle arguments = getIntent().getExtras();
         if (arguments.get("profession") != null) {
-            executeSearchForVacancies(arguments.getString("profession"), searchApi, generalApi);
+            executeSearchForVacancies(arguments.getString("profession"), searchApi);
         }
     }
 
@@ -212,11 +207,6 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
         }
     }
 
-    @Override
-    public void onCameraMoveCanceled() {
-
-    }
-
     public void onStatusClick(View view) {
         Intent intent = new Intent(this, EmployeeStatusActivity.class);
         intent.putExtra("activity", "map");
@@ -272,8 +262,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnCame
         }
     }
 
-    private void executeSearchForVacancies(String profession, SearchApi searchApi,
-                                           GeneralApi generalApi){
+    private void executeSearchForVacancies(String profession, SearchApi searchApi){
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.setProfessionName(profession);
         RadioGroup radioGroup = linearLayout.findViewById(R.id.radio_group);
