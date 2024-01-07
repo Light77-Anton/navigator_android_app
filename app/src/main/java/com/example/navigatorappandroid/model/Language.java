@@ -20,6 +20,16 @@ public class Language {
 
     private List<User> users;
 
+    private List<ProfessionToUser> professionToUsers;
+
+    public List<ProfessionToUser> getProfessionToUsers() {
+        return professionToUsers;
+    }
+
+    public void setProfessionToUsers(List<ProfessionToUser> professionToUsers) {
+        this.professionToUsers = professionToUsers;
+    }
+
     public Long getId() {
         return id;
     }

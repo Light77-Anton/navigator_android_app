@@ -130,5 +130,12 @@
             android:onClick="executeSearchForVacancies"
             android:text="@string/is_auto"
             android:background="@color/custom_gray_blue" />
+        <android.widget.Button
+            android:id="@+id/additional_languages_button"
+            android:layout_below="@id/is_auto_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/additional_languages"
+            android:background="@color/custom_gray_blue" />
     </LinearLayout>
 </RelativeLayout>

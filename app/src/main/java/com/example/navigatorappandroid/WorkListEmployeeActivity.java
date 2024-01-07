@@ -11,9 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.model.Vacancy;
@@ -25,9 +23,7 @@ import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -175,7 +171,7 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
                     searchApi.getMeasuredDistance(locationsRequest).enqueue(new Callback<DistanceResponse>() {
                         @Override
                         public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
-                            addVacancyButton(employer.getName(), employer.getRanking(),
+                            addVacancyButton(employer.getId(), employer.getName(), employer.getRanking(),
                                     response.body().getDistance());
                         }
 
@@ -193,7 +189,7 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
         });
     }
 
-    private void addVacancyButton(String name, double rating, double distance) {
+    private void addVacancyButton(long id, String name, double rating, double distance) {
         Button button = new Button(searchResultsLayout.getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                 (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -201,6 +197,13 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
         button.setBackground(getResources().getDrawable(R.drawable.rectangle_button));
         button.setTextColor(getResources().getColor(R.color.black));
         button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
+                intent.putExtra("user_id", id);
+                startActivity(intent);
+            }
+        });
         StringBuilder sb = new StringBuilder();
         sb.append(name);
         sb.append("   ");

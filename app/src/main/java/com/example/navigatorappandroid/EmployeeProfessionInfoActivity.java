@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -25,7 +26,8 @@ import retrofit2.Response;
 public class EmployeeProfessionInfoActivity extends AppCompatActivity {
     private RetrofitService retrofitService;
     private  GeneralApi generalApi;
-    private LinearLayout layout;
+    private ScrollView scrollView = (ScrollView) getLayoutInflater().inflate(R.layout.activity_profession_info, null);
+    private LinearLayout layout = scrollView.findViewById(R.id.profession_info_layout);
     private long professionId;
     ProfessionToUserRequest professionToUserRequest;
     ProfessionToUserResponse professionToUserResponse;
@@ -35,7 +37,6 @@ public class EmployeeProfessionInfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profession_info);
-        layout = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_profession_info, null);
         RetrofitService retrofitService = new RetrofitService();
         GeneralApi generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
         Bundle arguments = getIntent().getExtras();
@@ -45,7 +46,7 @@ public class EmployeeProfessionInfoActivity extends AppCompatActivity {
         String language = arguments.get("language").toString();
         StringRequest stringRequest = new StringRequest();
         stringRequest.setString(language);
-        generalApi.getProfessionsNamesInSpecifiedLanguage(stringRequest).enqueue(new Callback<TextListResponse>() {
+        generalApi.getProfessionsNamesInSpecifiedLanguage().enqueue(new Callback<TextListResponse>() {
             @Override
             public void onResponse(Call<TextListResponse> call, Response<TextListResponse> response) {
                 professionNamesList.addAll(response.body().getList());
