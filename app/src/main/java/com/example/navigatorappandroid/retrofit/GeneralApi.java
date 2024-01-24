@@ -126,6 +126,18 @@ public interface GeneralApi {
     @GET("api/profession/get/by/name")
     Call<IdResponse> getProfessionIdByName(@Body StringRequest stringRequest);
 
+    @GET("api/vacancy/info/get")
+    Call<StringResponse> getAdditionalInfoAboutVacancyInSpecifiedLanguage(@Body ProfessionToUserRequest professionToUserRequest);
+
+    @GET("api/profession/name/get")
+    Call<StringResponse> getProfessionNameInSpecifiedLanguage(@Body ProfessionToUserRequest professionToUserRequest);
+
+    @GET("api/info/from/employee/get")
+    Call<StringResponse> getInfoFromEmployeeInEmployersLanguage(@Body ProfessionToUserRequest professionToUserRequest);
+
+    @GET("api/professions/to/user/get")
+    Call<StringResponse> getProfessionsToUserInEmployersLanguage(@Body ProfessionToUserRequest professionToUserRequest);
+
     @GET("api/profession/to/user/get")
     Call<ProfessionToUserResponse> getProfessionToUser(@Body ProfessionToUserRequest professionToUserRequest);
 

@@ -262,7 +262,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
         }
     }
 
-    private void executeSearchForVacancies(String profession, SearchApi searchApi){
+    private void executeSearchForVacancies(String profession, SearchApi searchApi) {
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.setProfessionName(profession);
         RadioGroup radioGroup = linearLayout.findViewById(R.id.radio_group);
@@ -312,7 +312,6 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
                 Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {

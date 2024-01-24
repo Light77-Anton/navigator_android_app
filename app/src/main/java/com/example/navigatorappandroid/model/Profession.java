@@ -10,13 +10,30 @@ import lombok.Setter;
 public class Profession {
 
     private Long id;
-    private List<ProfessionToUser> professionToUserList;
 
-    private List<Job> jobs;
+    private List<EmployeeData> employeeDataList;
+
+    private List<Language> languages;
 
     private List<Vacancy> passiveSearches;
 
     private List<ProfessionName> professionNames;
+
+    public List<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<Language> languages) {
+        this.languages = languages;
+    }
+
+    public List<EmployeeData> getEmployeeDataList() {
+        return employeeDataList;
+    }
+
+    public void setEmployeeDataList(List<EmployeeData> employeeDataList) {
+        this.employeeDataList = employeeDataList;
+    }
 
     public Long getId() {
         return id;
@@ -24,22 +41,6 @@ public class Profession {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<ProfessionToUser> getProfessionToUserList() {
-        return professionToUserList;
-    }
-
-    public void setProfessionToUserList(List<ProfessionToUser> professionToUserList) {
-        this.professionToUserList = professionToUserList;
-    }
-
-    public List<Job> getJobs() {
-        return jobs;
-    }
-
-    public void setJobs(List<Job> jobs) {
-        this.jobs = jobs;
     }
 
     public List<Vacancy> getPassiveSearches() {

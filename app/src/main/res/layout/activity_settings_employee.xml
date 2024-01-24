@@ -118,18 +118,6 @@
                 android:textSize="40sp"
                 android:inputType="text"
                 android:paddingStart="15dp" />
-            <EditText
-                android:id="@+id/work_requirements"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/edit_text"
-                android:hint="@string/employee_work_requirements"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white"
-                android:textSize="35sp"
-                android:inputType="text"
-                android:paddingStart="15dp" />
             <CheckBox
                 android:id="@+id/drivers_license"
                 android:layout_width="match_parent"

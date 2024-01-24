@@ -14,6 +14,11 @@ public class LocationsRequest {
     @JsonProperty("longitude_one")
     private double long1;
 
+    @JsonProperty("latitude_two")
+    private double lat2;
+    @JsonProperty("longitude_two")
+    private double long2;
+
     public double getLat1() {
         return lat1;
     }
@@ -45,9 +50,4 @@ public class LocationsRequest {
     public void setLong2(double long2) {
         this.long2 = long2;
     }
-
-    @JsonProperty("latitude_two")
-    private double lat2;
-    @JsonProperty("longitude_two")
-    private double long2;
 }

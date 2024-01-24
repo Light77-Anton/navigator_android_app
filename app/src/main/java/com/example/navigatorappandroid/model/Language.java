@@ -20,14 +20,24 @@ public class Language {
 
     private List<User> users;
 
-    private List<ProfessionToUser> professionToUsers;
+    private List<EmployeeData> employeeDataList;
 
-    public List<ProfessionToUser> getProfessionToUsers() {
-        return professionToUsers;
+    private List<Profession> professions;
+
+    public List<EmployeeData> getEmployeeDataList() {
+        return employeeDataList;
     }
 
-    public void setProfessionToUsers(List<ProfessionToUser> professionToUsers) {
-        this.professionToUsers = professionToUsers;
+    public void setEmployeeDataList(List<EmployeeData> employeeDataList) {
+        this.employeeDataList = employeeDataList;
+    }
+
+    public List<Profession> getProfessions() {
+        return professions;
+    }
+
+    public void setProfessions(List<Profession> professions) {
+        this.professions = professions;
     }
 
     public Long getId() {

@@ -110,6 +110,7 @@
     <string name="save_request">+save request</string>
     <string name="saved_requests">Saved requests</string>
     <string name="saved_persons">Saved persons</string>
+    <string name="contacted_persons">Contacted persons</string>
     <string name="show_extended_info">Show extended info</string>
     <string name="additional_languages">Additional languages</string>
 </resources>

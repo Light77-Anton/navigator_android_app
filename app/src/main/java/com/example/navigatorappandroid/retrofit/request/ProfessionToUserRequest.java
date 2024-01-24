@@ -9,25 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProfessionToUserRequest {
 
-    @JsonProperty("profession_id")
-    private long professionId;
+    @JsonProperty("id")
+    private long id;
 
-    public long getProfessionId() {
-        return professionId;
+    public long getId() {
+        return id;
     }
 
-    public void setProfessionId(long professionId) {
-        this.professionId = professionId;
+    public void setId(long id) {
+        this.id = id;
     }
-
-    public String getAdditionalInfo() {
-        return additionalInfo;
-    }
-
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
-    }
-
-    @JsonProperty("additional_info")
-    private String additionalInfo;
 }

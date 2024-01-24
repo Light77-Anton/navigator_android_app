@@ -12,24 +12,19 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
-
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
+import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
+import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
+import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import java.util.HashMap;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +33,7 @@ import retrofit2.Response;
 public class WorkListEmployerActivity extends AppCompatActivity {
 
     private LocationUpdateHandler locationUpdateHandler;
+
     private LinearLayout linearLayout = findViewById(R.id.work_list_employer_sort_request_layout);
     private LinearLayout searchResultsLayout = findViewById(R.id.work_list_employer_search_results_layout);
     private RetrofitService retrofitService;
@@ -173,8 +169,7 @@ public class WorkListEmployerActivity extends AppCompatActivity {
                     searchApi.getMeasuredDistance(locationsRequest).enqueue(new Callback<DistanceResponse>() {
                         @Override
                         public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
-                            addEmployeeButton(employee.getName(), employee.getRanking(),
-                                    response.body().getDistance());
+                            addEmployeeButton(employee, response.body().getDistance());
                         }
 
                         @Override
@@ -191,7 +186,18 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         });
     }
 
-    private void addEmployeeButton(String name, double rating, double distance) {
+    private void addEmployeeButton(User employee, double distance) {
+        String name = employee.getName();
+        String avatar = employee.getAvatar();
+        double rating = employee.getRanking();
+        String status;
+        if (employee.getEmployeeData().getStatus().equals("custom")) {
+            status = "Status: will active since " + employee.getEmployeeData().getActiveStatusStartDate();
+        } else {
+            status = "Status: " + employee.getEmployeeData().getStatus();
+        }
+        ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
+        professionToUserRequest.setId(employee.getId());
         Button button = new Button(searchResultsLayout.getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                 (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -206,6 +212,50 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         sb.append("   ");
         sb.append(distance);
         button.setText(sb);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
+                intent.putExtra("activity", "list");
+                intent.putExtra("name", name);
+                intent.putExtra("rating", rating);
+                intent.putExtra("avatar", avatar);
+                intent.putExtra("status", status);
+                StringBuilder languagesList = new StringBuilder();
+                for (Language employeeLang : employee.getCommunicationLanguages()) {
+                    languagesList.append(employeeLang.getLanguageEndonym() + ",");
+                }
+                languagesList.deleteCharAt(languagesList.length() - 1);
+                intent.putExtra("languages", languagesList.toString());
+                generalApi.getProfessionsToUserInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
+                    @Override
+                    public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
+                        String professions = response.body().getString();
+                        intent.putExtra("professions", professions);
+                    }
+
+                    @Override
+                    public void onFailure(Call<StringResponse> call, Throwable t) {
+                        Toast.makeText(WorkListEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                generalApi.getInfoFromEmployeeInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
+                    @Override
+                    public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
+                        String info = response.body().getString();
+                        intent.putExtra("additional_info", info);
+                    }
+
+                    @Override
+                    public void onFailure(Call<StringResponse> call, Throwable t) {
+                        Toast.makeText(WorkListEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                intent.putExtra("email", employee.getEmail());
+                intent.putExtra("phone", employee.getPhone());
+                intent.putExtra("social_networks_links", employee.getSocialNetworksLinks());
+                startActivity(intent);
+            }
+        });
         searchResultsLayout.addView(button);
     }
 }

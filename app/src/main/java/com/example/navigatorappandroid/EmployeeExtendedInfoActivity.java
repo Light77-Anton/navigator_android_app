@@ -18,8 +18,8 @@ public class EmployeeExtendedInfoActivity extends AppCompatActivity {
     private GeneralApi generalApi;
     private SearchApi searchApi;
     private UserInfoResponse userInfoResponse;
-    private ScrollView scrollView = findViewById(R.id.employee_info_scroll_view);
-    private RelativeLayout relativeLayout = findViewById(R.id.employee_info_layout);
+    private ScrollView scrollView = (ScrollView) getLayoutInflater().inflate(R.layout.activity_extended_info_employee, null);
+    private RelativeLayout relativeLayout = scrollView.findViewById(R.id.employee_info_layout);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,11 +11,12 @@ import lombok.Setter;
 public class Vacancy {
 
     private Long id;
-    private List<Profession> professions;
+    private Profession profession;
 
     private JobLocation jobLocation;
     private LocalDateTime startDateTime;
-    private String paymentAndAdditionalInfo;
+
+    private List<InfoAboutVacancyFromEmployer> paymentAndAdditionalInfo;
     private EmployerRequests employerRequests;
 
     public JobLocation getJobLocation() {
@@ -34,12 +35,12 @@ public class Vacancy {
         this.id = id;
     }
 
-    public List<Profession> getProfessions() {
-        return professions;
+    public Profession getProfession() {
+        return profession;
     }
 
-    public void setProfessions(List<Profession> professions) {
-        this.professions = professions;
+    public void setProfession(Profession profession) {
+        this.profession = profession;
     }
 
     public LocalDateTime getStartDateTime() {
@@ -49,13 +50,6 @@ public class Vacancy {
     public void setStartDateTime(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
-    public String getPaymentAndAdditionalInfo() {
-        return paymentAndAdditionalInfo;
-    }
-
-    public void setPaymentAndAdditionalInfo(String paymentAndAdditionalInfo) {
-        this.paymentAndAdditionalInfo = paymentAndAdditionalInfo;
-    }
 
     public EmployerRequests getEmployerRequests() {
         return employerRequests;
@@ -63,5 +57,13 @@ public class Vacancy {
 
     public void setEmployerRequests(EmployerRequests employerRequests) {
         this.employerRequests = employerRequests;
+    }
+
+    public List<InfoAboutVacancyFromEmployer> getPaymentAndAdditionalInfo() {
+        return paymentAndAdditionalInfo;
+    }
+
+    public void setPaymentAndAdditionalInfo(List<InfoAboutVacancyFromEmployer> paymentAndAdditionalInfo) {
+        this.paymentAndAdditionalInfo = paymentAndAdditionalInfo;
     }
 }

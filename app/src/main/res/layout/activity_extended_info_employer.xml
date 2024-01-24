@@ -9,17 +9,70 @@
         android:layout_height="match_parent"
         android:background="@color/custom_gray_blue">
         <TextView
+            android:id="@+id/vacancy_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentTop="true"
+            android:text="Vacancy info:"
+            android:textColor="@color/white"
+            android:textSize="40dp"/>
+        <TextView
+            android:id="@+id/profession"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vacancy_info"
+            android:text="Profession name"
+            android:textColor="@color/black"
+            android:textSize="30dp"/>
+        <TextView
+            android:id="@+id/job_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profession"
+            android:text="Job address"
+            android:textColor="@color/black"
+            android:textSize="30dp"/>
+        <TextView
+            android:id="@+id/start_date_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/job_location"
+            android:text="Start date and time"
+            android:textColor="@color/black"
+            android:textSize="30dp"/>
+        <TextView
+            android:id="@+id/payment_and_additional_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_date_time"
+            android:text="payment and additional info"
+            android:textColor="@color/black"
+            android:textSize="30dp"/>
+        <TextView
+            android:id="@+id/employer_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/payment_and_additional_info"
+            android:text="Employer info:"
+            android:textColor="@color/white"
+            android:textSize="40dp"/>
+        <TextView
             android:id="@+id/name"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/employer_info"
             android:text="Vadims Baumans"
             android:textColor="@color/black"
             android:textSize="30dp"/>
         <ImageView
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_alignParentEnd="true"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/name"
+            android:layout_below="@id/employer_info"
             android:src="@mipmap/avatar_example_round" />
         <android.widget.Button
             android:id="@+id/rating"
@@ -85,10 +138,21 @@
             android:textColor="@color/black"
             android:textSize="30dp" />
         <android.widget.Button
-            android:id="@+id/open_chat"
+            android:id="@+id/give_offer"
+            android:onClick="onOfferClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/social_networks_links"
+            android:background="@drawable/rectangle_button"
+            android:layout_marginTop="60dp"
+            android:text="@string/send_offer"
+            android:textColor="@color/white"
+            android:textSize="50sp" />
+        <android.widget.Button
+            android:id="@+id/open_chat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/give_offer"
             android:background="@drawable/rectangle_button"
             android:layout_marginTop="60dp"
             android:text="@string/open_chat"

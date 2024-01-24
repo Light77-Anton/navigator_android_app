@@ -64,19 +64,10 @@
             android:textColor="@color/black"
             android:textSize="30sp" />
         <TextView
-            android:id="@+id/works_requirements"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/professions"
-            android:layout_marginTop="60dp"
-            android:text="Employee's work requirements : "
-            android:textColor="@color/black"
-            android:textSize="30sp" />
-        <TextView
             android:id="@+id/languages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/works_requirements"
+            android:layout_below="@id/professions"
             android:layout_marginTop="60dp"
             android:text="Communication languages : Русский, English"
             android:textColor="@color/black"

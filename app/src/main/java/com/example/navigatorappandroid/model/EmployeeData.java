@@ -1,5 +1,7 @@
 package com.example.navigatorappandroid.model;
 import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,15 +18,26 @@ public class EmployeeData {
     private Long activeStatusStartDate;
     private User employee;
 
-    private ArrayList<ProfessionToUser> professionToUserList;
+    private List<Profession> professions;
 
-    public ArrayList<ProfessionToUser> getProfessionToUserList() {
-        return professionToUserList;
+    private List<Language> languages;
+
+    public List<Language> getLanguages() {
+        return languages;
     }
 
-    public void setProfessionToUserList(ArrayList<ProfessionToUser> professionToUserList) {
-        this.professionToUserList = professionToUserList;
+    public void setLanguages(List<Language> languages) {
+        this.languages = languages;
     }
+
+    public List<Profession> getProfessions() {
+        return professions;
+    }
+
+    public void setProfessions(List<Profession> professions) {
+        this.professions = professions;
+    }
+
     public Long getActiveStatusStartDate() {
         return activeStatusStartDate;
     }

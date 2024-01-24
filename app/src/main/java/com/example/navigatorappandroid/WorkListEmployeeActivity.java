@@ -13,15 +13,18 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
+import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.model.Vacancy;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
+import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
+import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import java.util.List;
 import retrofit2.Call;
@@ -171,8 +174,7 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
                     searchApi.getMeasuredDistance(locationsRequest).enqueue(new Callback<DistanceResponse>() {
                         @Override
                         public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
-                            addVacancyButton(employer.getId(), employer.getName(), employer.getRanking(),
-                                    response.body().getDistance());
+                            addVacancyButton(employer, vacancy, response.body().getDistance());
                         }
 
                         @Override
@@ -189,7 +191,11 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
         });
     }
 
-    private void addVacancyButton(long id, String name, double rating, double distance) {
+    private void addVacancyButton(User employer, Vacancy vacancy, double distance) {
+        String name = employer.getName();
+        String firmName = employer.getEmployerRequests().getFirmName();
+        String avatar = employer.getAvatar();
+        double rating = employer.getRanking();
         Button button = new Button(searchResultsLayout.getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                 (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -199,8 +205,48 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
         button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
-                intent.putExtra("user_id", id);
+                Intent intent = new Intent(v.getContext(), EmployerExtendedInfoActivity.class);
+                intent.putExtra("activity", "list");
+                ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
+                professionToUserRequest.setId(vacancy.getProfession().getId());
+                generalApi.getProfessionNameInSpecifiedLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
+                    @Override
+                    public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
+                        intent.putExtra("profession", response.body().getString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<StringResponse> call, Throwable t) {
+
+                    }
+                });
+                intent.putExtra("job_address", vacancy.getJobLocation().getJobAddress());
+                intent.putExtra("start_date_time", vacancy.getStartDateTime().toString());
+                professionToUserRequest.setId(vacancy.getId());
+                generalApi.getProfessionNameInSpecifiedLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
+                    @Override
+                    public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
+                        intent.putExtra("payment_and_additional_info", response.body().getString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<StringResponse> call, Throwable t) {
+
+                    }
+                });
+                intent.putExtra("name", name);
+                intent.putExtra("rating", rating);
+                intent.putExtra("avatar", avatar);
+                intent.putExtra("firm_name", firmName);
+                StringBuilder languagesList = new StringBuilder();
+                for (Language employeeLang : employer.getCommunicationLanguages()) {
+                    languagesList.append(employeeLang.getLanguageEndonym() + ",");
+                }
+                languagesList.deleteCharAt(languagesList.length() - 1);
+                intent.putExtra("languages", languagesList.toString());
+                intent.putExtra("email", employer.getEmail());
+                intent.putExtra("phone", employer.getPhone());
+                intent.putExtra("social_networks_links", employer.getSocialNetworksLinks());
                 startActivity(intent);
             }
         });

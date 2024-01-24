@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,85 +7,51 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/choose_profession"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:textSize="40sp"/>
-    <AutoCompleteTextView
-        android:id="@+id/search_employees_autocomplete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:completionHint="@string/choose_profession"
-        android:textColor="@color/white"
-        android:textSize="40sp"
-        android:paddingStart="45dp"
-        android:background="@drawable/spinner"
-        android:completionThreshold="1" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/saved_requests"
-        app:drawableRightCompat="@drawable/ic_search"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:textSize="40sp"/>
     <LinearLayout
-        android:id="@+id/activity_search_vacancies_saved_requests_layout"
-        android:background="@drawable/rectangle_button"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
-        <android.widget.Button
-            android:onClick="onSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rectangle_button"
-            android:text="profession name ..."
-            android:textColor="@color/white"
-            android:textSize="30sp" />
-        <android.widget.Button
-            android:onClick="onSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rectangle_button"
-            android:text="profession name ..."
-            android:textColor="@color/white"
-            android:textSize="30sp" />
-    </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/saved_persons"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:textSize="40sp"
-        app:drawableRightCompat="@drawable/default_user_avatar" />
-    <ScrollView
         android:background="@color/custom_gray_blue"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/choose_profession"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="40sp"/>
+        <AutoCompleteTextView
+            android:id="@+id/search_employees_autocomplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionHint="@string/choose_profession"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:paddingStart="45dp"
+            android:background="@drawable/spinner"
+            android:completionThreshold="1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/saved_requests"
+            app:drawableRightCompat="@drawable/ic_search"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="40sp"/>
         <LinearLayout
-            android:id="@+id/activity_search_vacancies_saved_persons_layout"
+            android:id="@+id/activity_search_vacancies_saved_requests_layout"
             android:background="@drawable/rectangle_button"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="200dp">
             <android.widget.Button
                 android:onClick="onSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/rectangle_button"
-                android:text="first person's name"
+                android:text="profession name ..."
                 android:textColor="@color/white"
                 android:textSize="30sp" />
             <android.widget.Button
@@ -94,77 +60,204 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/rectangle_button"
-                android:text="second person's name"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
-            <android.widget.Button
-                android:onClick="onSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rectangle_button"
-                android:text="third person's name"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
-            <android.widget.Button
-                android:onClick="onSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rectangle_button"
-                android:text="fought person's name"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
-            <android.widget.Button
-                android:onClick="onSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rectangle_button"
-                android:text="fifth person's name"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
-            <android.widget.Button
-                android:onClick="onSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rectangle_button"
-                android:text="sixth person's name"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
-            <android.widget.Button
-                android:onClick="onSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rectangle_button"
-                android:text="seventh person's name"
+                android:text="profession name ..."
                 android:textColor="@color/white"
                 android:textSize="30sp" />
         </LinearLayout>
-    </ScrollView>
-    <android.widget.Button
-        android:id="@+id/search"
-        android:onClick="onSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/rectangle_button"
-        android:text="@string/search"
-        android:textColor="@color/white"
-        android:textSize="50sp" />
-    <android.widget.Button
-        android:id="@+id/back"
-        android:onClick="onBack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/rectangle_button"
-        android:text="@string/back"
-        android:textColor="@color/white"
-        android:textSize="50sp"
-        android:drawableStart="@drawable/ic_arrow_back"/>
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/saved_persons"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="40sp"
+            app:drawableRightCompat="@drawable/rate_star" />
+        <ScrollView
+            android:background="@color/custom_gray_blue"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+            <LinearLayout
+                android:id="@+id/activity_search_vacancies_saved_persons_layout"
+                android:background="@drawable/rectangle_button"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="first person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="second person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="third person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="fought person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="fifth person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="sixth person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+
+                <android.widget.Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:onClick="onSearch"
+                    android:text="seventh person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+            </LinearLayout>
+        </ScrollView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/contacted_persons"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="40sp"
+            app:drawableRightCompat="@drawable/default_user_avatar" />
+        <ScrollView
+            android:background="@color/custom_gray_blue"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+            <LinearLayout
+                android:id="@+id/activity_search_vacancies_contacted_persons_layout"
+                android:background="@drawable/rectangle_button"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="first person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="second person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="third person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="fought person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="fifth person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="sixth person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <android.widget.Button
+                    android:onClick="onSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rectangle_button"
+                    android:text="seventh person's name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+            </LinearLayout>
+        </ScrollView>
+        <android.widget.Button
+            android:id="@+id/search"
+            android:onClick="onSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle_button"
+            android:text="@string/search"
+            android:textColor="@color/white"
+            android:textSize="50sp" />
+        <android.widget.Button
+            android:id="@+id/back"
+            android:onClick="onBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle_button"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            android:textSize="50sp"
+            android:drawableStart="@drawable/ic_arrow_back"/>
+    </LinearLayout>
+</ScrollView>
+
 
 
