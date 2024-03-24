@@ -14,7 +14,6 @@ public class LocationUpdateHandler {
     private Handler handler;
     private Runnable locationUpdateRunnable;
 
-
     public LocationUpdateHandler(double latitude, double longitude, long id) {
         handler = new Handler();
         locationUpdateRunnable = new Runnable() {

@@ -4,6 +4,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -18,12 +19,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.EmployeeStatusHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
+import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.Vacancy;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
+import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
+import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
+import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
+import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -330,10 +336,73 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
             Vacancy vacancy = map.get(marker);
             TextView name = layout.findViewById(R.id.name);
             TextView rating = layout.findViewById(R.id.rating);
-            TextView startDate = layout.findViewById(R.id.status_or_start_date);
+            TextView distance = layout.findViewById(R.id.distance);
             name.setText(vacancy.getEmployerRequests().getEmployer().getName());
             rating.setText(vacancy.getEmployerRequests().getEmployer().getRanking().toString());
-            startDate.setText(vacancy.getStartDateTime().toString());
+            LocationsRequest locationsRequest = new LocationsRequest();
+            locationsRequest.setLat1(userInfoResponse.getLocation().getLatitude());
+            locationsRequest.setLat2(vacancy.getJobLocation().getLatitude());
+            locationsRequest.setLong1(userInfoResponse.getLocation().getLongitude());
+            locationsRequest.setLong2(vacancy.getJobLocation().getLongitude());
+            searchApi.getMeasuredDistance(locationsRequest).enqueue(new Callback<DistanceResponse>() {
+                @Override
+                public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
+                    distance.setText(response.body().getDistance().toString());
+                }
+
+                @Override
+                public void onFailure(Call<DistanceResponse> call, Throwable t) {
+
+                }
+            });
+            Button extendedInfoButton = layout.findViewById(R.id.extended_info_button);
+            extendedInfoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
+                    intent.putExtra("activity", "map");
+                    intent.putExtra("name", vacancy.getEmployerRequests().getEmployer().getName());
+                    intent.putExtra("rating", vacancy.getEmployerRequests().getEmployer().getRanking());
+                    intent.putExtra("avatar", vacancy.getEmployerRequests().getEmployer().getAvatar());
+                    intent.putExtra("firm_name", vacancy.getEmployerRequests().getFirmName());
+                    StringBuilder languagesList = new StringBuilder();
+                    for (Language employeeLang : vacancy.getEmployerRequests().getEmployer().getCommunicationLanguages()) {
+                        languagesList.append(employeeLang.getLanguageEndonym() + ",");
+                    }
+                    languagesList.deleteCharAt(languagesList.length() - 1);
+                    intent.putExtra("languages", languagesList.toString());
+                    ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
+                    professionToUserRequest.setId(vacancy.getEmployerRequests().getEmployer().getId());
+                    generalApi.getProfessionsToUserInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
+                        @Override
+                        public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
+                            String professions = response.body().getString();
+                            intent.putExtra("professions", professions);
+                        }
+
+                        @Override
+                        public void onFailure(Call<StringResponse> call, Throwable t) {
+                            Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    generalApi.getInfoFromEmployeeInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
+                        @Override
+                        public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
+                            String info = response.body().getString();
+                            intent.putExtra("additional_info", info);
+                        }
+
+                        @Override
+                        public void onFailure(Call<StringResponse> call, Throwable t) {
+                            Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    intent.putExtra("email", vacancy.getEmployerRequests().getEmployer().getEmail());
+                    intent.putExtra("phone", vacancy.getEmployerRequests().getEmployer().getPhone());
+                    intent.putExtra("social_networks_links", vacancy.getEmployerRequests().getEmployer().getSocialNetworksLinks());
+                    startActivity(intent);
+                }
+            });
 
             return layout;
         }

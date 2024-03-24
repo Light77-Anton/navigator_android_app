@@ -8,9 +8,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:id="@+id/employee_info_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/employee_info_layout"
         android:background="@color/custom_gray_blue">
         <TextView
             android:id="@+id/name"
@@ -101,7 +101,7 @@
             android:textSize="30sp" />
         <android.widget.Button
             android:id="@+id/give_offer"
-            android:onClick="onOfferClick"
+            android:onClick="onSendOffer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/social_networks_links"
@@ -112,7 +112,7 @@
             android:textSize="50sp" />
         <android.widget.Button
             android:id="@+id/open_chat"
-            android:onClick="onChatClick"
+            android:onClick="onOpenChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/give_offer"

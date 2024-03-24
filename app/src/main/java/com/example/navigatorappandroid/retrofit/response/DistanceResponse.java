@@ -4,13 +4,13 @@ import lombok.Data;
 @Data
 public class DistanceResponse {
 
-    public double getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(double distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
-    private double distance;
+    private Double distance;
 }

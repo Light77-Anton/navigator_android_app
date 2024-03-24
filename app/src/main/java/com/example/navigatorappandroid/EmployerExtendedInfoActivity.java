@@ -17,14 +17,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EmployeeExtendedInfoActivity extends AppCompatActivity {
+public class EmployerExtendedInfoActivity extends AppCompatActivity {
 
     private RetrofitService retrofitService;
     private GeneralApi generalApi;
     private SearchApi searchApi;
     private UserInfoResponse userInfoResponse;
-    private ScrollView scrollView = (ScrollView) getLayoutInflater().inflate(R.layout.activity_extended_info_employee, null);
-    private RelativeLayout relativeLayout = scrollView.findViewById(R.id.employee_info_layout);
+    private ScrollView scrollView = (ScrollView) getLayoutInflater().inflate(R.layout.activity_extended_info_employer, null);
+    private RelativeLayout relativeLayout = scrollView.findViewById(R.id.employer_info_layout);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +37,13 @@ public class EmployeeExtendedInfoActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(EmployeeExtendedInfoActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EmployerExtendedInfoActivity.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });
         TextView name = relativeLayout.findViewById(R.id.name);
         Button rating = relativeLayout.findViewById(R.id.rating);
         ImageView avatar = relativeLayout.findViewById(R.id.avatar);
-        TextView status = relativeLayout.findViewById(R.id.status);
-        TextView professions = relativeLayout.findViewById(R.id.professions);
+        TextView firmName = relativeLayout.findViewById(R.id.firm_name);
         TextView languages = relativeLayout.findViewById(R.id.languages);
         TextView email = relativeLayout.findViewById(R.id.email);
         TextView phone = relativeLayout.findViewById(R.id.phone);
@@ -52,31 +51,29 @@ public class EmployeeExtendedInfoActivity extends AppCompatActivity {
         name.setText(arguments.getString("name"));
         rating.setText(arguments.getString("rating"));
         avatar.setImageURI();
-        status.setText(arguments.getString("status"));
-        professions.setText(arguments.getString("professions"));
+        firmName.setText(arguments.getString("firm_name"));
         languages.setText(arguments.getString("languages"));
         email.setText(arguments.getString("email"));
         phone.setText(arguments.getString("phone"));
         socialNetworksLinks.setText(arguments.getString("social_networks_links"));
-        setContentView(R.layout.activity_extended_info_employee);
+        setContentView(R.layout.activity_extended_info_employer);
     }
 
     public void onOpenChat(View view) {
         Bundle arguments = getIntent().getExtras();
-        Intent intent = new Intent(EmployeeExtendedInfoActivity.this, ChatActivity.class);
+        Intent intent = new Intent(EmployerExtendedInfoActivity.this, ChatActivity.class);
         if (arguments.getString("activity").equals("map")) {
             intent.putExtra("activity", "map");
         } else {
             intent.putExtra("activity", "list");
         }
-        intent.putExtra("page_info_role", "employee");
+        intent.putExtra("page_info_role", "employer");
         intent.putExtra("id", arguments.getLong("id"));
         intent.putExtra("name", arguments.getString("name"));
         intent.putExtra("rating", arguments.getString("rating"));
         intent.putExtra("avatar", arguments.getString("avatar"));
-        intent.putExtra("status", arguments.getString("status"));
+        intent.putExtra("firm_name", arguments.getString("firm_name"));
         intent.putExtra("languages", arguments.getString("languages"));
-        intent.putExtra("professions", arguments.getString("professions"));
         intent.putExtra("additional_info", arguments.getString("additional_info"));
         intent.putExtra("email", arguments.getString("email"));
         intent.putExtra("phone", arguments.getString("phone"));
@@ -88,9 +85,9 @@ public class EmployeeExtendedInfoActivity extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
         Intent intent;
         if (arguments.getString("activity").equals("map")) {
-            intent = new Intent(EmployeeExtendedInfoActivity.this, WorkMapEmployerActivity.class);
+            intent = new Intent(EmployerExtendedInfoActivity.this, WorkMapEmployerActivity.class);
         } else {
-            intent = new Intent(EmployeeExtendedInfoActivity.this, WorkListEmployerActivity.class);
+            intent = new Intent(EmployerExtendedInfoActivity.this, WorkListEmployerActivity.class);
         }
         startActivity(intent);
     }
@@ -99,9 +96,9 @@ public class EmployeeExtendedInfoActivity extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
         Intent intent;
         if (arguments.getString("activity").equals("map")) {
-            intent = new Intent(EmployeeExtendedInfoActivity.this, WorkMapEmployerActivity.class);
+            intent = new Intent(EmployerExtendedInfoActivity.this, WorkMapEmployerActivity.class);
         } else {
-            intent = new Intent(EmployeeExtendedInfoActivity.this, WorkListEmployerActivity.class);
+            intent = new Intent(EmployerExtendedInfoActivity.this, WorkListEmployerActivity.class);
         }
         startActivity(intent);
     }

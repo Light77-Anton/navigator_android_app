@@ -7,14 +7,33 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ChatMessage {
+public class ChatMessage implements Comparable<ChatMessage> {
     private Long id;
     private ChatRoom chat;
+
     private User sender;
+
     private User recipient;
     private String content;
     private LocalDateTime time;
     private String status;
+    private boolean isImage;
+
+    public User getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
+    }
+
+    public boolean isImage() {
+        return isImage;
+    }
+
+    public void setImage(boolean image) {
+        this.isImage = image;
+    }
 
     public Long getId() {
         return id;
@@ -30,22 +49,6 @@ public class ChatMessage {
 
     public void setChat(ChatRoom chat) {
         this.chat = chat;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public User getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(User recipient) {
-        this.recipient = recipient;
     }
 
     public String getContent() {
@@ -70,5 +73,24 @@ public class ChatMessage {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    @Override
+    public int compareTo(ChatMessage o) {
+        if (this.time.isAfter(o.time)) {
+            return 1;
+        } else if(this.time.isBefore(o.time)) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 }

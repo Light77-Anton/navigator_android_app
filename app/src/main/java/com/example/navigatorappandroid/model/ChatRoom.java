@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ChatRoom {
     private ChatRoomId id;
+
     private long senderId;
     private long recipientId;
     private List<ChatMessage> messages;

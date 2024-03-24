@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/custom_gray_blue">
     <RelativeLayout
+        android:id="@+id/employer_info_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/custom_gray_blue">

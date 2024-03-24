@@ -4,6 +4,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -17,12 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
+import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
+import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
+import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
+import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
+import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -331,11 +337,74 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
             User employee = map.get(marker);
             TextView name = layout.findViewById(R.id.name);
             TextView rating = layout.findViewById(R.id.rating);
-            TextView status = layout.findViewById(R.id.status_or_start_date);
+            TextView distance = layout.findViewById(R.id.distance);
             name.setText(employee.getName());
             rating.setText(employee.getRanking().toString());
-            status.setText(employee.getEmployeeData().getStatus());
+            LocationsRequest locationsRequest = new LocationsRequest();
+            locationsRequest.setLat1(userInfoResponse.getLocation().getLatitude());
+            locationsRequest.setLat2(employee.getLocation().getLatitude());
+            locationsRequest.setLong1(userInfoResponse.getLocation().getLongitude());
+            locationsRequest.setLong2(employee.getLocation().getLongitude());
+            searchApi.getMeasuredDistance(locationsRequest).enqueue(new Callback<DistanceResponse>() {
+                @Override
+                public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
+                    distance.setText(response.body().getDistance().toString());
+                }
 
+                @Override
+                public void onFailure(Call<DistanceResponse> call, Throwable t) {
+
+                }
+            });
+            Button extendedInfoButton = layout.findViewById(R.id.extended_info_button);
+            extendedInfoButton.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
+                   intent.putExtra("activity", "map");
+                   intent.putExtra("id", employee.getId());
+                   intent.putExtra("name", employee.getName());
+                   intent.putExtra("rating", employee.getRanking());
+                   intent.putExtra("avatar", employee.getAvatar());
+                   intent.putExtra("status", employee.getEmployeeData().getStatus());
+                   StringBuilder languagesList = new StringBuilder();
+                   for (Language employeeLang : employee.getCommunicationLanguages()) {
+                       languagesList.append(employeeLang.getLanguageEndonym() + ",");
+                   }
+                   languagesList.deleteCharAt(languagesList.length() - 1);
+                   intent.putExtra("languages", languagesList.toString());
+                   ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
+                   professionToUserRequest.setId(employee.getId());
+                   generalApi.getProfessionsToUserInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
+                       @Override
+                       public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
+                           String professions = response.body().getString();
+                           intent.putExtra("professions", professions);
+                       }
+
+                       @Override
+                       public void onFailure(Call<StringResponse> call, Throwable t) {
+                           Toast.makeText(WorkMapEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                       }
+                   });
+                   generalApi.getInfoFromEmployeeInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
+                       @Override
+                       public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
+                           String info = response.body().getString();
+                           intent.putExtra("additional_info", info);
+                       }
+
+                       @Override
+                       public void onFailure(Call<StringResponse> call, Throwable t) {
+                           Toast.makeText(WorkMapEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                       }
+                   });
+                   intent.putExtra("email", employee.getEmail());
+                   intent.putExtra("phone", employee.getPhone());
+                   intent.putExtra("social_networks_links", employee.getSocialNetworksLinks());
+                   startActivity(intent);
+               }
+           });
             return layout;
         }
 
