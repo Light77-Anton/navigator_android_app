@@ -13,7 +13,16 @@ public class EmployerRequests {
     private Long id;
     private String firmName;
     private ArrayList<Vacancy> vacancies;
-    private ArrayList<Job> jobs;
+
+    public List<EmployeeData> getContactedEmployees() {
+        return contactedEmployees;
+    }
+
+    public void setContactedEmployees(List<EmployeeData> contactedEmployees) {
+        this.contactedEmployees = contactedEmployees;
+    }
+
+    private List<EmployeeData> contactedEmployees;
     private User employer;
 
     public Long getId() {
@@ -38,14 +47,6 @@ public class EmployerRequests {
 
     public void setVacancies(ArrayList<Vacancy> vacancies) {
         this.vacancies = vacancies;
-    }
-
-    public List<Job> getJobs() {
-        return jobs;
-    }
-
-    public void setJobs(ArrayList<Job> jobs) {
-        this.jobs = jobs;
     }
 
     public User getEmployer() {

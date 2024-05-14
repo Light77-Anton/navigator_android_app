@@ -9,9 +9,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.navigatorappandroid.retrofit.ChatApi;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
+import com.example.navigatorappandroid.retrofit.request.ChatRequest;
+import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,14 +25,18 @@ public class EmployeeExtendedInfoActivity extends AppCompatActivity {
     private RetrofitService retrofitService;
     private GeneralApi generalApi;
     private SearchApi searchApi;
+    private ChatApi chatApi;
     private UserInfoResponse userInfoResponse;
     private ScrollView scrollView = (ScrollView) getLayoutInflater().inflate(R.layout.activity_extended_info_employee, null);
     private RelativeLayout relativeLayout = scrollView.findViewById(R.id.employee_info_layout);
+    private Bundle arguments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle arguments = getIntent().getExtras();
+        arguments = getIntent().getExtras();
+        retrofitService = new RetrofitService();
+        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
         generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
             @Override
             public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
@@ -58,51 +65,57 @@ public class EmployeeExtendedInfoActivity extends AppCompatActivity {
         email.setText(arguments.getString("email"));
         phone.setText(arguments.getString("phone"));
         socialNetworksLinks.setText(arguments.getString("social_networks_links"));
+        Button chatButton = relativeLayout.findViewById(R.id.open_chat);
+        chatApi = retrofitService.getRetrofit().create(ChatApi.class);
+        ChatRequest chatRequest = new ChatRequest();
+        chatRequest.setSenderId(userInfoResponse.getId());
+        chatRequest.setRecipientId(Long.parseLong(arguments.getString("id")));
+        chatApi.openChat(chatRequest).enqueue(new Callback<ResultErrorsResponse>() {
+            @Override
+            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                if (response.body().getErrors().isEmpty()) {
+                    chatButton.setVisibility(View.VISIBLE);
+                    chatButton.setEnabled(true);
+                    if (!response.body().isResult()) {
+                        Toast.makeText(EmployeeExtendedInfoActivity.this, "Now you can start chat with the user", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
+                Toast.makeText(EmployeeExtendedInfoActivity.this, "fail", Toast.LENGTH_SHORT).show();
+            }
+        });
         setContentView(R.layout.activity_extended_info_employee);
     }
 
     public void onOpenChat(View view) {
-        Bundle arguments = getIntent().getExtras();
-        Intent intent = new Intent(EmployeeExtendedInfoActivity.this, ChatActivity.class);
+        Intent intent = new Intent(this, ChatActivity.class);
         if (arguments.getString("activity").equals("map")) {
             intent.putExtra("activity", "map");
         } else {
             intent.putExtra("activity", "list");
         }
         intent.putExtra("page_info_role", "employee");
-        intent.putExtra("id", arguments.getLong("id"));
-        intent.putExtra("name", arguments.getString("name"));
-        intent.putExtra("rating", arguments.getString("rating"));
-        intent.putExtra("avatar", arguments.getString("avatar"));
-        intent.putExtra("status", arguments.getString("status"));
-        intent.putExtra("languages", arguments.getString("languages"));
-        intent.putExtra("professions", arguments.getString("professions"));
-        intent.putExtra("additional_info", arguments.getString("additional_info"));
-        intent.putExtra("email", arguments.getString("email"));
-        intent.putExtra("phone", arguments.getString("phone"));
-        intent.putExtra("social_networks_links", arguments.getString("social_networks_links"));
+        intent.putExtras(arguments);
         startActivity(intent);
     }
 
     public void onSendOffer(View view) {
-        Bundle arguments = getIntent().getExtras();
-        Intent intent;
-        if (arguments.getString("activity").equals("map")) {
-            intent = new Intent(EmployeeExtendedInfoActivity.this, WorkMapEmployerActivity.class);
-        } else {
-            intent = new Intent(EmployeeExtendedInfoActivity.this, WorkListEmployerActivity.class);
-        }
+        Intent intent = new Intent(this, OfferSendingChooseActivity.class);
+        intent.putExtras(arguments);
         startActivity(intent);
     }
 
     public void onBack(View view) {
-        Bundle arguments = getIntent().getExtras();
         Intent intent;
         if (arguments.getString("activity").equals("map")) {
-            intent = new Intent(EmployeeExtendedInfoActivity.this, WorkMapEmployerActivity.class);
+            intent = new Intent(this, WorkMapEmployerActivity.class);
         } else {
-            intent = new Intent(EmployeeExtendedInfoActivity.this, WorkListEmployerActivity.class);
+            intent = new Intent(this, WorkListEmployerActivity.class);
         }
+        intent.putExtras(arguments);
         startActivity(intent);
     }
 }

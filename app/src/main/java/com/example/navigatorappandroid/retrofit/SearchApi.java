@@ -1,5 +1,5 @@
 package com.example.navigatorappandroid.retrofit;
-import com.example.navigatorappandroid.retrofit.request.JobRequest;
+import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.request.StringRequest;
@@ -25,7 +25,7 @@ public interface SearchApi {
     Call<ProfessionsResponse> getProfessionList();
 
     @POST("api/search/employer/vacancy/set")
-    Call<ResultErrorsResponse> setVacancy(@Body JobRequest jobRequest);
+    Call<ResultErrorsResponse> setVacancy(@Body VacancyRequest vacancyRequest);
 
     @GET("api/search/employer/vacancy/get")
     Call<VacancyInfoResponse> getVacancyById(@Body StringRequest stringRequest);

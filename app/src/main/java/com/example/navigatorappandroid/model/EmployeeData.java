@@ -1,7 +1,5 @@
 package com.example.navigatorappandroid.model;
-import java.util.ArrayList;
 import java.util.List;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,22 +11,30 @@ public class EmployeeData {
     private Long id;
     private boolean isDriverLicense;
     private boolean isAuto;
-    private String employeesWorkRequirements;
+    private List<InfoFromEmployee> infoFromEmployee;
     private String status;
     private Long activeStatusStartDate;
     private User employee;
 
     private List<Profession> professions;
 
-    private List<Language> languages;
-
-    public List<Language> getLanguages() {
-        return languages;
+    public List<InfoFromEmployee> getInfoFromEmployee() {
+        return infoFromEmployee;
     }
 
-    public void setLanguages(List<Language> languages) {
-        this.languages = languages;
+    public void setInfoFromEmployee(List<InfoFromEmployee> infoFromEmployee) {
+        this.infoFromEmployee = infoFromEmployee;
     }
+
+    public List<EmployerRequests> getContactedEmployers() {
+        return contactedEmployers;
+    }
+
+    public void setContactedEmployers(List<EmployerRequests> contactedEmployers) {
+        this.contactedEmployers = contactedEmployers;
+    }
+
+    private List<EmployerRequests> contactedEmployers;
 
     public List<Profession> getProfessions() {
         return professions;

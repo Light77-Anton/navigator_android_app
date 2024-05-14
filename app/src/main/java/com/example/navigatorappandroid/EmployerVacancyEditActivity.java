@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
-import com.example.navigatorappandroid.retrofit.request.JobRequest;
+import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.response.IdResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
@@ -188,7 +188,7 @@ public class EmployerVacancyEditActivity extends AppCompatActivity {
     }
 
     public void onConfirmClick(View view) {
-        JobRequest jobRequest = new JobRequest();
+        VacancyRequest vacancyRequest = new VacancyRequest();
         String enteredJobAddress = jobAddressButton.getText().toString();
         if (isAddressValid(enteredJobAddress)) {
             String professionName = requiredProfessionSpinner.toString();
@@ -197,7 +197,7 @@ public class EmployerVacancyEditActivity extends AppCompatActivity {
             generalApi.getProfessionIdByName(stringRequest).enqueue(new Callback<IdResponse>() {
                 @Override
                 public void onResponse(Call<IdResponse> call, Response<IdResponse> response) {
-                    jobRequest.setProfessionId(response.body().getId());
+                    vacancyRequest.setProfessionId(response.body().getId());
                 }
 
                 @Override
@@ -206,13 +206,13 @@ public class EmployerVacancyEditActivity extends AppCompatActivity {
                 }
             });
             LocalDate localDate = LocalDate.of(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
-            jobRequest.setTimestamp(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
+            vacancyRequest.setTimestamp(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
             String info = paymentAndAdditionalInfoEditText.getText().toString();
-            jobRequest.setPaymentAndAdditionalInfo(info);
-            jobRequest.setJobAddress(enteredJobAddress);
-            jobRequest.setLatitude(jobAddressLatitude);
-            jobRequest.setLongitude(jobAddressLongitude);
-            searchApi.setVacancy(jobRequest).enqueue(new Callback<ResultErrorsResponse>() {
+            vacancyRequest.setPaymentAndAdditionalInfo(info);
+            vacancyRequest.setJobAddress(enteredJobAddress);
+            vacancyRequest.setLatitude(jobAddressLatitude);
+            vacancyRequest.setLongitude(jobAddressLongitude);
+            searchApi.setVacancy(vacancyRequest).enqueue(new Callback<ResultErrorsResponse>() {
                 @Override
                 public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
 

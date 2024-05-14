@@ -2,14 +2,13 @@ package com.example.navigatorappandroid.retrofit;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.request.CommentRequest;
 import com.example.navigatorappandroid.retrofit.request.InProgramMessageRequest;
-import com.example.navigatorappandroid.retrofit.request.JobRequest;
+import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.request.LocationRequest;
 import com.example.navigatorappandroid.retrofit.request.ModeratorDecision;
 import com.example.navigatorappandroid.retrofit.request.PasswordRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
-import com.example.navigatorappandroid.retrofit.request.StatusRequest;
 import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.request.TextListInSpecifiedLanguageRequest;
 import com.example.navigatorappandroid.retrofit.request.VoteRequest;
@@ -24,7 +23,6 @@ import com.example.navigatorappandroid.retrofit.response.TextListResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.VoteResponse;
 import java.security.Principal;
-
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -93,7 +91,7 @@ public interface GeneralApi {
     Call<ResultErrorsResponse> comment(@Body CommentRequest commentRequest);
 
     @POST("api/employer/search/passive")
-    Call<ResultErrorsResponse> setPassiveSearch(@Body JobRequest jobRequest);
+    Call<ResultErrorsResponse> setPassiveSearch(@Body VacancyRequest vacancyRequest);
 
     @POST("api/user/{id}/blacklist/{decision}")
     Call<ResultErrorsResponse> blacklist(@Query("favoriteId") String favoriteId,

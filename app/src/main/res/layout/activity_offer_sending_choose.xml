@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/custom_gray_blue">
+    <android.widget.Button
+        android:id="@+id/create_new_vacancy"
+        android:onClick="onCreateNewVacancy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/rectangle_button"
+        android:layout_marginTop="60dp"
+        android:text="@string/create_new_vacancy"
+        android:textColor="@color/white"
+        android:textSize="50sp" />
+    <android.widget.Button
+        android:id="@+id/choose_from_list"
+        android:onClick="onChooseFromList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/create_new_vacancy"
+        android:background="@drawable/rectangle_button"
+        android:layout_marginTop="30dp"
+        android:text="@string/choose_vacancy_from_my_list"
+        android:textColor="@color/white"
+        android:textSize="50sp" />
+    <android.widget.Button
+        android:id="@+id/back"
+        android:onClick="onBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rectangle_button"
+        android:text="@string/back"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:drawableStart="@drawable/ic_arrow_back"/>
+</RelativeLayout>

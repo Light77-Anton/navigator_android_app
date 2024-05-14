@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
+import com.example.navigatorappandroid.model.InfoAboutVacancyFromEmployer;
 import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.model.Vacancy;
@@ -192,6 +193,7 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
     }
 
     private void addVacancyButton(User employer, Vacancy vacancy, double distance) {
+        long id = employer.getId();
         String name = employer.getName();
         String firmName = employer.getEmployerRequests().getFirmName();
         String avatar = employer.getAvatar();
@@ -212,7 +214,7 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
                 generalApi.getProfessionNameInSpecifiedLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
                     @Override
                     public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
-                        intent.putExtra("profession", response.body().getString());
+                        intent.putExtra("vacancy_profession", response.body().getString());
                     }
 
                     @Override
@@ -220,20 +222,16 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
 
                     }
                 });
-                intent.putExtra("job_address", vacancy.getJobLocation().getJobAddress());
-                intent.putExtra("start_date_time", vacancy.getStartDateTime().toString());
-                professionToUserRequest.setId(vacancy.getId());
-                generalApi.getProfessionNameInSpecifiedLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
-                    @Override
-                    public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
-                        intent.putExtra("payment_and_additional_info", response.body().getString());
+                intent.putExtra("vacancy_job_address", vacancy.getJobLocation().getJobAddress());
+                intent.putExtra("vacancy_start_date_time", vacancy.getStartDateTime().toString());
+                for (String language : userInfoResponse.getCommunicationLanguages()) {
+                    for (InfoAboutVacancyFromEmployer info : vacancy.getPaymentAndAdditionalInfo()) {
+                        if (info.getLanguage().getLanguageEndonym().equals(language)) {
+                            intent.putExtra("vacancy_info", info.getText());
+                        }
                     }
-
-                    @Override
-                    public void onFailure(Call<StringResponse> call, Throwable t) {
-
-                    }
-                });
+                }
+                intent.putExtra("id", id);
                 intent.putExtra("name", name);
                 intent.putExtra("rating", rating);
                 intent.putExtra("avatar", avatar);

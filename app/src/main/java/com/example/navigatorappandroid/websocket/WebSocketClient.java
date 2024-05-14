@@ -5,7 +5,6 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WebSocketClient {
     private static final String WS_URL = "ws://localhost:8080/ws";
@@ -50,6 +49,13 @@ public class WebSocketClient {
 
         client.newWebSocket(request, webSocketListener);
         client.dispatcher().executorService().shutdown();
+    }
+
+    private int parseMessageType(ByteString bytes) {
+
+        // Parse binary data to extract message type
+        // Return the message type identifier or header
+        return MessageType.UNKNOWN; // Replace with actual logic
     }
 
     // Method to send messages from the Android app to the server

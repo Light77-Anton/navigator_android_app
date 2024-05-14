@@ -104,6 +104,7 @@
     <string name="choose_start_date">Choose start date :</string>
     <string name="choose_start_time">Choose start time :</string>
     <string name="send"><u>Send</u></string>
+    <string name="continue_and_set_waiting_date_time">Continue and set waiting date time</string>
     <string name="enter_message">Enter message...</string>
     <string name="do_not_show_my_email">Do not show my email to other users</string>
     <string name="do_not_show_my_phone">Do not show my phone to other users</string>
@@ -113,4 +114,9 @@
     <string name="contacted_persons">Contacted persons</string>
     <string name="show_extended_info">Show extended info</string>
     <string name="additional_languages">Additional languages</string>
+    <string name="create_new_vacancy">Create new vacancy</string>
+    <string name="choose_vacancy_from_my_list">Choose vacancy from my list</string>
+    <string name="set_waiting_date_time">Set waiting time and date for the answer</string>
+    <string name="or">Or</string>
+    <string name="waiting_until_start_date_time_checkbox">Waiting until start date time</string>
 </resources>

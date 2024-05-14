@@ -16,8 +16,18 @@ public class Vacancy {
     private JobLocation jobLocation;
     private LocalDateTime startDateTime;
 
+    private LocalDateTime waitingDateTime;
+
     private List<InfoAboutVacancyFromEmployer> paymentAndAdditionalInfo;
     private EmployerRequests employerRequests;
+
+    public LocalDateTime getWaitingDateTime() {
+        return waitingDateTime;
+    }
+
+    public void setWaitingDateTime(LocalDateTime waitingDateTime) {
+        this.waitingDateTime = waitingDateTime;
+    }
 
     public JobLocation getJobLocation() {
         return jobLocation;

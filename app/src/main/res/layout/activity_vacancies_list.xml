@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@+id/activity_vacancies_list_scroll_view"
+    tools:context=".VacanciesListActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/custom_gray_blue"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:id="@+id/activity_vacancies_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gray_blue_rectangle"
+        android:orientation="vertical">
+        <android.widget.Button
+            android:id="@+id/back"
+            android:onClick="onBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/rectangle_button"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            android:textSize="50sp"
+            android:drawableStart="@drawable/ic_arrow_back"/>
+    </LinearLayout>
+</ScrollView>

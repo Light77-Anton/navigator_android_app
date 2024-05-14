@@ -1,6 +1,8 @@
 package com.example.navigatorappandroid.retrofit;
 import com.example.navigatorappandroid.retrofit.request.ChatRequest;
+import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.response.ChatMessageResponse;
+import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -18,9 +20,15 @@ public interface ChatApi {
     @GET("api/chat/messages/{id}")
     Call<ChatMessageResponse> findMessage(@Path("id") long id);
 
-    @POST("api/chat/message")
-    Call<ChatMessageResponse> processMessage(@Body ChatRequest chatRequest);
+    @POST("api/chat/message/{userId}")
+    Call<ChatMessageResponse> processMessage(@Path("userId") String userId, @Body ChatRequest chatRequest);
 
     @GET("api/chat/room")
     Call<ChatMessageResponse> getOrCreateChatRoom(@Body ChatRequest chatRequest);
+
+    @POST("api/chat/employer/offer/{userId}")
+    Call<ResultErrorsResponse> sendOfferFromEmployer(@Path("userId") String userId, @Body VacancyRequest vacancyRequest);
+
+    @GET("api/chat/open")
+    Call<ResultErrorsResponse> openChat(@Body ChatRequest chatRequest);
 }

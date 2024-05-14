@@ -362,7 +362,7 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
                public void onClick(View v) {
                    Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
                    intent.putExtra("activity", "map");
-                   intent.putExtra("id", employee.getId());
+                   intent.putExtra("id", employee.getId().toString());
                    intent.putExtra("name", employee.getName());
                    intent.putExtra("rating", employee.getRanking());
                    intent.putExtra("avatar", employee.getAvatar());

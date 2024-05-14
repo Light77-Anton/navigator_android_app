@@ -15,11 +15,14 @@
             android:text="@string/required_profession"
             android:textColor="@color/white"
             android:textSize="40sp"/>
-        <AutoCompleteTextView
+        <Spinner
+            android:id="@+id/profession"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rectangle_button"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:textAlignment="center"
+            android:background="@drawable/spinner"
+            android:textColor="@color/white"
             android:textSize="30sp"/>
         <TextView
             android:layout_width="match_parent"
@@ -28,11 +31,13 @@
             android:text="@string/job_address"
             android:textColor="@color/white"
             android:textSize="40sp"/>
-        <AutoCompleteTextView
+        <android.widget.Button
+            android:id="@+id/job_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/rectangle_button"
+            android:textColor="@color/white"
             android:textSize="30sp"/>
         <TextView
             android:layout_width="match_parent"
@@ -42,10 +47,12 @@
             android:textColor="@color/white"
             android:textSize="40sp"/>
         <EditText
+            android:id="@+id/payment_and_additional_info"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/rectangle_button"
+            android:textColor="@color/white"
             android:textSize="30sp"/>
         <TextView
             android:layout_width="match_parent"
@@ -55,7 +62,7 @@
             android:textColor="@color/white"
             android:textSize="40sp"/>
         <DatePicker
-            android:id="@+id/datePicker"
+            android:id="@+id/date_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
@@ -70,19 +77,20 @@
             android:textColor="@color/white"
             android:textSize="40sp"/>
         <TimePicker
-            android:id="@+id/timePicker"
+            android:id="@+id/vacancy_time_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/custom_green"
             android:timePickerMode="spinner"
-            android:layout_marginTop="20dp" />
-        <TextView
+            android:layout_marginTop="30dp"/>
+        <android.widget.Button
+            android:onClick="onContinue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:background="@drawable/rectangle_button"
             android:textAlignment="center"
-            android:text="@string/send"
+            android:text="@string/continue_and_set_waiting_date_time"
             android:textColor="@color/red"
             android:textSize="50sp"/>
         <android.widget.Button

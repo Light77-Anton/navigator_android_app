@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.EmployeeStatusHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
+import com.example.navigatorappandroid.model.InfoAboutVacancyFromEmployer;
 import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.Vacancy;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
@@ -361,6 +362,29 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
                     intent.putExtra("activity", "map");
+                    ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
+                    professionToUserRequest.setId(vacancy.getProfession().getId());
+                    generalApi.getProfessionNameInSpecifiedLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
+                        @Override
+                        public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
+                            intent.putExtra("vacancy_profession", response.body().getString());
+                        }
+
+                        @Override
+                        public void onFailure(Call<StringResponse> call, Throwable t) {
+
+                        }
+                    });
+                    intent.putExtra("vacancy_job_address", vacancy.getJobLocation().getJobAddress());
+                    intent.putExtra("vacancy_start_date_time", vacancy.getStartDateTime().toString());
+                    for (String language : userInfoResponse.getCommunicationLanguages()) {
+                       for (InfoAboutVacancyFromEmployer info : vacancy.getPaymentAndAdditionalInfo()) {
+                           if (info.getLanguage().getLanguageEndonym().equals(language)) {
+                               intent.putExtra("vacancy_info", info.getText());
+                           }
+                       }
+                    }
+                    intent.putExtra("id", vacancy.getEmployerRequests().getEmployer().getId().toString());
                     intent.putExtra("name", vacancy.getEmployerRequests().getEmployer().getName());
                     intent.putExtra("rating", vacancy.getEmployerRequests().getEmployer().getRanking());
                     intent.putExtra("avatar", vacancy.getEmployerRequests().getEmployer().getAvatar());
