@@ -20,6 +20,17 @@ public class SearchRequest {
     private boolean isAuto;
     @JsonProperty("are_languages_match")
     private boolean areLanguagesMatch;
+
+    public boolean isMultivacancyAllowed() {
+        return isMultivacancyAllowed;
+    }
+
+    public void setMultivacancyAllowed(boolean multivacancyAllowed) {
+        isMultivacancyAllowed = multivacancyAllowed;
+    }
+
+    @JsonProperty("is_multivacancy_allowed")
+    private boolean isMultivacancyAllowed;
     @JsonProperty("in_radius_of")
     private int inRadiusOf;
 

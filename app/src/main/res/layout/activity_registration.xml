@@ -14,8 +14,8 @@
         android:background="@color/custom_gray_blue">
         <LinearLayout
             android:id="@+id/inside_layout"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/first_text_view"
@@ -24,43 +24,50 @@
                 android:text="@string/enter_your_data_for_registration"
                 android:textColor="@color/white"
                 android:textSize="50sp" />
+            <TextView
+                android:id="@+id/fifth_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/note_about_settings"
+                android:textColor="@color/red"
+                android:textSize="50sp" />
             <EditText
                 android:id="@+id/first_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
+                android:drawableEnd="@drawable/ic_star"
                 android:hint="@string/first_and_last_name"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white"
-                android:textSize="40sp"
                 android:inputType="text"
                 android:paddingStart="15dp"
-                android:drawableEnd="@drawable/ic_star"
-                />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="40sp" />
             <EditText
                 android:id="@+id/second_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
+                android:drawableEnd="@drawable/ic_star"
                 android:hint="@string/email"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white"
-                android:textSize="40sp"
                 android:inputType="textEmailAddress"
                 android:paddingStart="15dp"
-                android:drawableEnd="@drawable/ic_star" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="40sp" />
             <CheckBox
                 android:id="@+id/email_hide_checkbox"
-                android:onClick="checkRole"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:background="@drawable/edit_text"
+                android:onClick="checkRole"
                 android:text="@string/do_not_show_my_email"
                 android:textColor="@color/white"
-                android:textSize="40sp"
-                android:background="@drawable/edit_text"/>
+                android:textSize="40sp" />
             <TextView
                 android:id="@+id/second_text_view"
                 android:layout_width="wrap_content"
@@ -75,7 +82,7 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/spinner"
-                android:textAlignment="center"/>
+                android:textAlignment="center" />
             <EditText
                 android:id="@+id/third_edit_text"
                 android:layout_width="match_parent"
@@ -83,20 +90,20 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
                 android:hint="@string/phone"
-                android:textColorHint="@color/white"
+                android:paddingStart="15dp"
                 android:textColor="@color/white"
-                android:textSize="40sp"
-                android:paddingStart="15dp"/>
+                android:textColorHint="@color/white"
+                android:textSize="40sp" />
             <CheckBox
                 android:id="@+id/phone_hide_checkbox"
-                android:onClick="checkRole"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:background="@drawable/edit_text"
+                android:onClick="checkRole"
                 android:text="@string/do_not_show_my_phone"
                 android:textColor="@color/white"
-                android:textSize="40sp"
-                android:background="@drawable/edit_text"/>
+                android:textSize="40sp" />
             <EditText
                 android:id="@+id/fourth_edit_text"
                 android:layout_width="match_parent"
@@ -104,34 +111,34 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
                 android:hint="@string/social_networks_links"
-                android:textColorHint="@color/white"
+                android:paddingStart="15dp"
                 android:textColor="@color/white"
-                android:textSize="40sp"
-                android:paddingStart="15dp"/>
+                android:textColorHint="@color/white"
+                android:textSize="40sp" />
             <EditText
                 android:id="@+id/fifth_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
+                android:drawableEnd="@drawable/ic_star"
                 android:hint="@string/password"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white"
-                android:textSize="40sp"
                 android:paddingStart="15dp"
-                android:drawableEnd="@drawable/ic_star"/>
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="40sp" />
             <EditText
                 android:id="@+id/sixth_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
+                android:drawableEnd="@drawable/ic_star"
                 android:hint="@string/repeat_password"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white"
-                android:textSize="40sp"
                 android:paddingStart="15dp"
-                android:drawableEnd="@drawable/ic_star"/>
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="40sp" />
             <TextView
                 android:id="@+id/third_text_view"
                 android:layout_width="wrap_content"
@@ -143,24 +150,24 @@
                 app:drawableEndCompat="@drawable/ic_star" />
             <CheckBox
                 android:id="@+id/first_checkbox"
-                android:onClick="checkRole"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:background="@drawable/edit_text"
+                android:onClick="checkRole"
                 android:text="@string/i_am_looking_for_a_job"
                 android:textColor="@color/white"
-                android:textSize="40sp"
-                android:background="@drawable/edit_text"/>
+                android:textSize="40sp" />
             <CheckBox
                 android:id="@+id/second_checkbox"
-                android:onClick="checkRole"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:background="@drawable/edit_text"
+                android:onClick="checkRole"
                 android:text="@string/i_am_looking_for_employees"
                 android:textColor="@color/white"
-                android:textSize="40sp"
-                android:background="@drawable/edit_text"/>
+                android:textSize="40sp" />
             <TextView
                 android:id="@+id/fourth_text_view"
                 android:layout_width="wrap_content"
@@ -174,7 +181,7 @@
                 android:id="@+id/captcha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp" />
             <EditText
                 android:id="@+id/seventh_edit_text"
                 android:layout_width="match_parent"
@@ -182,39 +189,31 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
                 android:hint="@string/text_from_the_picture"
-                android:textColorHint="@color/white"
+                android:paddingStart="15dp"
                 android:textColor="@color/white"
-                android:textSize="40sp"
-                android:paddingStart="15dp" />
-            <TextView
-                android:id="@+id/fifth_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/note_about_settings"
-                android:layout_marginTop="30dp"
-                android:textColor="@color/red"
-                android:textSize="50sp" />
+                android:textColorHint="@color/white"
+                android:textSize="40sp" />
             <android.widget.Button
                 android:id="@+id/first_button"
-                android:onClick="onConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/rectangle_button"
+                android:onClick="OnConfirm"
                 android:text="@string/confirm"
                 android:textColor="@color/red"
-                android:textSize="50sp"/>
+                android:textSize="50sp" />
             <android.widget.Button
                 android:id="@+id/second_button"
-                android:onClick="onBack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
                 android:background="@drawable/rectangle_button"
+                android:drawableStart="@drawable/ic_arrow_back"
+                android:onClick="onBack"
                 android:text="@string/back"
                 android:textColor="@color/white"
-                android:textSize="50sp"
-                android:drawableStart="@drawable/ic_arrow_back"/>
+                android:textSize="50sp" />
         </LinearLayout>
-    </ScrollView>\
+    </ScrollView>
 </LinearLayout>

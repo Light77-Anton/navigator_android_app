@@ -23,8 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onConfirm(View view) {
-        LayoutInflater inflater = getLayoutInflater();
-        View coreView = inflater.inflate(R.layout.activity_login, null);
+        View coreView = getLayoutInflater().inflate(R.layout.activity_login, null);
         EditText emailEditText = coreView.findViewById(R.id.login);
         EditText passwordEditText = coreView.findViewById(R.id.password);
         RetrofitService retrofitService = new RetrofitService();
@@ -40,27 +39,30 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Intent intent;
                     if (response.body().getUserRole().equals("Employee")) {
-                        intent = new Intent(coreView.getContext(), WorkMapEmployeeActivity.class);
+                        intent = new Intent(view.getContext(), WorkListEmployeeActivity.class);
                         startActivity(intent);
                     } else if (response.body().getUserRole().equals("Employer")) {
-                        intent = new Intent(coreView.getContext(), WorkMapEmployerActivity.class);
-                        startActivity(intent);
-                    } else {
-                        intent = new Intent(coreView.getContext(), );
+                        intent = new Intent(view.getContext(), WorkListEmployerActivity.class);
                         startActivity(intent);
                     }
+                    /*
+                    else {
+                        intent = new Intent(view.getContext(), );
+                        startActivity(intent);
+                    }
+                     */
                 }
             }
-
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Error: 'login'" +
+                        " method is failure", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void onBack(View view) {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

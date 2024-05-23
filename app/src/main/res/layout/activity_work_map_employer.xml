@@ -6,26 +6,29 @@
     android:id="@+id/work_map_employer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <androidx.fragment.app.FragmentContainerView xmlns:map="http://schemas.android.com/apk/res-auto"
+    <androidx.fragment.app.FragmentContainerView
+        xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ea1ddfbd25d1e33e"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        tools:context=".WorkMapEmployeeActivity"
+        tools:context=".WorkMapEmployerActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        tools:layout="@layout/activity_placeholder"
         map:uiZoomControls="true"
         map:uiRotateGestures="true" />
     <android.widget.Button
         android:id="@+id/save_request"
         android:layout_above="@id/search_button"
         android:text="@string/save_request"
-        android:textColor="@color/custom_dark_green"
+        android:textColor="@color/black"
         android:layout_width="80dp"
         android:layout_height="50dp"
-        android:background="@color/custom_gray_blue"/>
+        android:background="@drawable/gray_blue_rectangle"/>
     <android.widget.Button
         android:id="@+id/search_button"
+        android:contentDescription="."
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:text="@string/search"
@@ -46,6 +49,7 @@
         android:drawableEnd="@drawable/offers_and_employees_info_icon"/>
     <android.widget.Button
         android:id="@+id/settings_button"
+        android:contentDescription="."
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_width="50dp"
@@ -54,6 +58,34 @@
         android:background="@color/custom_gray_blue"
         android:drawableLeft="@drawable/ic_settings"
         android:drawableRight="@drawable/ic_settings2"/>
+    <android.widget.Button
+        android:id="@+id/to_list"
+        android:contentDescription="."
+        android:layout_above="@id/settings_button"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="onListClick"
+        android:background="@drawable/gray_blue_circle"
+        android:paddingStart="13dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="3dp"
+        android:drawableStart="@drawable/list"/>
+    <android.widget.Button
+        android:id="@+id/to_chats"
+        android:contentDescription="."
+        android:layout_above="@id/to_list"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="onChatsClick"
+        android:background="@drawable/gray_blue_circle"
+        android:paddingStart="5dp"
+        android:text="0"
+        android:textSize="20sp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="3dp"
+        android:drawableStart="@drawable/chats"/>
     <android.widget.Button
         android:id="@+id/sort_request"
         android:layout_alignParentTop="true"
@@ -85,6 +117,7 @@
             android:orientation="vertical">
             <RadioButton
                 android:id="@+id/sort_by_persons_name_checkbox"
+                android:contentDescription="name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:onClick="executeSearchForEmployees"
@@ -92,6 +125,7 @@
                 android:background="@color/custom_gray_blue" />
             <RadioButton
                 android:id="@+id/sort_by_reputation_checkbox"
+                android:contentDescription="rating"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:onClick="executeSearchForEmployees"
@@ -99,6 +133,7 @@
                 android:background="@color/custom_gray_blue" />
             <RadioButton
                 android:id="@+id/sort_by_location_checkbox"
+                android:contentDescription="location"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:onClick="executeSearchForEmployees"
@@ -107,6 +142,7 @@
         </RadioGroup>
         <TextView
             android:id="@+id/radius"
+            android:textColor="@color/black"
             android:layout_below="@id/radio_group"
             android:layout_alignParentLeft="true"
             android:layout_width="match_parent"
@@ -116,7 +152,7 @@
         <SeekBar
             android:id="@+id/seekbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:background="@color/custom_gray_blue"
             android:layout_alignParentRight="true"
             android:onClick="executeSearchForEmployees"

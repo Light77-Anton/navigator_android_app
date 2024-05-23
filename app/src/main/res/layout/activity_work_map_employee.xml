@@ -14,6 +14,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        tools:layout="@layout/activity_placeholder"
         map:uiZoomControls="true"
         map:uiRotateGestures="true" />
     <android.widget.Button
@@ -28,8 +29,8 @@
     <android.widget.Button
         android:id="@+id/status_button"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="250dp"
-        android:layout_width="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_width="240dp"
         android:layout_height="50dp"
         android:text="@string/inactive"
         android:onClick="onStatusClick"
@@ -37,6 +38,7 @@
         android:drawableEnd="@drawable/inactive"/>
     <android.widget.Button
         android:id="@+id/settings_button"
+        android:contentDescription="."
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_width="50dp"
@@ -45,6 +47,47 @@
         android:background="@color/custom_gray_blue"
         android:drawableLeft="@drawable/ic_settings"
         android:drawableRight="@drawable/ic_settings2"/>
+    <android.widget.Button
+        android:id="@+id/to_list"
+        android:contentDescription="."
+        android:layout_above="@id/settings_button"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="onListClick"
+        android:background="@drawable/gray_blue_circle"
+        android:paddingStart="13dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="3dp"
+        android:drawableStart="@drawable/list"/>
+    <android.widget.Button
+        android:id="@+id/to_chats"
+        android:contentDescription="."
+        android:layout_above="@id/to_list"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="onChatsClick"
+        android:background="@drawable/red_circle"
+        android:paddingStart="5dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="3dp"
+        android:text="1"
+        android:textSize="20sp"
+        android:drawableStart="@drawable/chats"/>
+    <android.widget.Button
+        android:id="@+id/to_timers"
+        android:contentDescription="."
+        android:layout_above="@id/to_chats"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="onTimerssClick"
+        android:background="@drawable/gray_blue_circle"
+        android:paddingStart="13dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="3dp"
+        android:drawableStart="@drawable/timer"/>
     <android.widget.Button
         android:id="@+id/sort_request"
         android:layout_alignParentTop="true"
@@ -76,6 +119,7 @@
             android:orientation="vertical">
             <RadioButton
                 android:id="@+id/sort_by_persons_name_checkbox"
+                android:contentDescription="name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:onClick="executeSearchForVacancies"
@@ -83,6 +127,7 @@
                 android:background="@color/custom_gray_blue" />
             <RadioButton
                 android:id="@+id/sort_by_reputation_checkbox"
+                android:contentDescription="rating"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:onClick="executeSearchForVacancies"
@@ -90,6 +135,7 @@
                 android:background="@color/custom_gray_blue" />
             <RadioButton
                 android:id="@+id/sort_by_location_checkbox"
+                android:contentDescription="location"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:onClick="executeSearchForVacancies"
@@ -102,11 +148,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/custom_gray_blue"
+            android:textColor="@color/black"
             android:text="@string/in_radius_of"/>
         <SeekBar
             android:id="@+id/seekbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:background="@color/custom_gray_blue"
             android:onClick="executeSearchForVacancies"
             android:layout_alignParentRight="true"

@@ -26,6 +26,28 @@ public class UserInfoResponse {
     private String phone;
     private boolean isPhoneHidden;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isMultivacancyAllowed() {
+        return isMultivacancyAllowed;
+    }
+
+    public void setMultivacancyAllowed(boolean multivacancyAllowed) {
+        isMultivacancyAllowed = multivacancyAllowed;
+    }
+
+    public UserLocation getUserLocation() {
+        return userLocation;
+    }
+
+    public void setUserLocation(UserLocation userLocation) {
+        this.userLocation = userLocation;
+    }
+
+    private boolean isMultivacancyAllowed;
+
     private int limitForTheSearch;
 
     private boolean areLanguagesMatched;

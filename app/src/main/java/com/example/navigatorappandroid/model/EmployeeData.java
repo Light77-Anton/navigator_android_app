@@ -11,8 +11,18 @@ public class EmployeeData {
     private Long id;
     private boolean isDriverLicense;
     private boolean isAuto;
+
+    public boolean isMultivacancyAllowed() {
+        return isMultivacancyAllowed;
+    }
+
+    public void setMultivacancyAllowed(boolean multivacancyAllowed) {
+        isMultivacancyAllowed = multivacancyAllowed;
+    }
+
+    private boolean isMultivacancyAllowed;
     private List<InfoFromEmployee> infoFromEmployee;
-    private String status;
+    private byte status;
     private Long activeStatusStartDate;
     private User employee;
 
@@ -83,11 +93,11 @@ public class EmployeeData {
         this.employeesWorkRequirements = employeesWorkRequirements;
     }
 
-    public String getStatus() {
+    public byte getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(byte status) {
         this.status = status;
     }
 

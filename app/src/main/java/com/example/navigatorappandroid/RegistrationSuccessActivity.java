@@ -1,11 +1,10 @@
 package com.example.navigatorappandroid;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.request.InProgramMessageRequest;
@@ -24,8 +23,7 @@ public class RegistrationSuccessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Bundle arguments = getIntent().getExtras();
         String language = arguments.get("language").toString();
-        LayoutInflater inflater = getLayoutInflater();
-        View coreView = inflater.inflate(R.layout.activity_registration_success, null);
+        View coreView = getLayoutInflater().inflate(R.layout.activity_registration_success, null);
         TextView textView = coreView.findViewById(R.id.message);
         RetrofitService retrofitService = new RetrofitService();
         GeneralApi generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
@@ -41,7 +39,8 @@ public class RegistrationSuccessActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<StringResponse> call, Throwable t) {
-                Toast.makeText(RegistrationSuccessActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegistrationSuccessActivity.this, "Error: 'getMessageInSpecifiedLanguage'" +
+                        " method is failure", Toast.LENGTH_SHORT).show();
             }
         });
     }

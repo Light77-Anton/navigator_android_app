@@ -1,6 +1,8 @@
 package com.example.navigatorappandroid;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.EmployeeStatusHandler;
+import com.example.navigatorappandroid.handler.LanguageHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.InfoAboutVacancyFromEmployer;
 import com.example.navigatorappandroid.model.Language;
@@ -49,12 +52,14 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private LanguageHandler languageHandler;
     private LatLng latLngMyLocation;
     private Location lastKnownLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -69,20 +74,26 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
     private CameraPosition cameraPosition;
     private LocationUpdateHandler locationUpdateHandler;
     private EmployeeStatusHandler employeeStatusHandler;
-    LinearLayout linearLayout = findViewById(R.id.work_map_employee_sort_request_layout);
-    RetrofitService retrofitService;
-    GeneralApi generalApi;
-    SearchApi searchApi;
-    UserInfoResponse userInfoResponse;
+    private View coreView;
+    private LinearLayout linearLayout;
+    private RetrofitService retrofitService;
+    private GeneralApi generalApi;
+    private SearchApi searchApi;
+    private UserInfoResponse userInfoResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        languageHandler = new LanguageHandler();
+        coreView = getLayoutInflater().inflate(R.layout.activity_work_map_employee, null);
+        linearLayout = coreView.findViewById(R.id.work_map_employee_sort_request_layout);
+        retrofitService = new RetrofitService();
+        searchApi = retrofitService.getRetrofit().create(SearchApi.class);
+        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
         if (savedInstanceState != null) {
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
-        setContentView(R.layout.activity_work_map_employee);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         placesClient = Places.createClient(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -90,9 +101,6 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
                 .findFragmentById(R.id.ea1ddfbd25d1e33e);
         mapFragment.getMapAsync(this);
         changeSortRequestFieldCondition();
-        retrofitService = new RetrofitService();
-        searchApi = retrofitService.getRetrofit().create(SearchApi.class);
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
         generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
             @Override
             public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
@@ -100,9 +108,16 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
             }
             @Override
             public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WorkMapEmployeeActivity.this, "Error: 'getUserInfo' " +
+                        "method is failure", Toast.LENGTH_SHORT).show();
             }
         });
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        Locale locale = new Locale(languageHandler.getLanguageCode(userInfoResponse.getEndonymInterfaceLanguage()));
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        setContentView(R.layout.activity_work_map_employee);
     }
 
     @Override
@@ -229,7 +244,8 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
         intent.putExtra("is_email_hidden", userInfoResponse.isEmailHidden());
         intent.putExtra("social_networks_links", userInfoResponse.getSocialNetworksLinks());
         intent.putExtra("interface_language", userInfoResponse.getEndonymInterfaceLanguage());
-        intent.putExtra("communication_language", userInfoResponse.getCommunicationLanguages());
+        intent.putExtra("communication_languages", userInfoResponse.getCommunicationLanguages());
+        intent.putExtra("is_multivacancy_allowed", userInfoResponse.isMultivacancyAllowed());
         intent.putExtra("are_languages_matched", userInfoResponse.isAreLanguagesMatched());
         intent.putExtra("limit_in_the_search", userInfoResponse.getLimitForTheSearch());
         intent.putExtra("activity", "map");
@@ -247,17 +263,21 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
 
     private void enableLinearLayout() {
         linearLayout.setEnabled(true);
+        linearLayout.setVisibility(View.VISIBLE);
         for (int i = 0; i < linearLayout.getChildCount(); i++) {
             View child = linearLayout.getChildAt(i);
             child.setEnabled(true);
+            child.setVisibility(View.VISIBLE);
         }
     }
 
     private void disableLinearLayout() {
         linearLayout.setEnabled(false);
+        linearLayout.setVisibility(View.INVISIBLE);
         for (int i = 0; i < linearLayout.getChildCount(); i++) {
             View child = linearLayout.getChildAt(i);
             child.setEnabled(false);
+            child.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -276,13 +296,13 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
         radioGroup.setOnCheckedChangeListener((radiogroup, id)-> {
             RadioButton radio = findViewById(id);
             switch (radio.getText().toString()) {
-                case "Sort by person\\'s name":
+                case "name":
                     searchRequest.setSortType("name");
                     break;
-                case "Sort by reputation":
+                case "rating":
                     searchRequest.setSortType("rating");
                     break;
-                case "Sort by location":
+                case "location":
                     searchRequest.setSortType("location");
                     break;
                 default:
@@ -294,6 +314,7 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
         searchRequest.setInRadiusOf(seekBar.getProgress());
         CheckBox checkBox = linearLayout.findViewById(R.id.is_auto_checkbox);
         searchRequest.setAuto(checkBox.isChecked());
+        searchRequest.setMultivacancyAllowed(userInfoResponse.isMultivacancyAllowed());
         searchRequest.setLimit(userInfoResponse.getLimitForTheSearch());
         searchRequest.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
         searchApi.getVacanciesByProfession(searchRequest).enqueue(new Callback<SearchResponse>() {
@@ -316,7 +337,8 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
 
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
-                Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WorkMapEmployeeActivity.this, "Error: 'getVacanciesByProfession' " +
+                        "method is failure", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -353,7 +375,8 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
 
                 @Override
                 public void onFailure(Call<DistanceResponse> call, Throwable t) {
-
+                    Toast.makeText(WorkMapEmployeeActivity.this, "Error: 'getMeasuredDistance' " +
+                            "method is failure", Toast.LENGTH_SHORT).show();
                 }
             });
             Button extendedInfoButton = layout.findViewById(R.id.extended_info_button);
@@ -372,7 +395,8 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
 
                         @Override
                         public void onFailure(Call<StringResponse> call, Throwable t) {
-
+                            Toast.makeText(WorkMapEmployeeActivity.this, "Error: 'getProfessionNameInSpecifiedLanguage' " +
+                                    "method is failure", Toast.LENGTH_SHORT).show();
                         }
                     });
                     intent.putExtra("vacancy_job_address", vacancy.getJobLocation().getJobAddress());
@@ -395,32 +419,6 @@ public class WorkMapEmployeeActivity extends AppCompatActivity implements OnMapR
                     }
                     languagesList.deleteCharAt(languagesList.length() - 1);
                     intent.putExtra("languages", languagesList.toString());
-                    ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
-                    professionToUserRequest.setId(vacancy.getEmployerRequests().getEmployer().getId());
-                    generalApi.getProfessionsToUserInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
-                        @Override
-                        public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
-                            String professions = response.body().getString();
-                            intent.putExtra("professions", professions);
-                        }
-
-                        @Override
-                        public void onFailure(Call<StringResponse> call, Throwable t) {
-                            Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    generalApi.getInfoFromEmployeeInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
-                        @Override
-                        public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
-                            String info = response.body().getString();
-                            intent.putExtra("additional_info", info);
-                        }
-
-                        @Override
-                        public void onFailure(Call<StringResponse> call, Throwable t) {
-                            Toast.makeText(WorkMapEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
-                        }
-                    });
                     intent.putExtra("email", vacancy.getEmployerRequests().getEmployer().getEmail());
                     intent.putExtra("phone", vacancy.getEmployerRequests().getEmployer().getPhone());
                     intent.putExtra("social_networks_links", vacancy.getEmployerRequests().getEmployer().getSocialNetworksLinks());

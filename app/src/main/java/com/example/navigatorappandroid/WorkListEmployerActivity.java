@@ -1,5 +1,9 @@
 package com.example.navigatorappandroid;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -11,7 +15,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import com.example.navigatorappandroid.handler.LanguageHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.User;
@@ -25,17 +33,28 @@ import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
 import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WorkListEmployerActivity extends AppCompatActivity {
+    private LanguageHandler languageHandler;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
+    private boolean locationPermissionGranted;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private LocationUpdateHandler locationUpdateHandler;
-
-    private LinearLayout linearLayout = findViewById(R.id.work_list_employer_sort_request_layout);
-    private LinearLayout searchResultsLayout = findViewById(R.id.work_list_employer_search_results_layout);
+    private Location lastKnownLocation;
+    private View coreView;
+    private LinearLayout linearLayout;
+    private LinearLayout searchResultsLayout;
     private RetrofitService retrofitService;
     private GeneralApi generalApi;
     private SearchApi searchApi;
@@ -44,11 +63,14 @@ public class WorkListEmployerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_work_list_employer);
-        changeSortRequestFieldCondition();
+        languageHandler = new LanguageHandler();
+        coreView = getLayoutInflater().inflate(R.layout.activity_work_list_employer, null);
+        linearLayout = coreView.findViewById(R.id.work_list_employer_sort_request_layout);
+        searchResultsLayout = coreView.findViewById(R.id.work_list_employer_search_results_layout);
         retrofitService = new RetrofitService();
         searchApi = retrofitService.getRetrofit().create(SearchApi.class);
         generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
+        changeSortRequestFieldCondition();
         generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
             @Override
             public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
@@ -61,8 +83,18 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         });
         Bundle arguments = getIntent().getExtras();
         if (arguments.get("profession") != null) {
-            executeSearchForEmployees(arguments.getString("profession"), searchApi);
+            executeSearchForEmployees(arguments.getString("profession"));
         }
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        Locale locale = new Locale(languageHandler.getLanguageCode(userInfoResponse.getEndonymInterfaceLanguage()));
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        getLocationPermission();
+        getDeviceLocation();
+        locationUpdateHandler = new LocationUpdateHandler(lastKnownLocation.getLatitude(),
+                lastKnownLocation.getLongitude(), userInfoResponse.getId());
+        setContentView(R.layout.activity_work_list_employer);
     }
 
     @Override
@@ -77,19 +109,68 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         locationUpdateHandler.stopLocationUpdates();
     }
 
+    private void getLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        locationPermissionGranted = false;
+        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                locationPermissionGranted = true;
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     private void enableLinearLayout() {
         linearLayout.setEnabled(true);
+        linearLayout.setVisibility(View.VISIBLE);
         for (int i = 0; i < linearLayout.getChildCount(); i++) {
             View child = linearLayout.getChildAt(i);
             child.setEnabled(true);
+            child.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void getDeviceLocation() {
+        try {
+            if (locationPermissionGranted) {
+                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            lastKnownLocation = task.getResult();
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e)  {
+            e.printStackTrace();
         }
     }
 
     private void disableLinearLayout() {
         linearLayout.setEnabled(false);
+        linearLayout.setVisibility(View.INVISIBLE);
         for (int i = 0; i < linearLayout.getChildCount(); i++) {
             View child = linearLayout.getChildAt(i);
             child.setEnabled(false);
+            child.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -109,9 +190,10 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         intent.putExtra("phone", userInfoResponse.getPhone());
         intent.putExtra("social_networks_links", userInfoResponse.getSocialNetworksLinks());
         intent.putExtra("interface_language", userInfoResponse.getEndonymInterfaceLanguage());
-        intent.putExtra("communication_language", userInfoResponse.getCommunicationLanguages());
+        intent.putExtra("communication_languages", userInfoResponse.getCommunicationLanguages());
         intent.putExtra("are_languages_matched", userInfoResponse.isAreLanguagesMatched());
         intent.putExtra("limit_in_the_search", userInfoResponse.getLimitForTheSearch());
+        intent.putExtra("is_multivacancy_allowed", userInfoResponse.isMultivacancyAllowed());
         intent.putExtra("activity", "list");
         startActivity(intent);
     }
@@ -128,21 +210,21 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void executeSearchForEmployees(String profession, SearchApi searchApi) {
+    private void executeSearchForEmployees(String profession) {
         searchResultsLayout.removeAllViews();
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.setProfessionName(profession);
-        RadioGroup radioGroup = linearLayout.findViewById(R.id.radio_group);
+                RadioGroup radioGroup = linearLayout.findViewById(R.id.radio_group);
         radioGroup.setOnCheckedChangeListener((radiogroup, id)-> {
             RadioButton radio = findViewById(id);
-            switch (radio.getText().toString()) {
-                case "Sort by person\\'s name":
+            switch (radio.getContentDescription().toString()) {
+                case "name":
                     searchRequest.setSortType("name");
                     break;
-                case "Sort by reputation":
+                case "rating":
                     searchRequest.setSortType("rating");
                     break;
-                case "Sort by location":
+                case "location":
                     searchRequest.setSortType("location");
                     break;
                 default:
@@ -154,6 +236,7 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         searchRequest.setInRadiusOf(seekBar.getProgress());
         CheckBox checkBox = linearLayout.findViewById(R.id.is_auto_checkbox);
         searchRequest.setAuto(checkBox.isChecked());
+        searchRequest.setMultivacancyAllowed(userInfoResponse.getEmployerRequests().isMultivacancyAllowedInSearch());
         searchRequest.setLimit(userInfoResponse.getLimitForTheSearch());
         searchRequest.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
         searchApi.getEmployeesOfChosenProfession(searchRequest).enqueue(new Callback<SearchResponse>() {
@@ -174,14 +257,16 @@ public class WorkListEmployerActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<DistanceResponse> call, Throwable t) {
-                            Toast.makeText(WorkListEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WorkListEmployerActivity.this, "Error: " +
+                                    "'getMeasuredDistance' method is failure", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
             }
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
-                Toast.makeText(WorkListEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WorkListEmployerActivity.this, "Error " +
+                        "'getEmployeesOfChosenProfession' method is failure", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -191,10 +276,13 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         String avatar = employee.getAvatar();
         double rating = employee.getRanking();
         String status;
-        if (employee.getEmployeeData().getStatus().equals("custom")) {
-            status = "Status: will active since " + employee.getEmployeeData().getActiveStatusStartDate();
+        if (employee.getEmployeeData().getStatus() == 2) {
+
+            status = getString(R.string.employee_status_custom) + Instant.ofEpochMilli
+                    (employee.getEmployeeData().getActiveStatusStartDate())
+                    .atZone(ZoneId.systemDefault()).toLocalDate().toString();
         } else {
-            status = "Status: " + employee.getEmployeeData().getStatus();
+            status = getString(R.string.employee_status) + employee.getEmployeeData().getStatus();
         }
         ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
         professionToUserRequest.setId(employee.getId());
@@ -235,7 +323,8 @@ public class WorkListEmployerActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<StringResponse> call, Throwable t) {
-                        Toast.makeText(WorkListEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WorkListEmployerActivity.this, "Error " +
+                                "'getProfessionsToUserInEmployersLanguage' method is failure", Toast.LENGTH_SHORT).show();
                     }
                 });
                 generalApi.getInfoFromEmployeeInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
@@ -247,7 +336,8 @@ public class WorkListEmployerActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<StringResponse> call, Throwable t) {
-                        Toast.makeText(WorkListEmployerActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WorkListEmployerActivity.this, "Error: 'getInfoFromEmployeeInEmployersLanguage'" +
+                                " method is failure", Toast.LENGTH_SHORT).show();
                     }
                 });
                 intent.putExtra("email", employee.getEmail());

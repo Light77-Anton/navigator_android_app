@@ -12,6 +12,16 @@ public class EmployerRequests {
 
     private Long id;
     private String firmName;
+
+    public boolean isMultivacancyAllowedInSearch() {
+        return isMultivacancyAllowedInSearch;
+    }
+
+    public void setMultivacancyAllowedInSearch(boolean multivacancyAllowedInSearch) {
+        isMultivacancyAllowedInSearch = multivacancyAllowedInSearch;
+    }
+
+    private boolean isMultivacancyAllowedInSearch;
     private ArrayList<Vacancy> vacancies;
 
     public List<EmployeeData> getContactedEmployees() {
