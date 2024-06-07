@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -154,6 +153,7 @@
                 android:textSize="40sp" />
             <com.jaredrummler.materialspinner.MaterialSpinner
                 android:id="@+id/communication_language_first"
+                android:contentDescription="."
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
@@ -173,11 +173,12 @@
                 android:layout_marginTop="30dp"
                 android:paddingStart="40dp"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 android:text="@string/limit_of_positions_in_the_search"/>
             <SeekBar
                 android:id="@+id/seekbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:max="100"
                 android:min="1"
                 android:progress="25"/>
@@ -187,9 +188,18 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_button"
                 android:layout_marginTop="30dp"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 android:text="@string/ignore_matched_communication_language_in_the_search"
-                android:textColor="@color/black"/>
+                android:textColor="@color/white"/>
+            <CheckBox
+                android:id="@+id/is_multivacancy_allowed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_button"
+                android:layout_marginTop="30dp"
+                android:textSize="30sp"
+                android:text="@string/do_not_show_employees_with_multivacancy"
+                android:textColor="@color/white"/>
             <android.widget.Button
                 android:id="@+id/confirm"
                 android:layout_width="match_parent"
@@ -223,5 +233,4 @@
                 android:drawableStart="@drawable/ic_arrow_back"/>
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

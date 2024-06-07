@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/outside_layout"
@@ -90,6 +91,7 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
                 android:hint="@string/phone"
+                android:inputType="phone"
                 android:paddingStart="15dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
@@ -123,6 +125,7 @@
                 android:background="@drawable/edit_text"
                 android:drawableEnd="@drawable/ic_star"
                 android:hint="@string/password"
+                android:inputType="textPassword"
                 android:paddingStart="15dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
@@ -135,6 +138,7 @@
                 android:background="@drawable/edit_text"
                 android:drawableEnd="@drawable/ic_star"
                 android:hint="@string/repeat_password"
+                android:inputType="textPassword"
                 android:paddingStart="15dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"

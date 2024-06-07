@@ -1,6 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_list_layout"
+    android:orientation="vertical"
+    android:background="@drawable/chat_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-</ScrollView>
+    <android.widget.Button
+        android:id="@+id/back_button"
+        android:contentDescription="."
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:onClick="onBack"
+        android:background="@color/custom_gray_blue"
+        android:drawableStart="@drawable/ic_arrow_back"/>
+    <TextView
+        android:id="@+id/recipient_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/back_button"
+        android:background="@color/custom_gray_blue"
+        android:textAlignment="center"
+        android:text="Ожидание..."
+        android:textColor="@color/white"
+        android:textSize="30sp"/>
+    <ScrollView
+        android:id="@+id/chat_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
+        <LinearLayout
+            android:id="@+id/chat_inside_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Вася Пупкин-грузчик-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Антон Бауман-таксист-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Вадим Бауман-плотник-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Андрей Пупкин-грузчик-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Сергей Пупкин-таксист-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Александр Пупкин-плотник-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Владимир Пупкин-грузчик-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Константин Пупкин-таксист-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Михаил Пупкин-плотник-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Иван Пупкин-грузчик-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Гоша Пупкин-таксист-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Алексей Пупкин-плотник-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Григорий Пупкин-грузчик-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Дмитрий Пупкин-таксист-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="Влад Пупкин-плотник-00:00:00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="20sp"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

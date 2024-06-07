@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_list_layout"
+    android:orientation="vertical"
+    android:background="@drawable/chat_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-</ScrollView>
+    <android.widget.Button
+        android:id="@+id/back_button"
+        android:contentDescription="."
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:onClick="onBack"
+        android:background="@color/custom_gray_blue"
+        android:drawableStart="@drawable/ic_arrow_back"/>
+    <TextView
+        android:id="@+id/recipient_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/back_button"
+        android:background="@color/custom_gray_blue"
+        android:textAlignment="center"
+        android:text="Переписки"
+        android:textColor="@color/white"
+        android:textSize="40sp"/>
+    <ScrollView
+        android:id="@+id/chat_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
+        <LinearLayout
+            android:id="@+id/chat_inside_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.widget.Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="1   Вася Пупкин"
+                android:drawableLeft="@drawable/message_sign"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="30sp"/>
+            <android.widget.Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="0   Антон Бауман"
+                android:drawableLeft="@drawable/message_sign"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="30sp"/>
+            <android.widget.Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:background="@drawable/gray_blue_rectangle"
+                android:text="0   Вадим Бауман"
+                android:drawableLeft="@drawable/message_sign"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="30sp"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

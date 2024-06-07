@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_settings_layout"
+    android:orientation="vertical"
+    android:background="@drawable/chat_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.widget.Button
+        android:id="@+id/back_button"
+        android:contentDescription="."
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:onClick="onBack"
+        android:background="@color/custom_gray_blue"
+        android:drawableStart="@drawable/ic_arrow_back"/>
+    <TextView
+        android:id="@+id/recipient_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/back_button"
+        android:background="@color/custom_gray_blue"
+        android:textAlignment="center"
+        android:text="Вася Пупкин"
+        android:textColor="@color/white"
+        android:textSize="30sp"/>
+    <android.widget.Button
+        android:id="@+id/to_favorites"
+        android:contentDescription="."
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="200dp"
+        android:onClick="onToFavorites"
+        android:text="Добавить в фавориты"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:background="@color/custom_green" />
+    <android.widget.Button
+        android:id="@+id/to_black_list"
+        android:contentDescription="."
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="400dp"
+        android:onClick="onToBlackList"
+        android:text="Добавить в черный список"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:background="@color/red" />
+</RelativeLayout>

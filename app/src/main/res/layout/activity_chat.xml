@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
     <android.widget.Button
         android:id="@+id/back_button"
+        android:contentDescription="."
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
@@ -19,11 +20,24 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/back_button"
+        android:layout_toLeftOf="@id/chat_setting"
         android:background="@color/custom_gray_blue"
         android:textAlignment="center"
+        android:paddingStart="20dp"
         android:text="Antons Baumans"
         android:textColor="@color/white"
-        android:textSize="40sp"/>
+        android:textSize="30sp"/>
+    <android.widget.Button
+        android:id="@+id/chat_setting"
+        android:contentDescription="."
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="onSettingsClick"
+        android:background="@color/custom_gray_blue"
+        android:paddingLeft="15dp"
+        android:drawableStart="@drawable/ic_settings"/>
     <ScrollView
         android:id="@+id/chat_scroll_view"
         android:layout_width="match_parent"
@@ -43,7 +57,7 @@
                 android:layout_marginLeft="10dp"
                 android:padding="15dp"
                 android:background="@drawable/other_person_chat_offer_background"
-                android:text="Предложение о работе : Антон Бауман - Специалист - нажмите на сообшение для ответа"
+                android:text="Предложение о работе : Антон Бауман - Специалист - Riga, Ilukstes iela 38 - 40 евро в час - нажмите на сообшение для ответа"
                 android:textColor="@color/white"
                 android:textSize="30sp"/>
             <TextView
@@ -91,6 +105,7 @@
     </ScrollView>
     <android.widget.Button
         android:id="@+id/attach_file"
+        android:contentDescription="."
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"

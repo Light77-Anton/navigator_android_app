@@ -46,13 +46,11 @@
         android:text="Vadims Baumans"
         android:textColor="@color/black"
         android:textSize="30sp"/>
-    <TextView
+    <ImageView
         android:layout_width="60dp"
         android:layout_height="50dp"
         android:paddingTop="25dp"
-        android:text="2/10"
-        android:textColor="@color/red"
-        android:textSize="20sp"
+        android:src="@drawable/dislike"
         android:layout_marginTop="60dp"
         android:layout_toRightOf="@id/vadims_username"
         android:layout_below="@id/comments_list"/>
@@ -60,15 +58,14 @@
         android:id="@+id/vadims_comment"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
         android:layout_marginTop="30dp"
         android:layout_below="@id/vadims_avatar"
         android:background="@drawable/comment_background"
-        android:text="tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt..."
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
-
+        android:text="Негативный коммент"
+        android:textColor="@color/black"
+        android:textSize="30sp"/>
     <ImageView
         android:id="@+id/antons_avatar"
         android:layout_width="50dp"
@@ -88,26 +85,23 @@
         android:text="Antons Baumans"
         android:textColor="@color/black"
         android:textSize="30sp"/>
-    <TextView
+    <ImageView
         android:layout_width="60dp"
         android:layout_height="50dp"
         android:paddingTop="25dp"
-        android:text="10/10"
-        android:textColor="@color/custom_dark_green"
-        android:textSize="20sp"
+        android:src="@drawable/like"
         android:layout_marginTop="60dp"
         android:layout_toRightOf="@id/antons_username"
         android:layout_below="@id/vadims_comment"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
         android:layout_marginTop="30dp"
         android:layout_below="@id/antons_avatar"
         android:background="@drawable/comment_background"
-        android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
-
+        android:text="Положительный коммент"
+        android:textColor="@color/black"
+        android:textSize="30sp"/>
 </RelativeLayout>

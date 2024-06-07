@@ -63,6 +63,7 @@
             android:textSize="40sp"/>
         <EditText
             android:id="@+id/payment_and_additional_info"
+            android:hint="."
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="30dp"

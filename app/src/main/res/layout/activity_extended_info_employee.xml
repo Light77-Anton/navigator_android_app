@@ -34,7 +34,7 @@
             android:layout_marginTop="30dp"
             android:background="@color/custom_gray_blue"
             android:text="Rating -10/10"
-            android:textColor="@color/red"
+            android:textColor="@color/dark_red"
             android:textSize="25sp" />
         <ImageView
             android:layout_width="50dp"

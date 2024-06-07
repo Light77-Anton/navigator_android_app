@@ -121,4 +121,6 @@
     <string name="waiting_until_start_date_time_checkbox">Ожидать до времени и даты начала</string>
     <string name="employee_status">Статус: </string>
     <string name="employee_status_custom">Статус: будет активен с </string>
+    <string name="do_not_show_employees_with_multivacancy">Не показывать рабочих с мультивакансией</string>
+    <string name="multivacancy_is_allowed">Разрешить принимать множество вакансий одновременно</string>
 </resources>

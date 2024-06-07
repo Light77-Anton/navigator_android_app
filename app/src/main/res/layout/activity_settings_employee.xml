@@ -161,6 +161,7 @@
                 android:textSize="40sp" />
             <com.jaredrummler.materialspinner.MaterialSpinner
                 android:id="@+id/communication_language_first"
+                android:contentDescription="."
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
@@ -172,8 +173,17 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_button"
                 android:layout_marginTop="30dp"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 android:text="@string/ignore_matched_communication_language_in_the_search"
+                android:textColor="@color/white"/>
+            <CheckBox
+                android:id="@+id/is_multivacancy_allowed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_button"
+                android:layout_marginTop="30dp"
+                android:textSize="30sp"
+                android:text="@string/multivacancy_is_allowed"
                 android:textColor="@color/white"/>
             <android.widget.Button
                 android:id="@+id/profession_button"

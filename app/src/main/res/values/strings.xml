@@ -122,4 +122,6 @@
     <string name="waiting_until_start_date_time_checkbox">Waiting until start date time</string>
     <string name="employee_status">Status: </string>
     <string name="employee_status_custom">Status: will active since </string>
+    <string name="do_not_show_employees_with_multivacancy">Do not show employees with multivacancy</string>
+    <string name="multivacancy_is_allowed">Allow accept many vacancies in the same time</string>
 </resources>

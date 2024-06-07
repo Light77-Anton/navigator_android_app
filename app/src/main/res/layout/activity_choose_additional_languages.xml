@@ -17,6 +17,7 @@
         android:textSize="40sp" />
     <com.jaredrummler.materialspinner.MaterialSpinner
         android:id="@+id/additional_languages_spinner"
+        android:contentDescription="."
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/additional_languages_text"

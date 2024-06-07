@@ -1,7 +1,6 @@
 package com.example.navigatorappandroid;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,9 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onConfirm(View view) {
-        View coreView = getLayoutInflater().inflate(R.layout.activity_login, null);
-        EditText emailEditText = coreView.findViewById(R.id.login);
-        EditText passwordEditText = coreView.findViewById(R.id.password);
+        EditText emailEditText = findViewById(R.id.login);
+        EditText passwordEditText = findViewById(R.id.password);
         RetrofitService retrofitService = new RetrofitService();
         AuthApi authApi = retrofitService.getRetrofit().create(AuthApi.class);
         LoginRequest loginRequest = new LoginRequest();

@@ -2,7 +2,6 @@ package com.example.navigatorappandroid;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
@@ -27,7 +26,6 @@ import retrofit2.Response;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private View coreView;
     private RetrofitService retrofitService;
     private GeneralApi generalApi;
     private AuthApi authApi;
@@ -35,23 +33,21 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registration);
         retrofitService = new RetrofitService();
         authApi = retrofitService.getRetrofit().create(AuthApi.class);
         generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        coreView = getLayoutInflater().inflate(R.layout.activity_registration, null);
         generalApi.getLanguagesList().enqueue(new Callback<TextListResponse>() {
             @Override
             public void onResponse(Call<TextListResponse> call, Response<TextListResponse> response) {
-                Spinner languagesSpinner = coreView.findViewById(R.id.spinner);
+                Spinner languagesSpinner = findViewById(R.id.spinner);
                 ArrayAdapter<String> adapter = new ArrayAdapter<>
-                        (coreView.getContext(), android.R.layout.simple_spinner_item,
+                        (((View) findViewById(android.R.id.content)).getContext(), android.R.layout.simple_spinner_item,
                                 response.body().getList());
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 languagesSpinner.setAdapter(adapter);
                 setCaptcha();
-                setContentView(coreView);
             }
-
             @Override
             public void onFailure(Call<TextListResponse> call, Throwable t) {
                 Toast.makeText(RegistrationActivity.this,
@@ -67,29 +63,29 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void OnConfirm(View view) {
         RegistrationRequest registrationRequest = new RegistrationRequest();
-        EditText firstAndLastNameEditText = coreView.findViewById(R.id.first_edit_text);
+        EditText firstAndLastNameEditText = findViewById(R.id.first_edit_text);
         registrationRequest.setName(firstAndLastNameEditText.getText().toString());
-        EditText emailEditText = coreView.findViewById(R.id.second_edit_text);
+        EditText emailEditText = findViewById(R.id.second_edit_text);
         registrationRequest.setEmail(emailEditText.getText().toString());
-        EditText phoneEditText = coreView.findViewById(R.id.third_edit_text);
+        EditText phoneEditText = findViewById(R.id.third_edit_text);
         registrationRequest.setPhone(phoneEditText.getText().toString());
-        EditText socialNetworksLinksEditText = coreView.findViewById(R.id.fourth_edit_text);
+        EditText socialNetworksLinksEditText = findViewById(R.id.fourth_edit_text);
         registrationRequest.setSocialNetworksLinks(socialNetworksLinksEditText.getText().toString());
-        EditText passwordEditText = coreView.findViewById(R.id.fifth_edit_text);
+        EditText passwordEditText = findViewById(R.id.fifth_edit_text);
         registrationRequest.setPassword(passwordEditText.getText().toString());
-        EditText repeatPasswordEditText = coreView.findViewById(R.id.sixth_edit_text);
+        EditText repeatPasswordEditText = findViewById(R.id.sixth_edit_text);
         registrationRequest.setRepeatedPassword(repeatPasswordEditText.getText().toString());
         String role;
-        CheckBox employeeCheckBox = coreView.findViewById(R.id.first_checkbox);
+        CheckBox employeeCheckBox = findViewById(R.id.first_checkbox);
         if (employeeCheckBox.isChecked()) {
             role = "Employee";
         } else {
             role = "Employer";
         }
         registrationRequest.setRole(role);
-        EditText textFromThePictureEditText = coreView.findViewById(R.id.seventh_edit_text);
+        EditText textFromThePictureEditText = findViewById(R.id.seventh_edit_text);
         registrationRequest.setCode(textFromThePictureEditText.getText().toString());
-        Spinner languagesSpinner = coreView.findViewById(R.id.spinner);
+        Spinner languagesSpinner = findViewById(R.id.spinner);
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -124,7 +120,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void setCaptcha() {
-        ImageView imageView = coreView.findViewById(R.id.captcha);
+        ImageView imageView = findViewById(R.id.captcha);
         authApi.captcha().enqueue(new Callback<CaptchaResponse>() {
             @Override
             public void onResponse(Call<CaptchaResponse> call, Response<CaptchaResponse> response) {

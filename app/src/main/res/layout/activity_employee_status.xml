@@ -43,6 +43,7 @@
     </RadioGroup>
     <android.widget.Button
         android:id="@+id/active_help_button"
+        android:contentDescription="."
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_toRightOf="@id/radios"
@@ -51,6 +52,7 @@
         android:background="@drawable/help_sign" />
     <android.widget.Button
         android:id="@+id/inactive_help_button"
+        android:contentDescription="."
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_toRightOf="@id/radios"
@@ -59,6 +61,7 @@
         android:background="@drawable/help_sign" />
     <android.widget.Button
         android:id="@+id/custom_help_button"
+        android:contentDescription="."
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_toRightOf="@id/radios"

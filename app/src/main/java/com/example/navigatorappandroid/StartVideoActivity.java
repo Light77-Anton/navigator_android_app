@@ -1,6 +1,5 @@
 package com.example.navigatorappandroid;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -8,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StartVideoActivity extends AppCompatActivity {
 
-    VideoView videoPlayer;
+    private VideoView videoPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

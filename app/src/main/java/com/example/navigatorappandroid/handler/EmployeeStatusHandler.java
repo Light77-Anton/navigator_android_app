@@ -3,7 +3,6 @@ import android.os.Handler;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

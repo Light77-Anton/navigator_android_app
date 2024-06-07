@@ -37,6 +37,7 @@ import com.example.navigatorappandroid.retrofit.response.SearchResponse;
 import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import java.util.List;
@@ -56,7 +57,6 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
     private boolean locationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private EmployeeStatusHandler employeeStatusHandler;
-    private View coreView;
     private LinearLayout linearLayout;
     private LinearLayout searchResultsLayout;
     private RetrofitService retrofitService;
@@ -67,9 +67,11 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        coreView = getLayoutInflater().inflate(R.layout.activity_work_list_employee, null);
-        linearLayout = coreView.findViewById(R.id.work_list_employee_sort_request_layout);
-        searchResultsLayout = coreView.findViewById(R.id.work_list_employee_search_results_layout);
+        setContentView(R.layout.activity_work_list_employee);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        languageHandler = new LanguageHandler();
+        linearLayout = findViewById(R.id.work_list_employee_sort_request_layout);
+        searchResultsLayout = findViewById(R.id.work_list_employee_search_results_layout);
         retrofitService = new RetrofitService();
         searchApi = retrofitService.getRetrofit().create(SearchApi.class);
         generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
@@ -81,7 +83,8 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(WorkListEmployeeActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WorkListEmployeeActivity.this, "error: 'getUserInfo' " +
+                        "method is failure", Toast.LENGTH_SHORT).show();
             }
         });
         Bundle arguments = getIntent().getExtras();
@@ -97,20 +100,27 @@ public class WorkListEmployeeActivity extends AppCompatActivity {
         getDeviceLocation();
         locationUpdateHandler = new LocationUpdateHandler(lastKnownLocation.getLatitude(),
                 lastKnownLocation.getLongitude(), userInfoResponse.getId());
+        if (userInfoResponse.getEmployeeData().getStatus() == 2) {
+            employeeStatusHandler = new EmployeeStatusHandler();
+        }
         setContentView(R.layout.activity_work_list_employee);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        employeeStatusHandler.startStatusChecking();
+        if (userInfoResponse.getEmployeeData().getStatus() == 2) {
+            employeeStatusHandler.startStatusChecking();
+        }
         locationUpdateHandler.startLocationUpdates();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        employeeStatusHandler.stopStatusChecking();
+        if (userInfoResponse.getEmployeeData().getStatus() == 2) {
+            employeeStatusHandler.stopStatusChecking();
+        }
         locationUpdateHandler.stopLocationUpdates();
     }
 
