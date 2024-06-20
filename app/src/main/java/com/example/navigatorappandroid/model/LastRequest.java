@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid.model;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -6,15 +7,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SavedRequest {
+public class LastRequest {
 
     private Long id;
 
-    private String professionName;
+    private Profession profession;
 
     private int limit;
 
     private boolean isAuto;
+
+    private boolean areLanguagesMatched;
+
+    private List<Language> communicationLanguages;
+
+    private Language additionalLanguage;
+
+    private int inRadiusOf;
+
+    private String SortType;
+
+    private User user;
 
     public Long getId() {
         return id;
@@ -24,12 +37,12 @@ public class SavedRequest {
         this.id = id;
     }
 
-    public String getProfessionName() {
-        return professionName;
+    public Profession getProfession() {
+        return profession;
     }
 
-    public void setProfessionName(String professionName) {
-        this.professionName = professionName;
+    public void setProfession(Profession profession) {
+        this.profession = profession;
     }
 
     public int getLimit() {
@@ -56,6 +69,22 @@ public class SavedRequest {
         this.areLanguagesMatched = areLanguagesMatched;
     }
 
+    public List<Language> getCommunicationLanguages() {
+        return communicationLanguages;
+    }
+
+    public void setCommunicationLanguages(List<Language> communicationLanguages) {
+        this.communicationLanguages = communicationLanguages;
+    }
+
+    public Language getAdditionalLanguage() {
+        return additionalLanguage;
+    }
+
+    public void setAdditionalLanguage(Language additionalLanguage) {
+        this.additionalLanguage = additionalLanguage;
+    }
+
     public int getInRadiusOf() {
         return inRadiusOf;
     }
@@ -79,12 +108,4 @@ public class SavedRequest {
     public void setUser(User user) {
         this.user = user;
     }
-
-    private boolean areLanguagesMatched;
-
-    private int inRadiusOf;
-
-    private String SortType;
-
-    private User user;
 }

@@ -15,9 +15,18 @@ public class Profession {
 
     private List<Language> languages;
 
-    private List<Vacancy> passiveSearches;
+    private List<Vacancy> vacancies;
 
     private List<ProfessionName> professionNames;
+    private List<LastRequest> lastRequests;
+
+    public List<LastRequest> getLastRequests() {
+        return lastRequests;
+    }
+
+    public void setLastRequests(List<LastRequest> lastRequests) {
+        this.lastRequests = lastRequests;
+    }
 
     public List<Language> getLanguages() {
         return languages;
@@ -43,12 +52,12 @@ public class Profession {
         this.id = id;
     }
 
-    public List<Vacancy> getPassiveSearches() {
-        return passiveSearches;
+    public List<Vacancy> getVacancies() {
+        return vacancies;
     }
 
-    public void setPassiveSearches(List<Vacancy> passiveSearches) {
-        this.passiveSearches = passiveSearches;
+    public void setVacancies(List<Vacancy> vacancies) {
+        this.vacancies = vacancies;
     }
 
     public List<ProfessionName> getProfessionNames() {

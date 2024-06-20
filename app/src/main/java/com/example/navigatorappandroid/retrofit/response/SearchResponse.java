@@ -1,5 +1,4 @@
 package com.example.navigatorappandroid.retrofit.response;
-import com.example.navigatorappandroid.model.SavedRequest;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.model.Vacancy;
 import com.fasterxml.jackson.annotation.JsonInclude;

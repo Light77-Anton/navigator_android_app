@@ -33,6 +33,19 @@
         android:layout_marginLeft="5dp"
         android:drawableStart="@drawable/chats"/>
     <android.widget.Button
+        android:id="@+id/to_timers"
+        android:contentDescription="."
+        android:layout_above="@id/vacancies_button"
+        android:layout_alignParentLeft="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:onClick="onTimersClick"
+        android:background="@drawable/gray_blue_circle"
+        android:paddingStart="18dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="180dp"
+        android:drawableStart="@drawable/timer"/>
+    <android.widget.Button
         android:id="@+id/vacancies_button"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="100dp"
@@ -168,6 +181,13 @@
             android:layout_height="50dp"
             android:onClick="executeSearchForEmployees"
             android:text="@string/is_auto"
+            android:background="@color/custom_gray_blue" />
+        <CheckBox
+            android:id="@+id/show_temporarily_inactive_employees"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:onClick="executeSearchForEmployees"
+            android:text="@string/show_temporarily_inactive_employees"
             android:background="@color/custom_gray_blue" />
     </LinearLayout>
 </RelativeLayout>

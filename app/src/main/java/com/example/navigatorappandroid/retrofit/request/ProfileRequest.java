@@ -101,14 +101,6 @@ public class ProfileRequest {
         this.firmName = firmName;
     }
 
-    public String getEmployeesWorkRequirements() {
-        return employeesWorkRequirements;
-    }
-
-    public void setEmployeesWorkRequirements(String employeesWorkRequirements) {
-        this.employeesWorkRequirements = employeesWorkRequirements;
-    }
-
     public boolean isDriverLicense() {
         return isDriverLicense;
     }
@@ -140,15 +132,23 @@ public class ProfileRequest {
     public void setLimit(int limit) {
         this.limit = limit;
     }
-
-    @JsonProperty("employees_work_requirements")
-    private String employeesWorkRequirements;
     @JsonProperty("is_driver_license")
     private boolean isDriverLicense;
     @JsonProperty("is_auto")
     private boolean isAuto;
     @JsonProperty("are_languages_matched")
     private boolean areLanguagesMatched;
+
+    public boolean isMultivacancyAllowed() {
+        return isMultivacancyAllowed;
+    }
+
+    public void setMultivacancyAllowed(boolean multivacancyAllowed) {
+        isMultivacancyAllowed = multivacancyAllowed;
+    }
+
+    @JsonProperty("is_multivacancy_allowed")
+    private boolean isMultivacancyAllowed;
     @JsonProperty("limit_in_the_search")
     private int limit;
 }

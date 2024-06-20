@@ -73,19 +73,17 @@
                 android:textSize="40sp"
                 android:inputType="text"
                 android:paddingStart="15dp" />
-            <EditText
+            <Button
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
-                android:hint="@string/password"
-                android:textColorHint="@color/white"
                 android:textColor="@color/white"
-                android:textSize="40sp"
-                android:inputType="text"
-                android:paddingStart="15dp"
-                app:drawableEndCompat="@drawable/ic_star"/>
+                android:textSize="30sp"
+                android:text="@string/change_password"
+                android:onClick="onChangePasswordClick"
+                android:paddingStart="15dp" />
             <EditText
                 android:id="@+id/phone"
                 android:layout_width="match_parent"

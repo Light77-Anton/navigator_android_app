@@ -18,7 +18,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle arguments = getIntent().getExtras();
         setContentView(R.layout.activity_login);
+        if (arguments != null && arguments.getBoolean("is_auth_error")) {
+            Toast.makeText(LoginActivity.this, "Authentication error: you " +
+                    "have to login again", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onConfirm(View view) {
@@ -37,10 +42,18 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Intent intent;
                     if (response.body().getUserRole().equals("Employee")) {
-                        intent = new Intent(view.getContext(), WorkListEmployeeActivity.class);
+                        if (response.body().getCurrentWorkDisplay() == 0) {
+                            intent = new Intent(view.getContext(), WorkListEmployeeActivity.class);
+                        } else {
+                            intent = new Intent(view.getContext(), WorkMapEmployeeActivity.class);
+                        }
                         startActivity(intent);
                     } else if (response.body().getUserRole().equals("Employer")) {
-                        intent = new Intent(view.getContext(), WorkListEmployerActivity.class);
+                        if (response.body().getCurrentWorkDisplay() == 0) {
+                            intent = new Intent(view.getContext(), WorkListEmployerActivity.class);
+                        } else {
+                            intent = new Intent(view.getContext(), WorkMapEmployerActivity.class);
+                        }
                         startActivity(intent);
                     }
                     /*

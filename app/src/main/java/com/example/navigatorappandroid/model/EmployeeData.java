@@ -12,14 +12,6 @@ public class EmployeeData {
     private boolean isDriverLicense;
     private boolean isAuto;
 
-    public boolean isMultivacancyAllowed() {
-        return isMultivacancyAllowed;
-    }
-
-    public void setMultivacancyAllowed(boolean multivacancyAllowed) {
-        isMultivacancyAllowed = multivacancyAllowed;
-    }
-
     private boolean isMultivacancyAllowed;
     private List<InfoFromEmployee> infoFromEmployee;
     private byte status;
@@ -27,6 +19,15 @@ public class EmployeeData {
     private User employee;
 
     private List<Profession> professions;
+    private List<EmployerRequests> contactedEmployers;
+
+    public boolean isMultivacancyAllowed() {
+        return isMultivacancyAllowed;
+    }
+
+    public void setMultivacancyAllowed(boolean multivacancyAllowed) {
+        isMultivacancyAllowed = multivacancyAllowed;
+    }
 
     public List<InfoFromEmployee> getInfoFromEmployee() {
         return infoFromEmployee;
@@ -43,8 +44,6 @@ public class EmployeeData {
     public void setContactedEmployers(List<EmployerRequests> contactedEmployers) {
         this.contactedEmployers = contactedEmployers;
     }
-
-    private List<EmployerRequests> contactedEmployers;
 
     public List<Profession> getProfessions() {
         return professions;
@@ -83,14 +82,6 @@ public class EmployeeData {
 
     public void setAuto(boolean auto) {
         isAuto = auto;
-    }
-
-    public String getEmployeesWorkRequirements() {
-        return employeesWorkRequirements;
-    }
-
-    public void setEmployeesWorkRequirements(String employeesWorkRequirements) {
-        this.employeesWorkRequirements = employeesWorkRequirements;
     }
 
     public byte getStatus() {

@@ -22,6 +22,17 @@ public class LoginResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String blockMessage;
 
+    public byte getCurrentWorkDisplay() {
+        return currentWorkDisplay;
+    }
+
+    public void setCurrentWorkDisplay(byte currentWorkDisplay) {
+        this.currentWorkDisplay = currentWorkDisplay;
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private byte currentWorkDisplay;
+
     public boolean isResult() {
         return result;
     }

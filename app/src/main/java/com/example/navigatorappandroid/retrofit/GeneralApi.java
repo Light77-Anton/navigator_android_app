@@ -1,5 +1,6 @@
 package com.example.navigatorappandroid.retrofit;
 import com.example.navigatorappandroid.model.User;
+import com.example.navigatorappandroid.retrofit.request.ChangePasswordRequest;
 import com.example.navigatorappandroid.retrofit.request.CommentRequest;
 import com.example.navigatorappandroid.retrofit.request.InProgramMessageRequest;
 import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
@@ -24,6 +25,7 @@ import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.VoteResponse;
 import java.security.Principal;
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -37,8 +39,6 @@ import retrofit2.http.Query;
 
 public interface GeneralApi {
 
-
-
     @PUT("api/moderator")
     Call<ResultErrorsResponse> setModerator();
 
@@ -50,6 +50,9 @@ public interface GeneralApi {
 
     @POST("api/language/add")
     Call<ResultErrorsResponse> addLanguage(@Query("language") String language);
+
+    @PUT("api/profile/password/change")
+    Call<ResultErrorsResponse> changePassword(@Body ChangePasswordRequest changePasswordRequest); // добавить на backend
     @Multipart
     @PUT("api/profile/avatar")
     Call<AvatarResponse> profileAvatar(@Part MultipartBody.Part avatar);
@@ -152,5 +155,11 @@ public interface GeneralApi {
     Call<StringResponse> activateAccount(@Path("id") Long email);
 
     @GET("api/user/get")
-    Call<UserInfoResponse> getUserInfo();
+    Call<UserInfoResponse> getUserInfo();// изменить получение аватара на backend!
+
+    @GET("api/user/avatar/{path}/get")
+    Call<ResponseBody> getUserAvatar(@Path("path") String path);// изменить получение аватара на backend!
+
+    @PUT("api/user/display/change")
+    Call<ResultErrorsResponse> changeWorkDisplay(); // добавить на backend!
 }

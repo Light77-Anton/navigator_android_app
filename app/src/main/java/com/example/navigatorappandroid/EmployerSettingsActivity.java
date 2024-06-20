@@ -4,14 +4,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,11 +20,14 @@ import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
+import com.example.navigatorappandroid.retrofit.response.LoginResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.TextListResponse;
+import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -39,31 +40,59 @@ public class EmployerSettingsActivity extends AppCompatActivity {
 
     private Uri selectedImageUri;
     private static final int REQUEST_IMAGE_PICK = 1;
-    ImageView avatarImageView;
-    RetrofitService retrofitService;
-    GeneralApi generalApi;
-    EditText nameEditText;
-    EditText firmNameEditText;
-    EditText phoneEditText;
-    CheckBox isPhoneHiddenCheckBox;
-    CheckBox isEmailHiddenCheckBox;
-    EditText socialNetworksLinksEditText;
-    Spinner interfaceLanguageSpinner;
-    MaterialSpinner communicationLanguagesSpinner;
-    CheckBox areLanguagesMatchedCheckBox;
-    SeekBar seekBar;
+    private ImageView avatarImageView;
+    private RetrofitService retrofitService;
+    private GeneralApi generalApi;
+    private AuthApi authApi;
+    private EditText nameEditText;
+    private EditText firmNameEditText;
+    private EditText phoneEditText;
+    private CheckBox isPhoneHiddenCheckBox;
+    private CheckBox isEmailHiddenCheckBox;
+    private EditText socialNetworksLinksEditText;
+    private Spinner interfaceLanguageSpinner;
+    private MaterialSpinner communicationLanguagesSpinner;
+    private CheckBox areLanguagesMatchedCheckBox;
+    private CheckBox isMultivacancyAllowedCheckBox;
+    private UserInfoResponse userInfoResponse;
+    private SeekBar seekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LayoutInflater inflater = getLayoutInflater();
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.activity_settings_employee, null);
+        Intent intent = new Intent(this, LoginActivity.class);
         retrofitService = new RetrofitService();
         generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        Bundle arguments = getIntent().getExtras();
-        avatarImageView = layout.findViewById(R.id.avatar);
-        Button uploadButton = layout.findViewById(R.id.avatar_upload);
-        Button setAvatarButton = layout.findViewById(R.id.set_avatar);
+        authApi = retrofitService.getRetrofit().create(AuthApi.class);
+        authApi.authCheck().enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (!response.body().isResult()) {
+                    intent.putExtra("is_auth_error", true);
+                    startActivity(intent);
+                }
+            }
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                intent.putExtra("is_auth_error", true);
+                startActivity(intent);
+            }
+        });
+        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
+            @Override
+            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
+                userInfoResponse = response.body();
+            }
+            @Override
+            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
+                Toast.makeText(EmployerSettingsActivity.this, "error: 'getUserInfo' " +
+                        "method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+        setContentView(R.layout.activity_settings_employer);
+        avatarImageView = findViewById(R.id.avatar);
+        Button uploadButton = findViewById(R.id.avatar_upload);
+        Button setAvatarButton = findViewById(R.id.set_avatar);
         uploadButton.setOnClickListener(view -> openGallery());
         setAvatarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,26 +104,26 @@ public class EmployerSettingsActivity extends AppCompatActivity {
                 }
             }
         });
-        String firmName = arguments.get("firm_name").toString();
-        firmNameEditText = layout.findViewById(R.id.firm_name);
+        String firmName = userInfoResponse.getEmployerRequests().getFirmName();
+        firmNameEditText = findViewById(R.id.firm_name);
         firmNameEditText.setText(firmName);
-        String name = arguments.get("name").toString();
-        nameEditText = layout.findViewById(R.id.first_and_last_name);
+        String name = userInfoResponse.getName();
+        nameEditText = findViewById(R.id.first_and_last_name);
         nameEditText.setText(name);
-        String phone = arguments.get("phone").toString();
-        phoneEditText = layout.findViewById(R.id.phone);
+        String phone = userInfoResponse.getPhone();
+        phoneEditText = findViewById(R.id.phone);
         phoneEditText.setText(phone);
-        boolean isPhoneHidden = arguments.getBoolean("is_phone_hidden");
-        isPhoneHiddenCheckBox = layout.findViewById(R.id.is_phone_hidden);
+        boolean isPhoneHidden = userInfoResponse.isPhoneHidden();
+        isPhoneHiddenCheckBox = findViewById(R.id.is_phone_hidden);
         isPhoneHiddenCheckBox.setChecked(isPhoneHidden);
-        boolean isEmailHidden = arguments.getBoolean("is_email_hidden");
-        isEmailHiddenCheckBox = layout.findViewById(R.id.is_email_hidden);
+        boolean isEmailHidden = userInfoResponse.isEmailHidden();
+        isEmailHiddenCheckBox = findViewById(R.id.is_email_hidden);
         isEmailHiddenCheckBox.setChecked(isEmailHidden);
-        String socialNetworksLinks = arguments.get("social_networks_links").toString();
-        socialNetworksLinksEditText = layout.findViewById(R.id.social_networks_links);
+        String socialNetworksLinks = userInfoResponse.getSocialNetworksLinks();
+        socialNetworksLinksEditText = findViewById(R.id.social_networks_links);
         socialNetworksLinksEditText.setText(socialNetworksLinks);
-        String interfaceLanguage = arguments.get("interface_language").toString();
-        interfaceLanguageSpinner = layout.findViewById(R.id.interface_language);
+        String interfaceLanguage = userInfoResponse.getEndonymInterfaceLanguage();
+        interfaceLanguageSpinner = findViewById(R.id.interface_language);
         ArrayList<String> languagesList = new ArrayList<>();
         generalApi.getLanguagesList().enqueue(new Callback<TextListResponse>() {
             @Override
@@ -104,7 +133,8 @@ public class EmployerSettingsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<TextListResponse> call, Throwable t) {
-                Toast.makeText(EmployerSettingsActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EmployerSettingsActivity.this, "error: 'getLanguagesList' " +
+                        "method is failure", Toast.LENGTH_SHORT).show();
             }
         });
         ArrayAdapter<String> languagesAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, languagesList);
@@ -112,8 +142,8 @@ public class EmployerSettingsActivity extends AppCompatActivity {
         interfaceLanguageSpinner.setAdapter(languagesAdapter);
         int spinnerInterfaceLanguagePosition = languagesAdapter.getPosition(interfaceLanguage);
         interfaceLanguageSpinner.setSelection(spinnerInterfaceLanguagePosition);
-        ArrayList<String> communicationLanguages = arguments.getStringArrayList("communication_language");
-        communicationLanguagesSpinner = layout.findViewById(R.id.communication_language_first);
+        List<String> communicationLanguages = userInfoResponse.getCommunicationLanguages();
+        communicationLanguagesSpinner = findViewById(R.id.communication_language_first);
         communicationLanguagesSpinner.setAdapter(languagesAdapter);
         ArrayList<Integer> multiSpinnerPositions = new ArrayList<>();
         for (String lang : communicationLanguages) {
@@ -122,13 +152,15 @@ public class EmployerSettingsActivity extends AppCompatActivity {
         for (Integer i : multiSpinnerPositions) {
             communicationLanguagesSpinner.setSelectedIndex(i);
         }
-        boolean areLanguagesMatched = arguments.getBoolean("are_languages_matched");
-        areLanguagesMatchedCheckBox = layout.findViewById(R.id.are_languages_matched);
+        boolean areLanguagesMatched = userInfoResponse.isAreLanguagesMatched();
+        areLanguagesMatchedCheckBox = findViewById(R.id.are_languages_matched);
         areLanguagesMatchedCheckBox.setChecked(areLanguagesMatched);
-        int limit = arguments.getInt("limit_in_the_search");
-        seekBar = layout.findViewById(R.id.seekbar);
+        int limit = userInfoResponse.getLimitForTheSearch();
+        boolean isMultivacancyAllowed = userInfoResponse.isMultivacancyAllowed();
+        isMultivacancyAllowedCheckBox = findViewById(R.id.is_multivacancy_allowed);
+        isMultivacancyAllowedCheckBox.setChecked(isMultivacancyAllowed);
+        seekBar = findViewById(R.id.seekbar);
         seekBar.setProgress(limit);
-        setContentView(layout);
     }
 
     private void openGallery() {
@@ -176,6 +208,11 @@ public class EmployerSettingsActivity extends AppCompatActivity {
         return filePath;
     }
 
+    public void onChangePasswordClick(View view) {
+        Intent intent = new Intent(this, ChangePasswordActivity.class);
+        startActivity(intent);
+    }
+
     public void onConfirmClick(View view) {
         ProfileRequest profileRequest = new ProfileRequest();
         profileRequest.setFirmName(firmNameEditText.getText().toString());
@@ -187,29 +224,29 @@ public class EmployerSettingsActivity extends AppCompatActivity {
         profileRequest.setInterfaceLanguage(interfaceLanguageSpinner.getSelectedItem().toString());
         profileRequest.setCommunicationLanguages(communicationLanguagesSpinner.getItems().stream().map(Object::toString).collect(Collectors.toList()));
         profileRequest.setAreLanguagesMatched(areLanguagesMatchedCheckBox.isChecked());
+        profileRequest.setMultivacancyAllowed(isMultivacancyAllowedCheckBox.isChecked());
         profileRequest.setLimit(seekBar.getProgress());
         generalApi.profile(profileRequest).enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
                 Intent intent;
-                Bundle arguments = getIntent().getExtras();
-                if (arguments.getString("activity").equals("map")) {
-                    intent = new Intent(view.getContext(), WorkMapEmployeeActivity.class);
+                if (userInfoResponse.getCurrentWorkDisplay() == 1) {
+                    intent = new Intent(view.getContext(), WorkMapEmployerActivity.class);
                     startActivity(intent);
                 }
-                intent = new Intent(this, WorkListEmployerActivity.class);
+                intent = new Intent(view.getContext(), WorkListEmployerActivity.class);
                 startActivity(intent);
             }
 
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                Toast.makeText(EmployerSettingsActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EmployerSettingsActivity.this, "error: 'profile' " +
+                        "method is failure", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void onLogoutClick(View view) {
-        AuthApi authApi = retrofitService.getRetrofit().create(AuthApi.class);
         authApi.logout().enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
@@ -219,16 +256,16 @@ public class EmployerSettingsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                Toast.makeText(EmployerSettingsActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EmployerSettingsActivity.this, "error: 'logout' " +
+                        "method is failure", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void onBackClick(View view) {
         Intent intent;
-        Bundle arguments = getIntent().getExtras();
-        if (arguments.getString("activity").equals("map")) {
-            intent = new Intent(this, WorkMapEmployeeActivity.class);
+        if (userInfoResponse.getCurrentWorkDisplay() == 1) {
+            intent = new Intent(this, WorkMapEmployerActivity.class);
             startActivity(intent);
         }
         intent = new Intent(this, WorkListEmployerActivity.class);

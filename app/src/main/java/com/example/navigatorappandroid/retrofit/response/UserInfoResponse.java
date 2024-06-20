@@ -1,11 +1,12 @@
 package com.example.navigatorappandroid.retrofit.response;
 import com.example.navigatorappandroid.model.EmployeeData;
 import com.example.navigatorappandroid.model.EmployerRequests;
+import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.UserLocation;
 import com.example.navigatorappandroid.model.User;
-import com.example.navigatorappandroid.model.Vote;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -14,10 +15,19 @@ public class UserInfoResponse {
     private Long id;
     private String socialNetworksLinks;
 
-    private ArrayList<String> communicationLanguages;
+    private List<Language> communicationLanguages;
     private String endonymInterfaceLanguage;
-    private ArrayList<Vote> votes;
-    private Double ranking;
+    private byte ranking;
+
+    public byte getCurrentWorkDisplay() {
+        return currentWorkDisplay;
+    }
+
+    public void setCurrentWorkDisplay(byte currentWorkDisplay) {
+        this.currentWorkDisplay = currentWorkDisplay;
+    }
+
+    private byte currentWorkDisplay;
     private boolean isBlocked;
     private String name;
     private String email;
@@ -69,11 +79,11 @@ public class UserInfoResponse {
         this.id = id;
     }
 
-    public ArrayList<String> getCommunicationLanguages() {
+    public List<Language> getCommunicationLanguages() {
         return communicationLanguages;
     }
 
-    public void setCommunicationLanguages(ArrayList<String> communicationLanguages) {
+    public void setCommunicationLanguages(List<Language> communicationLanguages) {
         this.communicationLanguages = communicationLanguages;
     }
 
@@ -109,19 +119,11 @@ public class UserInfoResponse {
         this.endonymInterfaceLanguage = endonymInterfaceLanguage;
     }
 
-    public ArrayList<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(ArrayList<Vote> votes) {
-        this.votes = votes;
-    }
-
-    public Double getRanking() {
+    public byte getRanking() {
         return ranking;
     }
 
-    public void setRanking(Double ranking) {
+    public void setRanking(byte ranking) {
         this.ranking = ranking;
     }
 

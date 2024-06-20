@@ -13,16 +13,11 @@ public class EmployerRequests {
     private Long id;
     private String firmName;
 
-    public boolean isMultivacancyAllowedInSearch() {
-        return isMultivacancyAllowedInSearch;
-    }
-
-    public void setMultivacancyAllowedInSearch(boolean multivacancyAllowedInSearch) {
-        isMultivacancyAllowedInSearch = multivacancyAllowedInSearch;
-    }
-
     private boolean isMultivacancyAllowedInSearch;
-    private ArrayList<Vacancy> vacancies;
+    private List<Vacancy> vacancies;
+
+    private List<EmployeeData> contactedEmployees;
+    private User employer;
 
     public List<EmployeeData> getContactedEmployees() {
         return contactedEmployees;
@@ -32,8 +27,13 @@ public class EmployerRequests {
         this.contactedEmployees = contactedEmployees;
     }
 
-    private List<EmployeeData> contactedEmployees;
-    private User employer;
+    public boolean isMultivacancyAllowedInSearch() {
+        return isMultivacancyAllowedInSearch;
+    }
+
+    public void setMultivacancyAllowedInSearch(boolean multivacancyAllowedInSearch) {
+        isMultivacancyAllowedInSearch = multivacancyAllowedInSearch;
+    }
 
     public Long getId() {
         return id;

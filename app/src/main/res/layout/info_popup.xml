@@ -55,5 +55,4 @@
         android:textAlignment="center"
         android:textSize="40sp"
         android:background="@drawable/rectangle_button" />
-
 </LinearLayout>

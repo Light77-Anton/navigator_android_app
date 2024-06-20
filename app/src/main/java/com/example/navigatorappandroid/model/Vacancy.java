@@ -13,6 +13,7 @@ public class Vacancy {
     private Long id;
     private Profession profession;
 
+    private int quotasNumber;
     private JobLocation jobLocation;
     private LocalDateTime startDateTime;
 
@@ -20,6 +21,14 @@ public class Vacancy {
 
     private List<InfoAboutVacancyFromEmployer> paymentAndAdditionalInfo;
     private EmployerRequests employerRequests;
+
+    public int getQuotasNumber() {
+        return quotasNumber;
+    }
+
+    public void setQuotasNumber(int quotasNumber) {
+        this.quotasNumber = quotasNumber;
+    }
 
     public LocalDateTime getWaitingDateTime() {
         return waitingDateTime;

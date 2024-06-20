@@ -6,12 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InProgramMessage {
+public class InfoFromEmployee {
 
     private Long id;
-    private String message;
-    private Language language;
-    private MessagesCodeName messagesCodeName;
+
+    private String text;
 
     public Long getId() {
         return id;
@@ -21,12 +20,12 @@ public class InProgramMessage {
         this.id = id;
     }
 
-    public String getMessage() {
-        return message;
+    public String getText() {
+        return text;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Language getLanguage() {
@@ -37,11 +36,15 @@ public class InProgramMessage {
         this.language = language;
     }
 
-    public MessagesCodeName getMessagesCodeName() {
-        return messagesCodeName;
+    public EmployeeData getEmployeeData() {
+        return employeeData;
     }
 
-    public void setMessagesCodeName(MessagesCodeName messagesCodeName) {
-        this.messagesCodeName = messagesCodeName;
+    public void setEmployeeData(EmployeeData employeeData) {
+        this.employeeData = employeeData;
     }
+
+    private Language language;
+
+    private EmployeeData employeeData;
 }

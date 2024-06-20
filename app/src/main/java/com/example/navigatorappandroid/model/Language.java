@@ -1,5 +1,4 @@
 package com.example.navigatorappandroid.model;
-import java.io.Serializable;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +17,24 @@ public class Language {
 
     private List<InProgramMessage> inProgramMessages;
 
+    private List<InfoFromEmployee> infoFromEmployees;
+
     private List<User> users;
 
     private List<EmployeeData> employeeDataList;
 
     private List<Profession> professions;
+
+    private List<InfoAboutVacancyFromEmployer> infoAboutVacancyFromEmployers;
+    private List<LastRequest> additionalLanguagesOfLastRequests;
+    private List<LastRequest> lastRequestsList;
+    public List<InfoFromEmployee> getInfoFromEmployees() {
+        return infoFromEmployees;
+    }
+
+    public void setInfoFromEmployees(List<InfoFromEmployee> infoFromEmployees) {
+        this.infoFromEmployees = infoFromEmployees;
+    }
 
     public List<EmployeeData> getEmployeeDataList() {
         return employeeDataList;

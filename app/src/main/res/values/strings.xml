@@ -45,6 +45,7 @@
     <string name="country">Country</string>
     <string name="city">City</string>
     <string name="is_auto">Is auto?</string>
+    <string name="show_temporarily_inactive_employees">Show temporarily inactive employees</string>
     <string name="limit">Limit(optional)</string>
     <string name="language">Language</string>
     <string name="consider_match_language">Consider selected communication language in the search?</string>
@@ -73,7 +74,9 @@
     <string name="you_have_not_set_professions">You have not set professions</string>
     <string name="choose_profession">Choose profession</string>
     <string name="write_additional_info">Write additional info about profession if it is necessary</string>
+    <string name="change_password">Change password -></string>
     <string name="active">Active</string>
+    <string name="additional_info_for_employers_hint">Additional info for employers in English (optional)</string>
     <string name="inactive">Inactive</string>
     <string name="temporarily_inactive">Custom</string>
     <string name="search">Search</string>
@@ -109,7 +112,7 @@
     <string name="enter_message">Enter message...</string>
     <string name="do_not_show_my_email">Do not show my email to other users</string>
     <string name="do_not_show_my_phone">Do not show my phone to other users</string>
-    <string name="save_request">+save request</string>
+    <string name="last_request">Last request</string>
     <string name="saved_requests">Saved requests</string>
     <string name="saved_persons">Saved persons</string>
     <string name="contacted_persons">Contacted persons</string>

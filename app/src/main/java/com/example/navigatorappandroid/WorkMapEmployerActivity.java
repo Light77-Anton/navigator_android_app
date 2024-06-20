@@ -21,17 +21,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.LanguageHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
-import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.User;
+import com.example.navigatorappandroid.retrofit.AuthApi;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
-import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
+import com.example.navigatorappandroid.retrofit.response.LoginResponse;
+import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
-import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,8 +48,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -76,31 +74,47 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
     private LocationUpdateHandler locationUpdateHandler;
     private LinearLayout linearLayout;
     private RetrofitService retrofitService;
-    private View coreView;
     private GeneralApi generalApi;
     private SearchApi searchApi;
+    private AuthApi authApi;
     private UserInfoResponse userInfoResponse;
     private HashSet<Marker> currentMarkers = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        languageHandler = new LanguageHandler();
-        coreView = getLayoutInflater().inflate(R.layout.activity_work_map_employer, null);
-        linearLayout = coreView.findViewById(R.id.work_map_employer_sort_request_layout);
+        Intent intent = new Intent(this, LoginActivity.class);
         retrofitService = new RetrofitService();
         searchApi = retrofitService.getRetrofit().create(SearchApi.class);
         generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        if (savedInstanceState != null) {
-            lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
-            cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
-        }
+        authApi = retrofitService.getRetrofit().create(AuthApi.class);
+        authApi.authCheck().enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (!response.body().isResult()) {
+                    intent.putExtra("is_auth_error", true);
+                    startActivity(intent);
+                }
+            }
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                intent.putExtra("is_auth_error", true);
+                startActivity(intent);
+            }
+        });
+        setContentView(R.layout.activity_work_map_employer);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         placesClient = Places.createClient(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.ea1ddfbd25d1e33e);
         mapFragment.getMapAsync(this);
+        languageHandler = new LanguageHandler();
+        linearLayout = findViewById(R.id.work_map_employer_sort_request_layout);
+        if (savedInstanceState != null) {
+            lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+        }
         changeSortRequestFieldCondition();
         generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
             @Override
@@ -118,7 +132,6 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
         Locale locale = new Locale(languageHandler.getLanguageCode(userInfoResponse.getEndonymInterfaceLanguage()));
         configuration.setLocale(locale);
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-        setContentView(R.layout.activity_work_map_employer);
     }
 
     @Override
@@ -142,7 +155,7 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
         locationUpdateHandler = new LocationUpdateHandler(lastKnownLocation.getLatitude(),
                 lastKnownLocation.getLongitude(), userInfoResponse.getId());
         Bundle arguments = getIntent().getExtras();
-        if (arguments.get("profession") != null) {
+        if (arguments != null && arguments.get("profession") != null) {
             executeSearchForEmployees(arguments.getString("profession"));
         }
     }
@@ -229,6 +242,7 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
 
     public void onSettingsClick(View view) {
         Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
+        /*
         intent.putExtra("firm_name", userInfoResponse.getEmployerRequests().getFirmName());
         intent.putExtra("avatar", userInfoResponse.getAvatar());
         intent.putExtra("name", userInfoResponse.getName());
@@ -239,14 +253,34 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
         intent.putExtra("are_languages_matched", userInfoResponse.isAreLanguagesMatched());
         intent.putExtra("limit_in_the_search", userInfoResponse.getLimitForTheSearch());
         intent.putExtra("is_multivacancy_allowed", userInfoResponse.isMultivacancyAllowed());
-        intent.putExtra("activity", "map");
+         */
         startActivity(intent);
     }
 
     public void onSearchClick(View view) {
         Intent intent = new Intent(this, SearchEmployeesActivity.class);
-        intent.putExtra("activity", "map");
         startActivity(intent);
+    }
+
+    public void onListClick(View view) {
+        generalApi.changeWorkDisplay().enqueue(new Callback<ResultErrorsResponse>() {
+            @Override
+            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
+
+            @Override
+            public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
+                Toast.makeText(WorkMapEmployerActivity.this, "Error " +
+                        "'changeWorkDisplay' method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Intent intent = new Intent(this, WorkListEmployerActivity.class);
+        startActivity(intent);
+    }
+
+    public void onTimersClick(View view) {
+    }
+
+    public void onChatsClick(View view) {
     }
 
     private void enableLinearLayout() {
@@ -279,7 +313,6 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
 
     public void onVacanciesSettingClick(View view) {
         Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
-        intent.putExtra("activity", "map");
         startActivity(intent);
     }
 
@@ -314,6 +347,8 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
         CheckBox checkBox = linearLayout.findViewById(R.id.is_auto_checkbox);
         searchRequest.setAuto(checkBox.isChecked());
         searchRequest.setMultivacancyAllowed(userInfoResponse.getEmployerRequests().isMultivacancyAllowedInSearch());
+        CheckBox showTemporarilyInactiveEmployeescheckBox = linearLayout.findViewById(R.id.show_temporarily_inactive_employees);
+        searchRequest.setShowTemporarilyInactiveEmployees(showTemporarilyInactiveEmployeescheckBox.isChecked());
         searchRequest.setLimit(userInfoResponse.getLimitForTheSearch());
         searchRequest.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
         searchApi.getEmployeesOfChosenProfession(searchRequest).enqueue(new Callback<SearchResponse>() {
@@ -361,7 +396,7 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
             TextView rating = layout.findViewById(R.id.rating);
             TextView distance = layout.findViewById(R.id.distance);
             name.setText(employee.getName());
-            rating.setText(employee.getRanking().toString());
+            rating.setText(employee.getRanking());
             LocationsRequest locationsRequest = new LocationsRequest();
             locationsRequest.setLat1(userInfoResponse.getLocation().getLatitude());
             locationsRequest.setLat2(employee.getLocation().getLatitude());
@@ -384,8 +419,8 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
                @Override
                public void onClick(View v) {
                    Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
-                   intent.putExtra("activity", "map");
-                   intent.putExtra("id", employee.getId().toString());
+                   intent.putExtra("employee_id", employee.getId().toString());
+                   /*
                    intent.putExtra("name", employee.getName());
                    intent.putExtra("rating", employee.getRanking());
                    intent.putExtra("avatar", employee.getAvatar());
@@ -435,6 +470,7 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
                    intent.putExtra("email", employee.getEmail());
                    intent.putExtra("phone", employee.getPhone());
                    intent.putExtra("social_networks_links", employee.getSocialNetworksLinks());
+                    */
                    startActivity(intent);
                }
            });

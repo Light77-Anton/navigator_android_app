@@ -21,8 +21,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.LanguageHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
-import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.User;
+import com.example.navigatorappandroid.retrofit.AuthApi;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.SearchApi;
@@ -30,8 +30,9 @@ import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
+import com.example.navigatorappandroid.retrofit.response.LoginResponse;
+import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
-import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -58,11 +59,31 @@ public class WorkListEmployerActivity extends AppCompatActivity {
     private RetrofitService retrofitService;
     private GeneralApi generalApi;
     private SearchApi searchApi;
+    private AuthApi authApi;
     private UserInfoResponse userInfoResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = new Intent(this, LoginActivity.class);
+        retrofitService = new RetrofitService();
+        searchApi = retrofitService.getRetrofit().create(SearchApi.class);
+        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
+        authApi = retrofitService.getRetrofit().create(AuthApi.class);
+        authApi.authCheck().enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (!response.body().isResult()) {
+                    intent.putExtra("is_auth_error", true);
+                    startActivity(intent);
+                }
+            }
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                intent.putExtra("is_auth_error", true);
+                startActivity(intent);
+            }
+        });
         setContentView(R.layout.activity_work_list_employer);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         languageHandler = new LanguageHandler();
@@ -84,7 +105,7 @@ public class WorkListEmployerActivity extends AppCompatActivity {
             }
         });
         Bundle arguments = getIntent().getExtras();
-        if (arguments.get("profession") != null) {
+        if (arguments != null && arguments.get("profession") != null) {
             executeSearchForEmployees(arguments.getString("profession"));
         }
         Resources resources = getResources();
@@ -185,6 +206,7 @@ public class WorkListEmployerActivity extends AppCompatActivity {
 
     public void onSettingsClick(View view) {
         Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
+        /*
         intent.putExtra("firm_name", userInfoResponse.getEmployerRequests().getFirmName());
         intent.putExtra("avatar", userInfoResponse.getAvatar());
         intent.putExtra("name", userInfoResponse.getName());
@@ -195,20 +217,39 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         intent.putExtra("are_languages_matched", userInfoResponse.isAreLanguagesMatched());
         intent.putExtra("limit_in_the_search", userInfoResponse.getLimitForTheSearch());
         intent.putExtra("is_multivacancy_allowed", userInfoResponse.isMultivacancyAllowed());
-        intent.putExtra("activity", "list");
+         */
         startActivity(intent);
     }
 
     public void onSearchClick(View view) {
         Intent intent = new Intent(this, SearchEmployeesActivity.class);
-        intent.putExtra("activity", "list");
         startActivity(intent);
     }
 
     public void onVacanciesSettingClick(View view) {
         Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
-        intent.putExtra("activity", "list");
         startActivity(intent);
+    }
+
+    public void onMapClick(View view) {
+        generalApi.changeWorkDisplay().enqueue(new Callback<ResultErrorsResponse>() {
+            @Override
+            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
+
+            @Override
+            public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
+                Toast.makeText(WorkListEmployerActivity.this, "Error " +
+                        "'changeWorkDisplay' method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Intent intent = new Intent(this, WorkMapEmployerActivity.class);
+        startActivity(intent);
+    }
+
+    public void onTimersClick(View view) {
+    }
+
+    public void onChatsClick(View view) {
     }
 
     private void executeSearchForEmployees(String profession) {
@@ -235,9 +276,11 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         });
         SeekBar seekBar = linearLayout.findViewById(R.id.seekbar);
         searchRequest.setInRadiusOf(seekBar.getProgress());
-        CheckBox checkBox = linearLayout.findViewById(R.id.is_auto_checkbox);
-        searchRequest.setAuto(checkBox.isChecked());
+        CheckBox autoCheckBox = linearLayout.findViewById(R.id.is_auto_checkbox);
+        searchRequest.setAuto(autoCheckBox.isChecked());
         searchRequest.setMultivacancyAllowed(userInfoResponse.getEmployerRequests().isMultivacancyAllowedInSearch());
+        CheckBox showTemporarilyInactiveEmployeescheckBox = linearLayout.findViewById(R.id.show_temporarily_inactive_employees);
+        searchRequest.setShowTemporarilyInactiveEmployees(showTemporarilyInactiveEmployeescheckBox.isChecked());
         searchRequest.setLimit(userInfoResponse.getLimitForTheSearch());
         searchRequest.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
         searchApi.getEmployeesOfChosenProfession(searchRequest).enqueue(new Callback<SearchResponse>() {
@@ -273,17 +316,9 @@ public class WorkListEmployerActivity extends AppCompatActivity {
     }
 
     private void addEmployeeButton(User employee, double distance) {
+        long employeeId = employee.getId();
         String name = employee.getName();
-        String avatar = employee.getAvatar();
-        double rating = employee.getRanking();
-        String status;
-        if (employee.getEmployeeData().getStatus() == 2) {
-            status = getString(R.string.employee_status_custom) + Instant.ofEpochMilli
-                    (employee.getEmployeeData().getActiveStatusStartDate())
-                    .atZone(ZoneId.systemDefault()).toLocalDate().toString();
-        } else {
-            status = getString(R.string.employee_status) + employee.getEmployeeData().getStatus();
-        }
+        byte rating = employee.getRanking();
         ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
         professionToUserRequest.setId(employee.getId());
         Button button = new Button(searchResultsLayout.getContext());
@@ -293,7 +328,17 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         button.setBackground(getResources().getDrawable(R.drawable.rectangle_button));
         button.setTextColor(getResources().getColor(R.color.black));
         button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        String status;
+        if (employee.getEmployeeData().getStatus() == 2) {
+            status = getString(R.string.employee_status_custom) + Instant.ofEpochMilli
+                            (employee.getEmployeeData().getActiveStatusStartDate())
+                    .atZone(ZoneId.systemDefault()).toLocalDate().toString();
+        } else {
+            status = getString(R.string.employee_status) + employee.getEmployeeData().getStatus();
+        }
         StringBuilder sb = new StringBuilder();
+        sb.append(status);
+        sb.append("   ");
         sb.append(name);
         sb.append("   ");
         sb.append(rating);
@@ -303,7 +348,7 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
-                intent.putExtra("activity", "list");
+                /*
                 intent.putExtra("name", name);
                 intent.putExtra("rating", rating);
                 intent.putExtra("avatar", avatar);
@@ -343,6 +388,8 @@ public class WorkListEmployerActivity extends AppCompatActivity {
                 intent.putExtra("email", employee.getEmail());
                 intent.putExtra("phone", employee.getPhone());
                 intent.putExtra("social_networks_links", employee.getSocialNetworksLinks());
+                 */
+                intent.putExtra("employee_id", employeeId);
                 startActivity(intent);
             }
         });

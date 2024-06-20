@@ -176,13 +176,5 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:text="@string/filters"/>
-        <CheckBox
-            android:id="@+id/is_auto_checkbox"
-            android:layout_below="@id/filters"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:onClick="executeSearchForVacancies"
-            android:text="@string/is_auto"
-            android:background="@color/custom_gray_blue" />
     </LinearLayout>
 </RelativeLayout>

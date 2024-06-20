@@ -20,23 +20,36 @@ public class User {
 
     private List<Vote> votes;
 
-    private Double ranking;
+    private byte ranking;
 
     private boolean isBlocked;
+
+    private boolean isActivated;
 
     private String name;
 
     private String email;
+    private boolean isEmailHidden;
 
     private String phone;
+    private boolean isPhoneHidden;
 
-    private String lastRequest;
+    private LastRequest lastRequest;
+    private int notificationsCount;
 
     private int limitForTheSearch;
 
-    private boolean areLanguagesMatched;
+    public byte getCurrentWorkDisplay() {
+        return currentWorkDisplay;
+    }
 
-    private List<ChatNotification> notifications;
+    public void setCurrentWorkDisplay(byte currentWorkDisplay) {
+        this.currentWorkDisplay = currentWorkDisplay;
+    }
+
+    private byte currentWorkDisplay;
+
+    private boolean areLanguagesMatched;
 
     private List<ChatMessage> sentMessages;
 
@@ -65,6 +78,78 @@ public class User {
     private List<User> favoriteOf;
 
     private UserLocation userLocation;
+
+    public byte getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(byte ranking) {
+        this.ranking = ranking;
+    }
+
+    public LastRequest getLastRequest() {
+        return lastRequest;
+    }
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        isActivated = activated;
+    }
+
+    public boolean isEmailHidden() {
+        return isEmailHidden;
+    }
+
+    public void setEmailHidden(boolean emailHidden) {
+        isEmailHidden = emailHidden;
+    }
+
+    public boolean isPhoneHidden() {
+        return isPhoneHidden;
+    }
+
+    public void setPhoneHidden(boolean phoneHidden) {
+        isPhoneHidden = phoneHidden;
+    }
+
+    public void setLastRequest(LastRequest lastRequest) {
+        this.lastRequest = lastRequest;
+    }
+
+    public int getNotificationsCount() {
+        return notificationsCount;
+    }
+
+    public void setNotificationsCount(int notificationsCount) {
+        this.notificationsCount = notificationsCount;
+    }
+
+    public int getLimitForTheSearch() {
+        return limitForTheSearch;
+    }
+
+    public void setLimitForTheSearch(int limitForTheSearch) {
+        this.limitForTheSearch = limitForTheSearch;
+    }
+
+    public boolean isAreLanguagesMatched() {
+        return areLanguagesMatched;
+    }
+
+    public void setAreLanguagesMatched(boolean areLanguagesMatched) {
+        this.areLanguagesMatched = areLanguagesMatched;
+    }
+
+    public UserLocation getUserLocation() {
+        return userLocation;
+    }
+
+    public void setUserLocation(UserLocation userLocation) {
+        this.userLocation = userLocation;
+    }
 
     public Long getId() {
         return id;
@@ -106,14 +191,6 @@ public class User {
         this.votes = votes;
     }
 
-    public Double getRanking() {
-        return ranking;
-    }
-
-    public void setRanking(Double ranking) {
-        this.ranking = ranking;
-    }
-
     public boolean isBlocked() {
         return isBlocked;
     }
@@ -144,22 +221,6 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getLastRequest() {
-        return lastRequest;
-    }
-
-    public void setLastRequest(String lastRequest) {
-        this.lastRequest = lastRequest;
-    }
-
-    public List<ChatNotification> getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(List<ChatNotification> notifications) {
-        this.notifications = notifications;
     }
 
     public List<ChatMessage> getSentMessages() {

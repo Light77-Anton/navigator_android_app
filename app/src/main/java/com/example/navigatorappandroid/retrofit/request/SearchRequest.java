@@ -29,6 +29,16 @@ public class SearchRequest {
         isMultivacancyAllowed = multivacancyAllowed;
     }
 
+    public boolean isShowTemporarilyInactiveEmployees() {
+        return showTemporarilyInactiveEmployees;
+    }
+
+    public void setShowTemporarilyInactiveEmployees(boolean showTemporarilyInactiveEmployees) {
+        this.showTemporarilyInactiveEmployees = showTemporarilyInactiveEmployees;
+    }
+
+    @JsonProperty("show_temporarily_inactive_employees")
+    private boolean showTemporarilyInactiveEmployees;
     @JsonProperty("is_multivacancy_allowed")
     private boolean isMultivacancyAllowed;
     @JsonProperty("in_radius_of")

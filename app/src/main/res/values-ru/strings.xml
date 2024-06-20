@@ -44,6 +44,7 @@
     <string name="country">Страна</string>
     <string name="city">Город</string>
     <string name="is_auto">Есть автомобиль?</string>
+    <string name="show_temporarily_inactive_employees">Показывать временно неактивных рабочих</string>
     <string name="limit">Лимит(опционально)</string>
     <string name="language">Язык</string>
     <string name="consider_match_language">Учитывать языки коммуникации в поиске?</string>
@@ -72,6 +73,8 @@
     <string name="you_have_not_set_professions">У вас нет указанных профессий</string>
     <string name="choose_profession">Выберите профессию</string>
     <string name="write_additional_info">Дайте дополнительную информацию о профессии, если необходимо</string>
+    <string name="change_password">Изменить пароль -></string>
+    <string name="additional_info_for_employers_hint">Дополнительная информация для работодателей на русском (опционально)</string>
     <string name="active">Активен</string>
     <string name="inactive">Неактивен</string>
     <string name="temporarily_inactive">Временно неактивен</string>
@@ -108,7 +111,7 @@
     <string name="enter_message">Введите сообщение...</string>
     <string name="do_not_show_my_email">Не показывать мою почту другим пользователям</string>
     <string name="do_not_show_my_phone">Не показывать мой телефон другим пользователям</string>
-    <string name="save_request">+сохранить запрос</string>
+    <string name="last_request">Последний запрос</string>
     <string name="saved_requests">Сохраненные запросы</string>
     <string name="saved_persons">Сохраненные контакты</string>
     <string name="contacted_persons">Contacted persons</string>

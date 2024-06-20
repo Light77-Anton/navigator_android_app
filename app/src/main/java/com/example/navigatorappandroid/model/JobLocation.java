@@ -13,6 +13,9 @@ public class JobLocation {
     private String jobAddress;
 
     private double latitude;
+    private double longitude;
+
+    private Vacancy vacancy;
 
     public Long getId() {
         return id;
@@ -53,8 +56,4 @@ public class JobLocation {
     public void setVacancy(Vacancy vacancy) {
         this.vacancy = vacancy;
     }
-
-    private double longitude;
-
-    private Vacancy vacancy;
 }
