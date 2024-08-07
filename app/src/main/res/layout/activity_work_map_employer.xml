@@ -19,14 +19,6 @@
         map:uiZoomControls="true"
         map:uiRotateGestures="true" />
     <android.widget.Button
-        android:id="@+id/save_request"
-        android:layout_above="@id/search_button"
-        android:text="@string/last_request"
-        android:textColor="@color/black"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:background="@drawable/gray_blue_rectangle"/>
-    <android.widget.Button
         android:id="@+id/search_button"
         android:contentDescription="."
         android:layout_alignParentLeft="true"
@@ -79,20 +71,57 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:onClick="onChatsClick"
-        android:background="@drawable/gray_blue_circle"
+        android:background="@drawable/red_circle"
         android:paddingStart="5dp"
-        android:text="0"
-        android:textSize="20sp"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="3dp"
+        android:text="1"
+        android:textSize="20sp"
         android:drawableStart="@drawable/chats"/>
     <android.widget.Button
-        android:id="@+id/sort_request"
+        android:id="@+id/to_timers"
+        android:contentDescription="."
+        android:layout_above="@id/to_chats"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="onTimerssClick"
+        android:background="@drawable/gray_blue_circle"
+        android:paddingStart="13dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="3dp"
+        android:drawableStart="@drawable/timer"/>
+    <android.widget.Button
+        android:id="@+id/additional_languages"
+        android:contentDescription="@string/additional_languages_content_description"
+        android:onClick="onAddLanguagesClick"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:text="@string/additional_languages"
+        android:background="@drawable/gray_blue_rectangle" />
+    <android.widget.Button
+        android:id="@+id/sort_request"
+        android:contentDescription="@string/sort_request_content_description"
+        android:onClick="changeSearchSettingsLayoutCondition"
+        android:layout_below="@id/additional_languages"
+        android:layout_alignParentLeft="true"
+        android:layout_width="205dp"
+        android:layout_height="50dp"
         android:text="@string/sort_request"
-        android:background="@color/custom_gray_blue" />
+        android:drawableRight="@drawable/baseline_arrow_downward_24"
+        android:background="@drawable/gray_blue_rectangle" />
+    <android.widget.Button
+        android:id="@+id/filters_request"
+        android:contentDescription="@string/filters_request_content_description"
+        android:onClick="changeSearchSettingsLayoutCondition"
+        android:layout_below="@id/additional_languages"
+        android:layout_alignParentRight="true"
+        android:layout_width="205dp"
+        android:layout_height="50dp"
+        android:text="@string/filters_request"
+        android:drawableRight="@drawable/baseline_arrow_downward_24"
+        android:background="@drawable/gray_blue_rectangle" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,87 +129,5 @@
         android:orientation="vertical"
         tools:context=".WorkMapEmployerActivity"
         android:id="@+id/work_map_employer_sort_request_layout">
-        <TextView
-            android:id="@+id/sort"
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/custom_gray_blue"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:text="@string/sort_by"/>
-        <RadioGroup
-            android:id="@+id/radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/sort"
-            android:orientation="vertical">
-            <RadioButton
-                android:id="@+id/sort_by_persons_name_checkbox"
-                android:contentDescription="name"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:onClick="executeSearchForEmployees"
-                android:text="@string/sort_by_persons_name"
-                android:background="@color/custom_gray_blue" />
-            <RadioButton
-                android:id="@+id/sort_by_reputation_checkbox"
-                android:contentDescription="rating"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:onClick="executeSearchForEmployees"
-                android:text="@string/sort_by_reputation"
-                android:background="@color/custom_gray_blue" />
-            <RadioButton
-                android:id="@+id/sort_by_location_checkbox"
-                android:contentDescription="location"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:onClick="executeSearchForEmployees"
-                android:text="@string/sort_by_location"
-                android:background="@color/custom_gray_blue" />
-        </RadioGroup>
-        <TextView
-            android:id="@+id/radius"
-            android:textColor="@color/black"
-            android:layout_below="@id/radio_group"
-            android:layout_alignParentLeft="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/custom_gray_blue"
-            android:text="@string/in_radius_of"/>
-        <SeekBar
-            android:id="@+id/seekbar"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/custom_gray_blue"
-            android:layout_alignParentRight="true"
-            android:onClick="executeSearchForEmployees"
-            android:max="50"
-            android:min="1"
-            android:progress="25" />
-        <TextView
-            android:id="@+id/filters"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/custom_gray_blue"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:text="@string/filters"/>
-        <CheckBox
-            android:id="@+id/is_auto_checkbox"
-            android:layout_below="@id/filters"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:onClick="executeSearchForEmployees"
-            android:text="@string/is_auto"
-            android:background="@color/custom_gray_blue" />
-        <android.widget.Button
-            android:id="@+id/additional_languages_button"
-            android:layout_below="@id/is_auto_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="@string/additional_languages"
-            android:background="@color/custom_gray_blue" />
     </LinearLayout>
 </RelativeLayout>

@@ -14,16 +14,12 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.navigatorappandroid.retrofit.AuthApi;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
+import androidx.core.content.ContextCompat;
+import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
-import com.example.navigatorappandroid.retrofit.response.LoginResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.TextListResponse;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import java.io.File;
 import java.util.ArrayList;
@@ -36,14 +32,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EmployeeSettingsActivity extends AppCompatActivity {
+public class EmployeeSettingsActivity extends BaseActivity {
 
     private Uri selectedImageUri;
     private static final int REQUEST_IMAGE_PICK = 1;
     private ImageView avatarImageView;
-    private RetrofitService retrofitService;
-    private GeneralApi generalApi;
-    private AuthApi authApi;
     private EditText nameEditText;
     private EditText phoneEditText;
     private CheckBox isPhoneHiddenCheckBox;
@@ -56,40 +49,10 @@ public class EmployeeSettingsActivity extends AppCompatActivity {
     private CheckBox areLanguagesMatchedCheckBox;
     private CheckBox isMultivacancyAllowedCheckBox;
     private SeekBar seekBar;
-    private UserInfoResponse userInfoResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, LoginActivity.class);
-        retrofitService = new RetrofitService();
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        authApi = retrofitService.getRetrofit().create(AuthApi.class);
-        authApi.authCheck().enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (!response.body().isResult()) {
-                    intent.putExtra("is_auth_error", true);
-                    startActivity(intent);
-                }
-            }
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                intent.putExtra("is_auth_error", true);
-                startActivity(intent);
-            }
-        });
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
-            @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                userInfoResponse = response.body();
-            }
-            @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(EmployeeSettingsActivity.this, "error: 'getUserInfo' " +
-                        "method is failure", Toast.LENGTH_SHORT).show();
-            }
-        });
         setContentView(R.layout.activity_settings_employee);
         avatarImageView = findViewById(R.id.avatar);
         Button uploadButton = findViewById(R.id.avatar_upload);
@@ -140,8 +103,10 @@ public class EmployeeSettingsActivity extends AppCompatActivity {
         interfaceLanguageSpinner.setAdapter(languagesAdapter);
         int spinnerInterfaceLanguagePosition = languagesAdapter.getPosition(interfaceLanguage);
         interfaceLanguageSpinner.setSelection(spinnerInterfaceLanguagePosition);
-        List<String> communicationLanguages = userInfoResponse.getCommunicationLanguages();
+        List<String> communicationLanguages = userInfoResponse.getCommunicationLanguages().stream()
+                .map(Language::getLanguageEndonym).collect(Collectors.toList());
         communicationLanguagesSpinner = findViewById(R.id.communication_language_first);
+        communicationLanguagesSpinner.setBackground(ContextCompat.getDrawable(this, R.drawable.spinner));
         communicationLanguagesSpinner.setAdapter(languagesAdapter);
         ArrayList<Integer> multiSpinnerPositions = new ArrayList<>();
         for (String lang : communicationLanguages) {

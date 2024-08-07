@@ -6,12 +6,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.request.StatusRequest;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import java.time.Instant;
@@ -21,30 +17,30 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EmployeeStatusActivity extends AppCompatActivity {
+public class EmployeeStatusActivity extends BaseActivity {
 
-    RetrofitService retrofitService;
-    GeneralApi generalApi;
-    StatusRequest statusRequest;
-    RelativeLayout relativeLayout;
+    private StatusRequest statusRequest;
+    private byte currentStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        relativeLayout = findViewById(R.id.activity_employee_status_layout);
-        setContentView(relativeLayout);
-        retrofitService = new RetrofitService();
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
+        setContentView(R.layout.activity_employee_status);
+        DatePicker datePicker = findViewById(R.id.datePicker);
         statusRequest = new StatusRequest();
         RadioGroup radios = findViewById(R.id.radios);
         radios.setOnCheckedChangeListener((radiogroup, id)-> {
             RadioButton radio = findViewById(id);
-            switch (radio.getText().toString()) {
-                case "Active":
+            switch (radio.getContentDescription().toString()) {
+                case "active":
                     statusRequest.setStatus("active");
+                    datePicker.setClickable(false);
+                    datePicker.setVisibility(View.INVISIBLE);
                     break;
-                case "Inactive":
+                case "inactive":
                     statusRequest.setStatus("inactive");
+                    datePicker.setClickable(false);
+                    datePicker.setVisibility(View.INVISIBLE);
                     break;
                 default:
                     statusRequest.setStatus("custom");
@@ -52,7 +48,6 @@ public class EmployeeStatusActivity extends AppCompatActivity {
                     LocalDate currentDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate();
                     statusRequest.setTimestamp(currentDate.atStartOfDay(ZoneId.systemDefault())
                             .toInstant().toEpochMilli());
-                    DatePicker datePicker = findViewById(R.id.datePicker);
                     datePicker.setClickable(true);
                     datePicker.setVisibility(View.VISIBLE);
                     datePicker.init(currentDate.getYear(), currentDate.getMonthValue(), currentDate.getDayOfMonth(),
@@ -64,10 +59,9 @@ public class EmployeeStatusActivity extends AppCompatActivity {
                                     .toInstant().toEpochMilli());
                         }
                     });
-                    break;
             }
         });
-        TextView helperText = relativeLayout.findViewById(R.id.helper_text);
+        TextView helperText = findViewById(R.id.helper_text);
         Button activeHelpButton = findViewById(R.id.active_help_button);
         activeHelpButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -89,26 +83,40 @@ public class EmployeeStatusActivity extends AppCompatActivity {
                 helperText.setVisibility(View.VISIBLE);
             }
         });
+        currentStatus = userInfoResponse.getEmployeeData().getStatus();
+        RadioButton button;
+        switch (currentStatus) {
+            case 0:
+                button = findViewById(R.id.inactive);
+                break;
+            case 1:
+                button = findViewById(R.id.active);
+                break;
+            default:
+                button = findViewById(R.id.custom);
+        }
+        button.setChecked(true);
     }
+
     public void onBackClick(View view) {
         if (statusRequest.getStatus() != null) {
             generalApi.employeeStatus(statusRequest).enqueue(new Callback<ResultErrorsResponse>() {
                 @Override
-                public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
-
+                public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                    Intent intent;
+                    if (userInfoResponse.getCurrentWorkDisplay() == 1) {
+                        intent = new Intent(view.getContext(), WorkMapEmployeeActivity.class);
+                        startActivity(intent);
+                    }
+                    intent = new Intent(view.getContext(), WorkListEmployeeActivity.class);
+                    startActivity(intent);
+                }
                 @Override
                 public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                    Toast.makeText(EmployeeStatusActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EmployeeStatusActivity.this, "error: 'employeeStatus' " +
+                            "method is failure", Toast.LENGTH_SHORT).show();
                 }
             });
         }
-        Intent intent;
-        Bundle arguments = getIntent().getExtras();
-        if (arguments.getString("activity").equals("map")) {
-            intent = new Intent(this, WorkMapEmployeeActivity.class);
-            startActivity(intent);
-        }
-        intent = new Intent(this, WorkListEmployeeActivity.class);
-        startActivity(intent);
     }
 }

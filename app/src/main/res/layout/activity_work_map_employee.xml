@@ -88,12 +88,36 @@
         android:layout_marginRight="3dp"
         android:drawableStart="@drawable/timer"/>
     <android.widget.Button
-        android:id="@+id/sort_request"
+        android:id="@+id/additional_languages"
+        android:contentDescription="@string/additional_languages_content_description"
+        android:onClick="onAddLanguagesClick"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:text="@string/additional_languages"
+        android:background="@drawable/gray_blue_rectangle" />
+    <android.widget.Button
+        android:id="@+id/sort_request"
+        android:contentDescription="@string/sort_request_content_description"
+        android:onClick="changeSearchSettingsLayoutCondition"
+        android:layout_below="@id/additional_languages"
+        android:layout_alignParentLeft="true"
+        android:layout_width="205dp"
+        android:layout_height="50dp"
         android:text="@string/sort_request"
-        android:background="@color/custom_gray_blue" />
+        android:drawableRight="@drawable/baseline_arrow_downward_24"
+        android:background="@drawable/gray_blue_rectangle" />
+    <android.widget.Button
+        android:id="@+id/filters_request"
+        android:contentDescription="@string/filters_request_content_description"
+        android:onClick="changeSearchSettingsLayoutCondition"
+        android:layout_below="@id/additional_languages"
+        android:layout_alignParentRight="true"
+        android:layout_width="205dp"
+        android:layout_height="50dp"
+        android:text="@string/filters_request"
+        android:drawableRight="@drawable/baseline_arrow_downward_24"
+        android:background="@drawable/gray_blue_rectangle" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,87 +125,5 @@
         android:orientation="vertical"
         tools:context=".WorkMapEmployerActivity"
         android:id="@+id/work_map_employee_sort_request_layout">
-        <TextView
-            android:id="@+id/sort"
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/custom_gray_blue"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:text="@string/sort_by"/>
-        <RadioGroup
-            android:id="@+id/radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/sort"
-            android:orientation="vertical">
-            <RadioButton
-                android:id="@+id/sort_by_persons_name_checkbox"
-                android:contentDescription="name"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:onClick="executeSearchForVacancies"
-                android:text="@string/sort_by_persons_name"
-                android:background="@color/custom_gray_blue" />
-            <RadioButton
-                android:id="@+id/sort_by_reputation_checkbox"
-                android:contentDescription="rating"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:onClick="executeSearchForVacancies"
-                android:text="@string/sort_by_reputation"
-                android:background="@color/custom_gray_blue" />
-            <RadioButton
-                android:id="@+id/sort_by_location_checkbox"
-                android:contentDescription="location"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:onClick="executeSearchForVacancies"
-                android:text="@string/sort_by_location"
-                android:background="@color/custom_gray_blue" />
-        </RadioGroup>
-        <TextView
-            android:id="@+id/radius"
-            android:layout_alignParentLeft="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/custom_gray_blue"
-            android:textColor="@color/black"
-            android:text="@string/in_radius_of"/>
-        <SeekBar
-            android:id="@+id/seekbar"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/custom_gray_blue"
-            android:onClick="executeSearchForVacancies"
-            android:layout_alignParentRight="true"
-            android:max="50"
-            android:min="1"
-            android:progress="25" />
-        <TextView
-            android:id="@+id/filters"
-            android:layout_below="@id/seekbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/custom_gray_blue"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:text="@string/filters"/>
-        <CheckBox
-            android:id="@+id/is_auto_checkbox"
-            android:layout_below="@id/filters"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:onClick="executeSearchForVacancies"
-            android:text="@string/is_auto"
-            android:background="@color/custom_gray_blue" />
-        <android.widget.Button
-            android:id="@+id/additional_languages_button"
-            android:layout_below="@id/is_auto_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="@string/additional_languages"
-            android:background="@color/custom_gray_blue" />
     </LinearLayout>
 </RelativeLayout>

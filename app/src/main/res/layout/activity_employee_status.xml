@@ -13,6 +13,7 @@
         android:orientation="vertical">
         <RadioButton
             android:id="@+id/active"
+            android:contentDescription="@string/active_content_description"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -22,6 +23,7 @@
             android:textSize="40sp" />
         <RadioButton
             android:id="@+id/inactive"
+            android:contentDescription="@string/inactive_content_description"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/active"
@@ -32,6 +34,7 @@
             android:textSize="40sp" />
         <RadioButton
             android:id="@+id/custom"
+            android:contentDescription="@string/custom_content_description"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/inactive"

@@ -4,67 +4,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.navigatorappandroid.retrofit.AuthApi;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.request.ChangePasswordRequest;
-import com.example.navigatorappandroid.retrofit.response.LoginResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChangePasswordActivity extends AppCompatActivity {
-
-    private UserInfoResponse userInfoResponse;
-    private RetrofitService retrofitService;
-    private GeneralApi generalApi;
-    private AuthApi authApi;
+public class ChangePasswordActivity extends BaseActivity {
     private EditText passwordEditText;
     private EditText repeatPasswordEditText;
-    private Bundle arguments;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
-        Intent intent = new Intent(this, LoginActivity.class);
-        retrofitService = new RetrofitService();
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        authApi = retrofitService.getRetrofit().create(AuthApi.class);
-        authApi.authCheck().enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (!response.body().isResult()) {
-                    intent.putExtra("is_auth_error", true);
-                    startActivity(intent);
-                }
-            }
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                intent.putExtra("is_auth_error", true);
-                startActivity(intent);
-            }
-        });
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
-            @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                userInfoResponse = response.body();
-            }
-            @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(ChangePasswordActivity.this, "error: 'getUserInfo' " +
-                        "method is failure", Toast.LENGTH_SHORT).show();
-            }
-        });
-        arguments = getIntent().getExtras();
+        passwordEditText = findViewById(R.id.password);
+        repeatPasswordEditText = findViewById(R.id.repeat_password);
     }
 
     public void onConfirmClick(View view) {
-        passwordEditText = findViewById(R.id.password);
-        repeatPasswordEditText = findViewById(R.id.repeat_password);
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
         changePasswordRequest.setPassword(passwordEditText.getText().toString());
         changePasswordRequest.setRepeated_password(repeatPasswordEditText.getText().toString());
@@ -78,7 +36,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     } else {
                         intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
                     }
-                    intent.putExtra("activity", arguments.getString("activity"));
                     startActivity(intent);
                 } else {
                     StringBuilder sb = new StringBuilder();
@@ -100,28 +57,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     public void onBackClick(View view) {
         Intent intent;
-        Bundle arguments = getIntent().getExtras();
-        if (arguments.getString("role").equals("employee")) {
-            if (arguments.getString("activity").equals("map")) {
-                intent = new Intent(this, WorkMapEmployeeActivity.class);
-                startActivity(intent);
-            }
-            intent = new Intent(this, WorkListEmployeeActivity.class);
-            startActivity(intent);
-        } else if (arguments.getString("role").equals("employer")) {
-            if (arguments.getString("activity").equals("map")) {
-                intent = new Intent(this, WorkMapEmployerActivity.class);
-                startActivity(intent);
-            }
-            intent = new Intent(this, WorkListEmployerActivity.class);
-            startActivity(intent);
+        if (userInfoResponse.getRole().equals("Employee")) {
+            intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
         } else {
-            if (arguments.getString("activity").equals("map")) {
-                intent = new Intent(this, WorkMapEmployeeActivity.class);
-                startActivity(intent);
-            }
-            intent = new Intent(this, WorkListEmployeeActivity.class);
-            startActivity(intent);
+            intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
         }
+        startActivity(intent);
     }
 }

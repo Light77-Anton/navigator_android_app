@@ -2,7 +2,9 @@ package com.example.navigatorappandroid.retrofit;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.request.ChangePasswordRequest;
 import com.example.navigatorappandroid.retrofit.request.CommentRequest;
+import com.example.navigatorappandroid.retrofit.request.EmployeeInfoForEmployersRequest;
 import com.example.navigatorappandroid.retrofit.request.InProgramMessageRequest;
+import com.example.navigatorappandroid.retrofit.request.StatusRequest;
 import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.request.LocationRequest;
 import com.example.navigatorappandroid.retrofit.request.ModeratorDecision;
@@ -16,11 +18,13 @@ import com.example.navigatorappandroid.retrofit.request.VoteRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
 import com.example.navigatorappandroid.retrofit.response.IdResponse;
 import com.example.navigatorappandroid.retrofit.response.JobListResponse;
+import com.example.navigatorappandroid.retrofit.response.ProfessionNamesListResponse;
 import com.example.navigatorappandroid.retrofit.response.ProfessionToUserResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.MapTextResponse;
 import com.example.navigatorappandroid.retrofit.response.TextListResponse;
+import com.example.navigatorappandroid.retrofit.response.TimersListResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.VoteResponse;
 import java.security.Principal;
@@ -122,7 +126,7 @@ public interface GeneralApi {
     Call<TextListResponse> getLanguagesList();
 
     @GET("api/professions/names/list/get")
-    Call<TextListResponse> getProfessionsNamesInSpecifiedLanguage();
+    Call<ProfessionNamesListResponse> getProfessionsNamesInSpecifiedLanguage();
 
     @GET("api/profession/get/by/name")
     Call<IdResponse> getProfessionIdByName(@Body StringRequest stringRequest);
@@ -162,4 +166,14 @@ public interface GeneralApi {
 
     @PUT("api/user/display/change")
     Call<ResultErrorsResponse> changeWorkDisplay(); // добавить на backend!
+
+    @PUT("api/user/employee/work/info/change")
+    Call<ResultErrorsResponse> changeInfoFromEmployeeForEmployers
+            (@Body EmployeeInfoForEmployersRequest employeeInfoForEmployersRequest); // добавить на backend!
+
+    @PUT("api/status")
+    Call<ResultErrorsResponse> employeeStatus(@Body StatusRequest statusRequest);
+
+    @GET("api/user/timers/list/get")
+    Call<TimersListResponse> getTimersList( );
 }

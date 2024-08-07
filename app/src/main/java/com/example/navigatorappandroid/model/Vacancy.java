@@ -19,6 +19,26 @@ public class Vacancy {
 
     private LocalDateTime waitingDateTime;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    private String type;
+
+    public List<EmployeeData> getHiredEmployees() {
+        return hiredEmployees;
+    }
+
+    public void setHiredEmployees(List<EmployeeData> hiredEmployees) {
+        this.hiredEmployees = hiredEmployees;
+    }
+
+    private List<EmployeeData> hiredEmployees;
+
     private List<InfoAboutVacancyFromEmployer> paymentAndAdditionalInfo;
     private EmployerRequests employerRequests;
 

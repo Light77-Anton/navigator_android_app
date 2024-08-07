@@ -1,5 +1,10 @@
 <resources>
-
+    <string-array name="languages">
+        <item>English</item>
+        <item>Русский</item>
+    </string-array>
+    <string name="info_from_employee_for_employers_hint_english" translatable="false">Additional info for employers in English (optional)</string>
+    <string name="info_from_employee_for_employers_hint_russian" translatable="false">Дополнительная информация для работодателей на русском (опционально)</string>
     <string name="app_name">NavigatorAppAndroid</string>
     <string name="app_name_logo"><u>Navigator App</u></string>
     <string name="login_text_button">Log In</string>
@@ -76,9 +81,11 @@
     <string name="write_additional_info">Write additional info about profession if it is necessary</string>
     <string name="change_password">Change password -></string>
     <string name="active">Active</string>
-    <string name="additional_info_for_employers_hint">Additional info for employers in English (optional)</string>
+    <string name="active_content_description" translatable="false">active</string>
     <string name="inactive">Inactive</string>
+    <string name="inactive_content_description" translatable="false">inactive</string>
     <string name="temporarily_inactive">Custom</string>
+    <string name="custom_content_description" translatable="false">custom</string>
     <string name="search">Search</string>
     <string name="logout">Logout</string>
     <string name="show_info_about_my_vacancies">Show info about my vacancies</string>
@@ -93,6 +100,9 @@
     <string name="is_vacancy_active">Is vacancy active?</string>
     <string name="choice_communication_language_info">Choice the communication language; if you do not choice the language - it will not be taken into account in the search</string>
     <string name="sort_request">Sort request</string>
+    <string name="sort_request_content_description" translatable="false">sort</string>
+    <string name="filters_request">Filters</string>
+    <string name="filters_request_content_description" translatable="false">filters</string>
     <string name="filters"><u>Filters :</u></string>
     <string name="sort_by"><u>Sort by :</u></string>
     <string name="sort_by_persons_name">Sort by user\'s name</string>
@@ -117,14 +127,18 @@
     <string name="saved_persons">Saved persons</string>
     <string name="contacted_persons">Contacted persons</string>
     <string name="show_extended_info">Show extended info</string>
-    <string name="additional_languages">Additional languages</string>
+    <string name="additional_languages">Additional languages +</string>
+    <string name="additional_languages_content_description" translatable="false">additional languages</string>
     <string name="create_new_vacancy">Create new vacancy</string>
     <string name="choose_vacancy_from_my_list">Choose vacancy from my list</string>
     <string name="set_waiting_date_time">Set waiting time and date for the answer</string>
     <string name="or">Or</string>
     <string name="waiting_until_start_date_time_checkbox">Waiting until start date time</string>
     <string name="employee_status">Status: </string>
+    <string name="empty">Empty</string>
+    <string name="black_list">Black list</string>
     <string name="employee_status_custom">Status: will active since </string>
     <string name="do_not_show_employees_with_multivacancy">Do not show employees with multivacancy</string>
     <string name="multivacancy_is_allowed">Allow accept many vacancies in the same time</string>
+    <string name="waiting">Waiting...</string>
 </resources>

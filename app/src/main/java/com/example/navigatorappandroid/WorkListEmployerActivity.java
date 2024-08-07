@@ -10,43 +10,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.LanguageHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.User;
-import com.example.navigatorappandroid.retrofit.AuthApi;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
-import com.example.navigatorappandroid.retrofit.SearchApi;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
-import com.example.navigatorappandroid.retrofit.response.LoginResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WorkListEmployerActivity extends AppCompatActivity {
+public class WorkListEmployerActivity extends BaseActivity {
     private LanguageHandler languageHandler;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -54,57 +50,25 @@ public class WorkListEmployerActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private LocationUpdateHandler locationUpdateHandler;
     private Location lastKnownLocation;
-    private LinearLayout linearLayout;
+    private LinearLayout searchSettingsLayout;
     private LinearLayout searchResultsLayout;
-    private RetrofitService retrofitService;
-    private GeneralApi generalApi;
-    private SearchApi searchApi;
-    private AuthApi authApi;
-    private UserInfoResponse userInfoResponse;
+    private boolean isSortRequestOpened = false;
+    private boolean isFiltersRequestOpened = false;
+    private Button sortRequestButton;
+    private Button filterRequestButton;
+    private HashMap<String, View> viewMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, LoginActivity.class);
-        retrofitService = new RetrofitService();
-        searchApi = retrofitService.getRetrofit().create(SearchApi.class);
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        authApi = retrofitService.getRetrofit().create(AuthApi.class);
-        authApi.authCheck().enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (!response.body().isResult()) {
-                    intent.putExtra("is_auth_error", true);
-                    startActivity(intent);
-                }
-            }
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                intent.putExtra("is_auth_error", true);
-                startActivity(intent);
-            }
-        });
         setContentView(R.layout.activity_work_list_employer);
+        sortRequestButton = findViewById(R.id.sort_request);
+        filterRequestButton = findViewById(R.id.filters_request);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         languageHandler = new LanguageHandler();
-        linearLayout = findViewById(R.id.work_list_employer_sort_request_layout);
+        searchSettingsLayout = findViewById(R.id.work_list_employer_sort_request_layout);
         searchResultsLayout = findViewById(R.id.work_list_employer_search_results_layout);
-        retrofitService = new RetrofitService();
-        searchApi = retrofitService.getRetrofit().create(SearchApi.class);
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
         changeSortRequestFieldCondition();
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
-            @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                userInfoResponse = response.body();
-            }
-            @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(WorkListEmployerActivity.this, "error: 'getUserInfo' " +
-                        "method is failure", Toast.LENGTH_SHORT).show();
-            }
-        });
-        Bundle arguments = getIntent().getExtras();
         if (arguments != null && arguments.get("profession") != null) {
             executeSearchForEmployees(arguments.getString("profession"));
         }
@@ -158,16 +122,6 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         }
     }
 
-    private void enableLinearLayout() {
-        linearLayout.setEnabled(true);
-        linearLayout.setVisibility(View.VISIBLE);
-        for (int i = 0; i < linearLayout.getChildCount(); i++) {
-            View child = linearLayout.getChildAt(i);
-            child.setEnabled(true);
-            child.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void getDeviceLocation() {
         try {
             if (locationPermissionGranted) {
@@ -186,18 +140,147 @@ public class WorkListEmployerActivity extends AppCompatActivity {
         }
     }
 
+    public void changeSearchSettingsLayoutCondition(View view) {
+        searchSettingsLayout.removeAllViews();
+        if (view.getContentDescription().toString().equals("sort")) {
+            if (isSortRequestOpened) {
+                isSortRequestOpened = false;
+                sortRequestButton.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                        ContextCompat.getDrawable(this, R.drawable.baseline_arrow_downward_24), null);
+            } else {
+                isSortRequestOpened = true;
+                RadioGroup radioGroup = new RadioGroup(searchResultsLayout.getContext());
+                radioGroup.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout.LayoutParams groupParams = new LinearLayout.LayoutParams
+                        (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                radioGroup.setLayoutParams(groupParams);
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                        executeSearchForEmployees(arguments.getString("profession"));
+                    }
+                });
+                for (int i = 0; i < 3; i++) {
+                    RadioButton radioButton = new RadioButton(searchResultsLayout.getContext());
+                    radioButton.setId(View.generateViewId());
+                    radioButton.setText(getResources().getString(R.string.sort_by_persons_name));
+                    radioButton.setBackground(ContextCompat.getDrawable(this, R.color.custom_gray_blue));
+                    LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams
+                            (LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(
+                                    TypedValue.COMPLEX_UNIT_DIP, 50, view.getResources().getDisplayMetrics()));
+                    radioButton.setLayoutParams(buttonParams);
+                    switch (i) {
+                        case 1:
+                            viewMap.put("rating", radioButton);
+                            radioButton.setContentDescription("rating");
+                            break;
+                        case 2:
+                            viewMap.put("location", radioButton);
+                            radioButton.setContentDescription("location");
+                            break;
+                        default:
+                            viewMap.put("name", radioButton);
+                            radioButton.setContentDescription("name");
+                    }
+                    radioGroup.addView(radioButton);
+                }
+                searchSettingsLayout.addView(radioGroup);
+                viewMap.put("radio_group", radioGroup);
+                TextView seekbarTextView = new TextView(searchResultsLayout.getContext());
+                LinearLayout.LayoutParams seekbarTextParams = new LinearLayout.LayoutParams
+                        (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                seekbarTextView.setLayoutParams(seekbarTextParams);
+                seekbarTextView.setBackground(ContextCompat.getDrawable(this, R.color.custom_gray_blue));
+                seekbarTextView.setTextColor(getResources().getColor(R.color.black));
+                seekbarTextView.setText(R.string.in_radius_of);
+                searchSettingsLayout.addView(seekbarTextView);
+                SeekBar seekBar = new SeekBar(searchResultsLayout.getContext());
+                LinearLayout.LayoutParams seekbarParams = new LinearLayout.LayoutParams
+                        (LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP, 48, view.getResources().getDisplayMetrics()));
+                seekBar.setLayoutParams(seekbarParams);
+                seekBar.setBackground(ContextCompat.getDrawable(this, R.color.custom_gray_blue));
+                seekBar.setMin(1);
+                seekBar.setMax(50);
+                seekBar.setProgress(25);
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                        executeSearchForEmployees(arguments.getString("profession"));
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {}
+                });
+                searchSettingsLayout.addView(seekBar);
+                viewMap.put("seekbar", seekBar);
+                sortRequestButton.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                        ContextCompat.getDrawable(this, R.drawable.baseline_arrow_upward_24), null);
+            }
+        } else {
+            CheckBox isAutoCheckbox = new CheckBox(searchResultsLayout.getContext());
+            LinearLayout.LayoutParams checkboxParams = new LinearLayout.LayoutParams
+                    (LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 50, view.getResources().getDisplayMetrics()));
+            isAutoCheckbox.setLayoutParams(checkboxParams);
+            isAutoCheckbox.setText(R.string.is_auto);
+            isAutoCheckbox.setBackground(ContextCompat.getDrawable(this, R.color.custom_gray_blue));
+            isAutoCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    executeSearchForEmployees(arguments.getString("profession"));
+                }
+            });
+            viewMap.put("is_auto", isAutoCheckbox);
+            searchSettingsLayout.addView(isAutoCheckbox);
+            CheckBox showTemporarilyInactiveCheckbox = new CheckBox(searchResultsLayout.getContext());
+            showTemporarilyInactiveCheckbox.setLayoutParams(checkboxParams);
+            showTemporarilyInactiveCheckbox.setText(R.string.show_temporarily_inactive_employees);
+            showTemporarilyInactiveCheckbox.setBackground(ContextCompat.getDrawable(this, R.color.custom_gray_blue));
+            showTemporarilyInactiveCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    executeSearchForEmployees(arguments.getString("profession"));
+                }
+            });
+            viewMap.put("show_temporarily_inactive", showTemporarilyInactiveCheckbox);
+            searchSettingsLayout.addView(showTemporarilyInactiveCheckbox);
+            if (isFiltersRequestOpened) {
+                isFiltersRequestOpened = false;
+                filterRequestButton.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                        ContextCompat.getDrawable(this, R.drawable.baseline_arrow_downward_24), null);
+            } else {
+                filterRequestButton.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                        ContextCompat.getDrawable(this, R.drawable.baseline_arrow_upward_24), null);
+            }
+        }
+    }
+
+    private void enableLinearLayout() {
+        searchSettingsLayout.setEnabled(true);
+        searchSettingsLayout.setVisibility(View.VISIBLE);
+        for (int i = 0; i < searchSettingsLayout.getChildCount(); i++) {
+            View child = searchSettingsLayout.getChildAt(i);
+            child.setEnabled(true);
+            child.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void disableLinearLayout() {
-        linearLayout.setEnabled(false);
-        linearLayout.setVisibility(View.INVISIBLE);
-        for (int i = 0; i < linearLayout.getChildCount(); i++) {
-            View child = linearLayout.getChildAt(i);
+        searchSettingsLayout.setEnabled(false);
+        searchSettingsLayout.setVisibility(View.INVISIBLE);
+        for (int i = 0; i < searchSettingsLayout.getChildCount(); i++) {
+            View child = searchSettingsLayout.getChildAt(i);
             child.setEnabled(false);
             child.setVisibility(View.INVISIBLE);
         }
     }
 
     private void changeSortRequestFieldCondition() {
-        if (linearLayout.isEnabled()) {
+        if (searchSettingsLayout.isEnabled()) {
             disableLinearLayout();
         } else {
             enableLinearLayout();
@@ -252,34 +335,27 @@ public class WorkListEmployerActivity extends AppCompatActivity {
     public void onChatsClick(View view) {
     }
 
+    public void onAddLanguagesClick(View view) {
+    }
+
     private void executeSearchForEmployees(String profession) {
         searchResultsLayout.removeAllViews();
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.setProfessionName(profession);
-                RadioGroup radioGroup = linearLayout.findViewById(R.id.radio_group);
-        radioGroup.setOnCheckedChangeListener((radiogroup, id)-> {
-            RadioButton radio = findViewById(id);
-            switch (radio.getContentDescription().toString()) {
-                case "name":
-                    searchRequest.setSortType("name");
-                    break;
-                case "rating":
-                    searchRequest.setSortType("rating");
-                    break;
-                case "location":
-                    searchRequest.setSortType("location");
-                    break;
-                default:
-                    searchRequest.setSortType("");
-                    break;
-            }
-        });
-        SeekBar seekBar = linearLayout.findViewById(R.id.seekbar);
+        RadioGroup radioGroup = (RadioGroup) viewMap.get("radio_group");
+        int checkedButtonId = radioGroup.getCheckedRadioButtonId();
+        if (checkedButtonId != -1) {
+            RadioButton checkedButton = findViewById(checkedButtonId);
+            searchRequest.setSortType(checkedButton.getContentDescription().toString());
+        } else {
+            searchRequest.setSortType("");
+        }
+        SeekBar seekBar = (SeekBar) viewMap.get("seekbar");
         searchRequest.setInRadiusOf(seekBar.getProgress());
-        CheckBox autoCheckBox = linearLayout.findViewById(R.id.is_auto_checkbox);
+        CheckBox autoCheckBox = (CheckBox) viewMap.get("is_auto");
         searchRequest.setAuto(autoCheckBox.isChecked());
         searchRequest.setMultivacancyAllowed(userInfoResponse.getEmployerRequests().isMultivacancyAllowedInSearch());
-        CheckBox showTemporarilyInactiveEmployeescheckBox = linearLayout.findViewById(R.id.show_temporarily_inactive_employees);
+        CheckBox showTemporarilyInactiveEmployeescheckBox = (CheckBox) viewMap.get("show_temporarily_inactive");
         searchRequest.setShowTemporarilyInactiveEmployees(showTemporarilyInactiveEmployeescheckBox.isChecked());
         searchRequest.setLimit(userInfoResponse.getLimitForTheSearch());
         searchRequest.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());

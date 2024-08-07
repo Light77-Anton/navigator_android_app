@@ -74,7 +74,6 @@
     <string name="choose_profession">Выберите профессию</string>
     <string name="write_additional_info">Дайте дополнительную информацию о профессии, если необходимо</string>
     <string name="change_password">Изменить пароль -></string>
-    <string name="additional_info_for_employers_hint">Дополнительная информация для работодателей на русском (опционально)</string>
     <string name="active">Активен</string>
     <string name="inactive">Неактивен</string>
     <string name="temporarily_inactive">Временно неактивен</string>
@@ -92,6 +91,7 @@
     <string name="is_vacancy_active">Вакансия активна?</string>
     <string name="choice_communication_language_info">Выберите язык коммуникации; если вы не выберите  - в противном случае он не будет учитываться в поиске</string>
     <string name="sort_request">Сортировка запроса</string>
+    <string name="filters_request">Фильтры</string>
     <string name="filters"><u>Фильтры :</u></string>
     <string name="sort_by"><u>Сортировать по :</u></string>
     <string name="sort_by_persons_name">Сортировать по имени пользователя</string>
@@ -116,14 +116,17 @@
     <string name="saved_persons">Сохраненные контакты</string>
     <string name="contacted_persons">Contacted persons</string>
     <string name="show_extended_info">Показать расширенную информацию</string>
-    <string name="additional_languages">Дополнительные языки</string>
+    <string name="additional_languages">Дополнительные языки +</string>
     <string name="create_new_vacancy">Создать новою вакансию</string>
     <string name="choose_vacancy_from_my_list">Выберите вакансию из списка</string>
     <string name="set_waiting_date_time">Установить время и дату ожидания для ответа</string>
     <string name="or">Или</string>
     <string name="waiting_until_start_date_time_checkbox">Ожидать до времени и даты начала</string>
     <string name="employee_status">Статус: </string>
+    <string name="empty">Пусто</string>
+    <string name="black_list">Черный список</string>
     <string name="employee_status_custom">Статус: будет активен с </string>
     <string name="do_not_show_employees_with_multivacancy">Не показывать рабочих с мультивакансией</string>
     <string name="multivacancy_is_allowed">Разрешить принимать множество вакансий одновременно</string>
+    <string name="waiting">Ожидание...</string>
 </resources>

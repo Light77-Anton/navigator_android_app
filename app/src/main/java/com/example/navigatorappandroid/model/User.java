@@ -2,6 +2,7 @@ package com.example.navigatorappandroid.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,8 +19,6 @@ public class User {
 
     private String interfaceLanguage;
 
-    private List<Vote> votes;
-
     private byte ranking;
 
     private boolean isBlocked;
@@ -27,6 +26,16 @@ public class User {
     private boolean isActivated;
 
     private String name;
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    private LocalDate birthDate;
 
     private String email;
     private boolean isEmailHidden;
@@ -54,6 +63,46 @@ public class User {
     private List<ChatMessage> sentMessages;
 
     private List<ChatMessage> receivedMessages;
+
+    private List<Comment> commentsFromUser;
+
+    private List<Comment> commentsToUser;
+
+    public List<Comment> getCommentsFromUser() {
+        return commentsFromUser;
+    }
+
+    public void setCommentsFromUser(List<Comment> commentsFromUser) {
+        this.commentsFromUser = commentsFromUser;
+    }
+
+    public List<Comment> getCommentsToUser() {
+        return commentsToUser;
+    }
+
+    public void setCommentsToUser(List<Comment> commentsToUser) {
+        this.commentsToUser = commentsToUser;
+    }
+
+    public List<Vote> getVotesFromUser() {
+        return votesFromUser;
+    }
+
+    public void setVotesFromUser(List<Vote> votesFromUser) {
+        this.votesFromUser = votesFromUser;
+    }
+
+    public List<Vote> getVotesToUser() {
+        return votesToUser;
+    }
+
+    public void setVotesToUser(List<Vote> votesToUser) {
+        this.votesToUser = votesToUser;
+    }
+
+    private List<Vote> votesFromUser;
+
+    private List<Vote> votesToUser;
 
     private EmployeeData employeeData;
 
@@ -181,14 +230,6 @@ public class User {
 
     public void setInterfaceLanguage(String interfaceLanguage) {
         this.interfaceLanguage = interfaceLanguage;
-    }
-
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
     }
 
     public boolean isBlocked() {

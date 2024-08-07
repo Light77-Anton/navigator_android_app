@@ -6,11 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Vote {
+public class Comment {
 
     private Long id;
 
-    private byte value;
+    private User sender;
 
     public Long getId() {
         return id;
@@ -18,14 +18,6 @@ public class Vote {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public byte getValue() {
-        return value;
-    }
-
-    public void setValue(byte value) {
-        this.value = value;
     }
 
     public User getSender() {
@@ -44,7 +36,15 @@ public class Vote {
         this.recipient = recipient;
     }
 
-    private User sender;
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     private User recipient;
+
+    private String content;
 }

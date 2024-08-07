@@ -26,7 +26,6 @@ public class VacanciesListActivity  extends AppCompatActivity {
 
     private RetrofitService retrofitService;
     private GeneralApi generalApi;
-    private SearchApi searchApi;
     private UserInfoResponse userInfoResponse;
     private View entireView;
     private LinearLayout linearLayout;

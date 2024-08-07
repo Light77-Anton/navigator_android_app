@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.retrofit.AuthApi;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
 import com.example.navigatorappandroid.retrofit.RetrofitService;
@@ -142,7 +144,8 @@ public class EmployerSettingsActivity extends AppCompatActivity {
         interfaceLanguageSpinner.setAdapter(languagesAdapter);
         int spinnerInterfaceLanguagePosition = languagesAdapter.getPosition(interfaceLanguage);
         interfaceLanguageSpinner.setSelection(spinnerInterfaceLanguagePosition);
-        List<String> communicationLanguages = userInfoResponse.getCommunicationLanguages();
+        List<String> communicationLanguages = userInfoResponse.getCommunicationLanguages().stream()
+                .map(Language::getLanguageEndonym).collect(Collectors.toList());
         communicationLanguagesSpinner = findViewById(R.id.communication_language_first);
         communicationLanguagesSpinner.setAdapter(languagesAdapter);
         ArrayList<Integer> multiSpinnerPositions = new ArrayList<>();

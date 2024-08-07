@@ -12,6 +12,15 @@ public class EmployeeData {
     private boolean isDriverLicense;
     private boolean isAuto;
 
+    public List<Vacancy> getAcceptedVacancies() {
+        return acceptedVacancies;
+    }
+
+    public void setAcceptedVacancies(List<Vacancy> acceptedVacancies) {
+        this.acceptedVacancies = acceptedVacancies;
+    }
+
+    private List<Vacancy> acceptedVacancies;
     private boolean isMultivacancyAllowed;
     private List<InfoFromEmployee> infoFromEmployee;
     private byte status;

@@ -20,6 +20,16 @@ public class Profession {
     private List<ProfessionName> professionNames;
     private List<LastRequest> lastRequests;
 
+    public long getDefaultOfferRefusingTimeMillis() {
+        return defaultOfferRefusingTimeMillis;
+    }
+
+    public void setDefaultOfferRefusingTimeMillis(long defaultOfferRefusingTimeMillis) {
+        this.defaultOfferRefusingTimeMillis = defaultOfferRefusingTimeMillis;
+    }
+
+    private long defaultOfferRefusingTimeMillis;
+
     public List<LastRequest> getLastRequests() {
         return lastRequests;
     }
