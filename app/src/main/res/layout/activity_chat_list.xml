@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="Chat list activity"
     android:id="@+id/chat_list_layout"
     android:orientation="vertical"
     android:background="@drawable/chat_background"
@@ -37,9 +38,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <android.widget.Button
+                android:id="@+id/all_chats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rectangle_button"
+                android:text="@string/all"
+                android:padding="10dp"
+                android:onClick="onAllClick"
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="30sp"/>
+            <android.widget.Button
+                android:id="@+id/favorites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/rectangle_button"
                 android:text="@string/saved_persons"
                 android:drawableRight="@drawable/rate_star"
@@ -49,9 +63,10 @@
                 android:textColor="@color/white"
                 android:textSize="30sp"/>
             <android.widget.Button
+                android:id="@+id/contacted_persons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/rectangle_button"
                 android:text="@string/contacted_persons"
                 android:drawableRight="@drawable/default_user_avatar"
@@ -61,9 +76,10 @@
                 android:textColor="@color/white"
                 android:textSize="30sp"/>
             <android.widget.Button
+                android:id="@+id/black_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/rectangle_button"
                 android:text="@string/black_list"
                 android:padding="10dp"
@@ -71,39 +87,6 @@
                 android:drawableRight="@drawable/inactive"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="30sp"/>
-            <android.widget.Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:padding="5dp"
-                android:background="@drawable/gray_blue_rectangle"
-                android:text="1   Вася Пупкин"
-                android:drawableLeft="@drawable/message_sign"
-                android:textAlignment="textStart"
-                android:textColor="@color/red"
-                android:textSize="30sp"/>
-            <android.widget.Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:padding="5dp"
-                android:background="@drawable/gray_blue_rectangle"
-                android:text="0   Антон Бауман"
-                android:drawableLeft="@drawable/message_sign"
-                android:textAlignment="textStart"
-                android:textColor="@color/black"
-                android:textSize="30sp"/>
-            <android.widget.Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:padding="5dp"
-                android:background="@drawable/gray_blue_rectangle"
-                android:text="0   Вадим Бауман"
-                android:drawableLeft="@drawable/message_sign"
-                android:textAlignment="textStart"
-                android:textColor="@color/black"
                 android:textSize="30sp"/>
         </LinearLayout>
     </ScrollView>

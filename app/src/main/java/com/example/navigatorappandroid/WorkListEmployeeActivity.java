@@ -18,9 +18,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+
+import com.example.navigatorappandroid.dto.KeyValuePairDTO;
 import com.example.navigatorappandroid.handler.EmployeeStatusHandler;
 import com.example.navigatorappandroid.handler.LanguageHandler;
 import com.example.navigatorappandroid.handler.LocationUpdateHandler;
+import com.example.navigatorappandroid.model.ChatMessage;
+import com.example.navigatorappandroid.model.EmployerRequests;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.model.Vacancy;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
@@ -43,10 +48,8 @@ public class WorkListEmployeeActivity extends BaseActivity {
 
     private LanguageHandler languageHandler;
     private LocationUpdateHandler locationUpdateHandler;
-
     private Location lastKnownLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
-
     private boolean locationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private EmployeeStatusHandler employeeStatusHandler;
@@ -57,6 +60,8 @@ public class WorkListEmployeeActivity extends BaseActivity {
     private Button sortRequestButton;
     private Button filterRequestButton;
     private HashMap<String, View> viewMap;
+    private Button toChatsButton;
+    private Button statusButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +75,8 @@ public class WorkListEmployeeActivity extends BaseActivity {
         searchResultsLayout = findViewById(R.id.work_list_employee_search_results_layout);
         changeSortRequestFieldCondition();
         if (arguments != null && arguments.get("profession") != null) {
-            executeSearchForVacancies(arguments.getString("profession"));
+            executeSearchForVacancies(arguments.getString("profession"),
+                    arguments.getStringArray("languages_array"));
         }
         Resources resources = getResources();
         Configuration configuration = resources.getConfiguration();
@@ -84,6 +90,8 @@ public class WorkListEmployeeActivity extends BaseActivity {
         if (userInfoResponse.getEmployeeData().getStatus() == 2) {
             employeeStatusHandler = new EmployeeStatusHandler();
         }
+        setCurrentStatus();
+        countUnreadChatMessages();
     }
 
     @Override
@@ -194,7 +202,8 @@ public class WorkListEmployeeActivity extends BaseActivity {
                 radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                        executeSearchForVacancies(arguments.getString("profession"));
+                        executeSearchForVacancies(arguments.getString("profession")
+                                , arguments.getStringArray("languages_array"));
                     }
                 });
                 for (int i = 0; i < 3; i++) {
@@ -243,7 +252,8 @@ public class WorkListEmployeeActivity extends BaseActivity {
                 seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                        executeSearchForVacancies(arguments.getString("profession"));
+                        executeSearchForVacancies(arguments.getString("profession"),
+                                arguments.getStringArray("languages_array"));
                     }
 
                     @Override
@@ -280,6 +290,26 @@ public class WorkListEmployeeActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    private void setCurrentStatus() {
+        byte currentStatus = userInfoResponse.getEmployeeData().getStatus();
+        switch (currentStatus) {
+            case 0:
+                statusButton.setCompoundDrawablesWithIntrinsicBounds(
+                        null, null,
+                        ContextCompat.getDrawable(this, R.drawable.inactive), null);
+                break;
+            case 1:
+                statusButton.setCompoundDrawablesWithIntrinsicBounds(
+                        null, null,
+                        ContextCompat.getDrawable(this, R.drawable.active), null);
+                break;
+            default:
+                statusButton.setCompoundDrawablesWithIntrinsicBounds(
+                        null, null,
+                        ContextCompat.getDrawable(this, R.drawable.temporarily_inactive), null);
+        }
+    }
+
     public void onStatusClick(View view) {
         Intent intent = new Intent(this, EmployeeStatusActivity.class);
         startActivity(intent);
@@ -301,18 +331,41 @@ public class WorkListEmployeeActivity extends BaseActivity {
     }
 
     public void onTimersClick(View view) {
+        Intent intent = new Intent(this, TimersListActivity.class);
+        startActivity(intent);
+    }
+
+    private void countUnreadChatMessages() {
+        int unreadChatMessages = 0;
+        List<ChatMessage> receivedMessages = userInfoResponse.getReceivedMessages();
+        for (ChatMessage chatMessage : receivedMessages) {
+            if (chatMessage.getStatus().equals("Sent")) {
+                unreadChatMessages++;
+            }
+        }
+        toChatsButton.setText(unreadChatMessages);
+        if (unreadChatMessages == 0) {
+            toChatsButton.setBackground(ContextCompat.getDrawable(this, R.drawable.gray_blue_circle));
+        } else {
+            toChatsButton.setBackground(ContextCompat.getDrawable(this, R.drawable.red_circle));
+        }
     }
 
     public void onChatsClick(View view) {
+        Intent intent = new Intent(this, ChatListActivity.class);
+        startActivity(intent);
     }
 
     public void onAddLanguagesClick(View view) {
+        Intent intent = new Intent(this, ChooseAdditionalLanguagesActivity.class);
+        startActivity(intent);
     }
 
-    private void executeSearchForVacancies(String profession) {
+    private void executeSearchForVacancies(String profession, String[] additionalLanguages) {
         searchResultsLayout.removeAllViews();
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.setProfessionName(profession);
+        searchRequest.setAdditionalLanguages(additionalLanguages);
         RadioGroup radioGroup = (RadioGroup) viewMap.get("radio_group");
         int checkedButtonId = radioGroup.getCheckedRadioButtonId();
         if (checkedButtonId != -1) {
@@ -360,8 +413,8 @@ public class WorkListEmployeeActivity extends BaseActivity {
     }
 
     private void addVacancyButton(User employer, Vacancy vacancy, double distance) {
-        long employerId = employer.getId();
-        long vacancyId = vacancy.getId();
+        String employerId = employer.getId().toString();
+        String vacancyId = vacancy.getId().toString();
         String name = employer.getName();
         byte rating = employer.getRanking();
         Button button = new Button(searchResultsLayout.getContext());

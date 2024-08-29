@@ -68,8 +68,8 @@ public class EmployeeExtendedInfoActivity extends AppCompatActivity {
         Button chatButton = relativeLayout.findViewById(R.id.open_chat);
         chatApi = retrofitService.getRetrofit().create(ChatApi.class);
         ChatRequest chatRequest = new ChatRequest();
-        chatRequest.setSenderId(userInfoResponse.getId());
-        chatRequest.setRecipientId(Long.parseLong(arguments.getString("id")));
+        chatRequest.setEmployeeId(userInfoResponse.getId());
+        chatRequest.setEmployerId(Long.parseLong(arguments.getString("id")));
         chatApi.openChat(chatRequest).enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {

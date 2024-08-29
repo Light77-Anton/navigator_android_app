@@ -11,7 +11,20 @@ import lombok.Setter;
 public class EmployerRequests {
 
     private Long id;
-    private String firmName;
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public void setVacancies(List<Vacancy> vacancies) {
+        this.vacancies = vacancies;
+    }
+
+    private Company company;
 
     private boolean isMultivacancyAllowedInSearch;
     private List<Vacancy> vacancies;
@@ -43,13 +56,6 @@ public class EmployerRequests {
         this.id = id;
     }
 
-    public String getFirmName() {
-        return firmName;
-    }
-
-    public void setFirmName(String firmName) {
-        this.firmName = firmName;
-    }
 
     public List<Vacancy> getVacancies() {
         return vacancies;

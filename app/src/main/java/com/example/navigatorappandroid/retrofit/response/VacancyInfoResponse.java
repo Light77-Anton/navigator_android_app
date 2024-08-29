@@ -1,5 +1,5 @@
 package com.example.navigatorappandroid.retrofit.response;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
@@ -24,12 +24,20 @@ public class VacancyInfoResponse {
         this.jobAddress = jobAddress;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
+    }
+
+    public LocalDateTime getVacancyAvailability() {
+        return vacancyAvailability;
+    }
+
+    public void setVacancyAvailability(LocalDateTime vacancyAvailability) {
+        this.vacancyAvailability = vacancyAvailability;
     }
 
     public String getPaymentAndAdditionalInfo() {
@@ -40,6 +48,7 @@ public class VacancyInfoResponse {
         this.paymentAndAdditionalInfo = paymentAndAdditionalInfo;
     }
 
-    private LocalDate localDate;
+    private LocalDateTime localDateTime;
+    private LocalDateTime vacancyAvailability;
     private String paymentAndAdditionalInfo;
 }

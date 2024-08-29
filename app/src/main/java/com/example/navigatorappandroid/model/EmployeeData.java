@@ -30,6 +30,16 @@ public class EmployeeData {
     private List<Profession> professions;
     private List<EmployerRequests> contactedEmployers;
 
+    public List<Comment> getCommentsToCompany() {
+        return commentsToCompany;
+    }
+
+    public void setCommentsToCompany(List<Comment> commentsToCompany) {
+        this.commentsToCompany = commentsToCompany;
+    }
+
+    private List<Comment> commentsToCompany;
+
     public boolean isMultivacancyAllowed() {
         return isMultivacancyAllowed;
     }
@@ -108,6 +118,4 @@ public class EmployeeData {
     public void setEmployee(User employee) {
         this.employee = employee;
     }
-
-
 }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:tag="Chat settings activity"
     android:id="@+id/chat_settings_layout"
+    tools:context=".ChatSettingsActivity"
     android:orientation="vertical"
     android:background="@drawable/chat_background"
     android:layout_width="match_parent"
@@ -26,25 +29,33 @@
         android:textColor="@color/white"
         android:textSize="30sp"/>
     <android.widget.Button
-        android:id="@+id/to_favorites"
+        android:id="@+id/extended_info_button"
         android:contentDescription="."
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="200dp"
-        android:onClick="onToFavorites"
-        android:text="Добавить в фавориты"
+        android:onClick="onExtendedInfo"
         android:textColor="@color/black"
         android:textSize="30sp"
-        android:background="@color/custom_green" />
+        android:background="@color/dark_yellow"/>
     <android.widget.Button
-        android:id="@+id/to_black_list"
+        android:id="@+id/favorite_button"
         android:contentDescription="."
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="400dp"
-        android:onClick="onToBlackList"
-        android:text="Добавить в черный список"
+        android:onClick="onFavorite"
         android:textColor="@color/black"
         android:textSize="30sp"
-        android:background="@color/red" />
+        android:background="@color/custom_green"/>
+    <android.widget.Button
+        android:id="@+id/black_list_button"
+        android:contentDescription="."
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="600dp"
+        android:onClick="onBlackList"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:background="@color/red"/>
 </RelativeLayout>

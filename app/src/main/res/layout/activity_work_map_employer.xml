@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:tag="Employer work map activity"
     tools:context=".WorkMapEmployerActivity"
     android:id="@+id/work_map_employer_layout"
     android:layout_width="match_parent"

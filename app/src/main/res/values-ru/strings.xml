@@ -74,6 +74,7 @@
     <string name="choose_profession">Выберите профессию</string>
     <string name="write_additional_info">Дайте дополнительную информацию о профессии, если необходимо</string>
     <string name="change_password">Изменить пароль -></string>
+    <string name="my_company">Моя компания -></string>
     <string name="active">Активен</string>
     <string name="inactive">Неактивен</string>
     <string name="temporarily_inactive">Временно неактивен</string>
@@ -129,4 +130,20 @@
     <string name="do_not_show_employees_with_multivacancy">Не показывать рабочих с мультивакансией</string>
     <string name="multivacancy_is_allowed">Разрешить принимать множество вакансий одновременно</string>
     <string name="waiting">Ожидание...</string>
+    <string name="all">Все</string>
+    <string name="notification">Оповещение</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="add_to_black_list">Добавить в черный список</string>
+    <string name="remove_from_favorites">Убрать из избранного</string>
+    <string name="remove_from_black_list">Убрать из черного списка</string>
+    <string name="user_was_added_to_favorites"> был добавлен в фавориты</string>
+    <string name="user_was_removed_from_favorites"> был убран из фаворитов</string>
+    <string name="user_was_added_to_black_list"> был добавлен в черный список</string>
+    <string name="user_was_removed_from_black_list"> был убран из черного списка</string>
+    <string name="save_vacancy_as_template">Сохранить вакансию как шаблон?</string>
+    <string name="rate_user_now_or_later">Вы можете оценить пользователя сейчас или позже в настройках</string>
+    <string name="go_to_rate_user">Оценить пользователя</string>
+    <string name="skip">Пропустить</string>
+    <string name="agreed_time_has_come">Согласованное время пришло</string>
+    <string name="hidden">Скрыто</string>
 </resources>

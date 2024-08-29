@@ -11,6 +11,17 @@ public class SearchRequest {
 
     @JsonProperty("profession")
     private String professionName;
+
+    public String[] getAdditionalLanguages() {
+        return additionalLanguages;
+    }
+
+    public void setAdditionalLanguages(String[] additionalLanguages) {
+        this.additionalLanguages = additionalLanguages;
+    }
+
+    @JsonProperty("additional_languages")
+    private String[] additionalLanguages;
     @JsonProperty("limit")
     private int limit;
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="Settings employer activity"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -61,18 +62,17 @@
                 android:inputType="text"
                 android:paddingStart="15dp"
                 app:drawableEndCompat="@drawable/ic_star"/>
-            <EditText
-                android:id="@+id/firm_name"
+            <Button
+                android:id="@+id/company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edit_text"
-                android:hint="@string/firm_name"
-                android:textColorHint="@color/white"
                 android:textColor="@color/white"
-                android:textSize="40sp"
-                android:inputType="text"
-                android:paddingStart="15dp" />
+                android:textSize="30sp"
+                android:text="@string/my_company"
+                android:onClick="onChangePasswordClick"
+                android:paddingStart="15dp"/>
             <Button
                 android:id="@+id/password"
                 android:layout_width="match_parent"

@@ -20,6 +20,7 @@ import com.example.navigatorappandroid.retrofit.response.IdResponse;
 import com.example.navigatorappandroid.retrofit.response.JobListResponse;
 import com.example.navigatorappandroid.retrofit.response.ProfessionNamesListResponse;
 import com.example.navigatorappandroid.retrofit.response.ProfessionToUserResponse;
+import com.example.navigatorappandroid.retrofit.response.RelationshipStatusResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.MapTextResponse;
@@ -100,9 +101,14 @@ public interface GeneralApi {
     @POST("api/employer/search/passive")
     Call<ResultErrorsResponse> setPassiveSearch(@Body VacancyRequest vacancyRequest);
 
+    @POST("api/user/{id}/favorite/{decision}")
+    Call<ResultErrorsResponse> favorite(@Query("id") String id, @Query("decision") String decision);
+
     @POST("api/user/{id}/blacklist/{decision}")
-    Call<ResultErrorsResponse> blacklist(@Query("favoriteId") String favoriteId,
-                                        @Query("decision") String decision);
+    Call<ResultErrorsResponse> blacklist(@Query("id") String id, @Query("decision") String decision);
+
+    @GET("api/user/{id}/relationship/status")
+    Call<RelationshipStatusResponse> getRelationshipStatus(@Query("id") String id);
 
     @GET("api/user/sender/get")
     Call<User> getSender(Principal principal);

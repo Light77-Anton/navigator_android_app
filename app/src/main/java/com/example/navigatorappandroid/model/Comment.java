@@ -12,6 +12,14 @@ public class Comment {
 
     private User sender;
 
+    private User recipient;
+
+    private EmployeeData employeeSender;
+
+    private Company companyRecipient;
+
+    private boolean isOfficialComment;
+
     public Long getId() {
         return id;
     }
@@ -36,6 +44,46 @@ public class Comment {
         this.recipient = recipient;
     }
 
+    public EmployeeData getEmployeeSender() {
+        return employeeSender;
+    }
+
+    public void setEmployeeSender(EmployeeData employeeSender) {
+        this.employeeSender = employeeSender;
+    }
+
+    public Company getCompanyRecipient() {
+        return companyRecipient;
+    }
+
+    public void setCompanyRecipient(Company companyRecipient) {
+        this.companyRecipient = companyRecipient;
+    }
+
+    public boolean isOfficialComment() {
+        return isOfficialComment;
+    }
+
+    public void setOfficialComment(boolean officialComment) {
+        isOfficialComment = officialComment;
+    }
+
+    public boolean isCommentForUser() {
+        return isCommentForUser;
+    }
+
+    public void setCommentForUser(boolean commentForUser) {
+        isCommentForUser = commentForUser;
+    }
+
+    public boolean isCommentForCompany() {
+        return isCommentForCompany;
+    }
+
+    public void setCommentForCompany(boolean commentForCompany) {
+        isCommentForCompany = commentForCompany;
+    }
+
     public String getContent() {
         return content;
     }
@@ -44,7 +92,9 @@ public class Comment {
         this.content = content;
     }
 
-    private User recipient;
+    private boolean isCommentForUser;
+
+    private boolean isCommentForCompany;
 
     private String content;
 }

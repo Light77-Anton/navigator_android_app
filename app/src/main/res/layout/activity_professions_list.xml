@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:tag="Professions list activity"
     tools:context=".EmployeeProfessionListActivity"
     android:background="@color/custom_gray_blue"
     android:layout_width="match_parent"

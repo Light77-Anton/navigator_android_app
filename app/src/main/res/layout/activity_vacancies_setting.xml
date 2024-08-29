@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:id="@+id/activity_vacancies_setting_scroll_view"
+    android:tag="Vacancies setting activity"
     tools:context=".EmployerVacanciesSettingActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

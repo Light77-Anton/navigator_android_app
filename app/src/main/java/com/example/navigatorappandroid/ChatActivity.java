@@ -1,5 +1,6 @@
 package com.example.navigatorappandroid;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,21 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import com.example.navigatorappandroid.model.ChatMessage;
-import com.example.navigatorappandroid.model.User;
-import com.example.navigatorappandroid.retrofit.ChatApi;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
-import com.example.navigatorappandroid.retrofit.SearchApi;
 import com.example.navigatorappandroid.retrofit.request.ChatRequest;
 import com.example.navigatorappandroid.retrofit.response.ChatMessageResponse;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.google.android.gms.common.util.IOUtils;
 import java.io.InputStream;
 import java.util.TreeSet;
@@ -35,26 +28,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends BaseActivity {
 
-    private static final int REQUEST_IMAGE_PICK = 1;
     private Uri selectedImageUri;
-    private RetrofitService retrofitService;
-    private ChatApi chatApi;
-    private GeneralApi generalApi;
-    private SearchApi searchApi;
-    private UserInfoResponse userInfoResponse;
-    private RelativeLayout relativeLayout = (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_chat, null);
-    private ScrollView scrollView = relativeLayout.findViewById(R.id.chat_scroll_view);
+    private ScrollView scrollView;
     private LinearLayout linearLayout;
     private EditText enterMessage;
     private ChatRequest chatRequest;
-    private User sender;
-    private User recipient;
+    private String userId;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+        scrollView = findViewById(R.id.chat_scroll_view);
         // Wait until the layout is ready, then scroll to the bottom
         scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -64,24 +52,17 @@ public class ChatActivity extends AppCompatActivity {
                 scrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-        linearLayout = scrollView.findViewById(R.id.chat_inside_layout);
-        retrofitService = new RetrofitService();
-        chatApi = retrofitService.getRetrofit().create(ChatApi.class);
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
-            @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                userInfoResponse = response.body();
-            }
-            @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(ChatActivity.this, "fail", Toast.LENGTH_SHORT).show();
-            }
-        });
-        Bundle arguments = getIntent().getExtras();
+        linearLayout = findViewById(R.id.chat_inside_layout);
+        userId = String.valueOf(arguments.getLong("user_id"));
+        userName = String.valueOf(arguments.getString("user_name"));
         chatRequest = new ChatRequest();
-        chatRequest.setSenderId(userInfoResponse.getId());
-        chatRequest.setRecipientId(arguments.getLong("id"));
+        if (userInfoResponse.getRole().equals("Employee")) {
+            chatRequest.setEmployeeId(userInfoResponse.getId());
+            chatRequest.setEmployerId(arguments.getLong("user_id"));
+        } else {
+            chatRequest.setEmployeeId(arguments.getLong("user_id"));
+            chatRequest.setEmployerId(userInfoResponse.getId());
+        }
         chatApi.findChatMessages(chatRequest).enqueue(new Callback<ChatMessageResponse>() {
             @Override
             public void onResponse(Call<ChatMessageResponse> call, Response<ChatMessageResponse> response) {
@@ -94,7 +75,9 @@ public class ChatActivity extends AppCompatActivity {
                                 ((int) (120 * density), (int) (120 * density));
                         imageView.setLayoutParams(layoutParams);
                         imageView.setBackgroundResource(R.drawable.gray_blue_rectangle);
-                        imageView.setImageURI();
+                        byte[] decodedBytes = Base64.decode(message.getContent(), Base64.DEFAULT);
+                        imageView.setImageBitmap(BitmapFactory.decodeByteArray
+                                (decodedBytes, 0 , decodedBytes.length));
                         if (message.getSender().getId() == userInfoResponse.getId()) {
                             layoutParams.setMargins(0, 20, 10, 0);
                             layoutParams.gravity = Gravity.RIGHT;
@@ -127,23 +110,22 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<ChatMessageResponse> call, Throwable t) {
-                Toast.makeText(ChatActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, "error: 'findChatMessages' " +
+                        "method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-        TextView recipientName = relativeLayout.findViewById(R.id.recipient_name);
-        recipientName.setText(arguments.getString("name"));
-        Button attachFileButton = relativeLayout.findViewById(R.id.attach_file);
+        TextView recipientName = findViewById(R.id.recipient_name);
+        recipientName.setText(userName);
+        Button attachFileButton = findViewById(R.id.attach_file);
         attachFileButton.setOnClickListener(view -> openGallery());
-        setContentView(R.layout.activity_chat);
-        enterMessage = relativeLayout.findViewById(R.id.enter_message);
+        enterMessage = findViewById(R.id.enter_message);
         enterMessage.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER
-                && !enterMessage.getText().toString().equals("")) {
+                && !enterMessage.getText().toString().isEmpty()) {
                     TextView textView = new TextView(linearLayout.getContext());
                     textView.setPadding(15, 15, 15, 15);
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
@@ -155,16 +137,18 @@ public class ChatActivity extends AppCompatActivity {
                     textView.setTextColor(getResources().getColor(R.color.black));
                     textView.setText(enterMessage.getText().toString());
                     textView.setLayoutParams(layoutParams);
-                    linearLayout.addView(textView);
                     chatRequest.setImage(false);
-                    chatApi.processMessage(chatRequest).enqueue(new Callback<ChatMessageResponse>() {
+                    chatRequest.setContent(enterMessage.getText().toString());
+                    chatApi.processMessage(userId, chatRequest).enqueue(new Callback<ChatMessageResponse>() {
                         @Override
                         public void onResponse(Call<ChatMessageResponse> call, Response<ChatMessageResponse> response) {
+                            linearLayout.addView(textView);
+                            chatRequest.setContent(null);
                         }
-
                         @Override
                         public void onFailure(Call<ChatMessageResponse> call, Throwable t) {
-                            Toast.makeText(ChatActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivity.this, "error: 'processMessage' " +
+                                    "method is failure", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -173,26 +157,15 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    public void onSettingsClick(View view) {
+        Intent intent = new Intent(this, ChatSettingsActivity.class);
+        intent.putExtra("user_id", userId);
+        intent.putExtra("user_name", userName);
+        startActivity(intent);
+    }
+
     public void onBack(View view) {
-        Bundle arguments = getIntent().getExtras();
-        Intent intent;
-        if (arguments.getString("page_info_role").equals("employee")) {
-            intent = new Intent(ChatActivity.this, EmployeeExtendedInfoActivity.class);
-        } else {
-            intent = new Intent(ChatActivity.this, EmployerExtendedInfoActivity.class);
-        }
-        intent.putExtra("id", arguments.getLong("id"));
-        intent.putExtra("name", arguments.getString("name"));
-        intent.putExtra("page_info_role", arguments.getString("page_info_role"));
-        intent.putExtra("rating", arguments.getString("rating"));
-        intent.putExtra("avatar", arguments.getString("avatar"));
-        intent.putExtra("status", arguments.getString("status"));
-        intent.putExtra("languages", arguments.getString("languages"));
-        intent.putExtra("professions", arguments.getString("professions"));
-        intent.putExtra("additional_info", arguments.getString("additional_info"));
-        intent.putExtra("email", arguments.getString("email"));
-        intent.putExtra("phone", arguments.getString("phone"));
-        intent.putExtra("social_networks_links", arguments.getString("social_networks_links"));
+        Intent intent = new Intent(this, ChatListActivity.class);
         startActivity(intent);
     }
 
@@ -211,13 +184,11 @@ public class ChatActivity extends AppCompatActivity {
                 float density = getResources().getDisplayMetrics().density;
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                         ((int) (120 * density), (int) (120 * density));
-                imageView.setLayoutParams(layoutParams);
-                imageView.setBackgroundResource(R.drawable.gray_blue_rectangle);
-                imageView.setImageURI(selectedImageUri);
                 layoutParams.setMargins(0, 20, 10, 0);
                 layoutParams.gravity = Gravity.RIGHT;
                 imageView.setLayoutParams(layoutParams);
-                linearLayout.addView(imageView);
+                imageView.setBackgroundResource(R.drawable.gray_blue_rectangle);
+                imageView.setImageURI(selectedImageUri);
                 InputStream inputStream = null;
                 try {
                     inputStream = getContentResolver().openInputStream(selectedImageUri);
@@ -228,17 +199,22 @@ public class ChatActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 chatRequest.setImage(true);
-                chatApi.processMessage(chatRequest).enqueue(new Callback<ChatMessageResponse>() {
-                    @Override
-                    public void onResponse(Call<ChatMessageResponse> call, Response<ChatMessageResponse> response) {
-                    }
-
-                    @Override
-                    public void onFailure(Call<ChatMessageResponse> call, Throwable t) {
-                        Toast.makeText(ChatActivity.this, "fail", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (chatRequest.getContent() != null) {
+                    chatApi.processMessage(userId, chatRequest).enqueue(new Callback<ChatMessageResponse>() {
+                        @Override
+                        public void onResponse(Call<ChatMessageResponse> call, Response<ChatMessageResponse> response) {
+                            linearLayout.addView(imageView);
+                            chatRequest.setContent(null);
+                        }
+                        @Override
+                        public void onFailure(Call<ChatMessageResponse> call, Throwable t) {
+                            Toast.makeText(ChatActivity.this, "error: 'processMessage' " +
+                                    "method is failure", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         }
     }
+
 }

@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid.retrofit.response;
+import com.example.navigatorappandroid.model.ChatMessage;
 import com.example.navigatorappandroid.model.EmployeeData;
 import com.example.navigatorappandroid.model.EmployerRequests;
 import com.example.navigatorappandroid.model.Language;
@@ -64,6 +65,16 @@ public class UserInfoResponse {
     private String lastRequest;
     private EmployeeData employeeData;
     private EmployerRequests employerRequests;
+
+    public List<ChatMessage> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(List<ChatMessage> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
+
+    private List<ChatMessage> receivedMessages;
     private LocalDateTime regTime;
     private String role;
     private String avatar;

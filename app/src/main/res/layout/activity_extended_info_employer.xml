@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="Extended info employer activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/custom_gray_blue">
@@ -43,10 +44,18 @@
             android:textColor="@color/black"
             android:textSize="30dp"/>
         <TextView
-            android:id="@+id/payment_and_additional_info"
+            android:id="@+id/vacancy_availability"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/start_date_time"
+            android:text="Vacancy availability"
+            android:textColor="@color/black"
+            android:textSize="30dp"/>
+        <TextView
+            android:id="@+id/payment_and_additional_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vacancy_availability"
             android:text="payment and additional info"
             android:textColor="@color/black"
             android:textSize="30dp"/>
@@ -150,23 +159,11 @@
             android:textColor="@color/white"
             android:textSize="50sp" />
         <android.widget.Button
-            android:id="@+id/open_chat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/give_offer"
-            android:background="@drawable/rectangle_button"
-            android:layout_marginTop="60dp"
-            android:enabled="false"
-            android:visibility="invisible"
-            android:text="@string/open_chat"
-            android:textColor="@color/white"
-            android:textSize="50sp" />
-        <android.widget.Button
             android:id="@+id/back"
             android:onClick="onBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/open_chat"
+            android:layout_below="@id/give_offer"
             android:background="@drawable/rectangle_button"
             android:text="@string/back"
             android:textColor="@color/white"

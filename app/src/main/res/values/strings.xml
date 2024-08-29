@@ -80,6 +80,7 @@
     <string name="choose_profession">Choose profession</string>
     <string name="write_additional_info">Write additional info about profession if it is necessary</string>
     <string name="change_password">Change password -></string>
+    <string name="my_company">My company -></string>
     <string name="active">Active</string>
     <string name="active_content_description" translatable="false">active</string>
     <string name="inactive">Inactive</string>
@@ -141,4 +142,20 @@
     <string name="do_not_show_employees_with_multivacancy">Do not show employees with multivacancy</string>
     <string name="multivacancy_is_allowed">Allow accept many vacancies in the same time</string>
     <string name="waiting">Waiting...</string>
+    <string name="all">All</string>
+    <string name="notification">Notification</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="add_to_black_list">Add to black list</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="remove_from_black_list">Remove from black list</string>
+    <string name="user_was_added_to_favorites"> was added to favorites</string>
+    <string name="user_was_removed_from_favorites"> was removed from favorites</string>
+    <string name="user_was_added_to_black_list"> was added to the black list</string>
+    <string name="user_was_removed_from_black_list"> was removed from the black list</string>
+    <string name="save_vacancy_as_template">Save vacancy as a template?</string>
+    <string name="rate_user_now_or_later">You can rate the user right away or you can do it after in settings</string>
+    <string name="go_to_rate_user">Go to rate the user</string>
+    <string name="skip">Skip</string>
+    <string name="agreed_time_has_come">The agreed time has come</string>
+    <string name="hidden">Hidden</string>
 </resources>

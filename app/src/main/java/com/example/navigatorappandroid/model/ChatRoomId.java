@@ -8,26 +8,26 @@ public class ChatRoomId {
 
     }
 
-    public ChatRoomId(long senderId, long recipientId) {
-        this.senderId = senderId;
-        this.recipientId = recipientId;
+    public ChatRoomId(long employeeId, long employerId) {
+        this.employeeId = employeeId;
+        this.employerId = employerId;
     }
-    private long senderId;
-    private long recipientId;
+    private long employeeId;
+    private long employerId;
 
-    public long getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(long senderId) {
-        this.senderId = senderId;
+    public long getEmployeeId() {
+        return employeeId;
     }
 
-    public long getRecipientId() {
-        return recipientId;
+    public void setEmployeeId(long employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public void setRecipientId(long recipientId) {
-        this.recipientId = recipientId;
+    public long getEmployerId() {
+        return employerId;
+    }
+
+    public void setEmployerId(long employerId) {
+        this.employerId = employerId;
     }
 }

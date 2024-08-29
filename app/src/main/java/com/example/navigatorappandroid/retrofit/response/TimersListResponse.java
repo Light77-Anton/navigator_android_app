@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class TimersListResponse {
 
+    List<TimersDTO> list;
+
     public List<TimersDTO> getList() {
         return list;
     }
@@ -14,5 +16,4 @@ public class TimersListResponse {
         this.list = list;
     }
 
-    List<TimersDTO> list;
 }

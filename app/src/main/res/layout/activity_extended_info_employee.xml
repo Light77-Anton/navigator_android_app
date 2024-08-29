@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:tag="Extended info employee activity"
     tools:context=".EmployeeExtendedInfoActivity"
     android:background="@color/custom_gray_blue"
     android:id="@+id/employee_info_scroll_view"

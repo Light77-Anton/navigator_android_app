@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:tag="Search vacancies activity"
+    tools:context=".SearchVacanciesActivity"
     android:background="@color/custom_gray_blue"
     android:orientation="vertical"
     android:layout_width="match_parent"

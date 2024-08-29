@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".NotificationActivity"
+    android:tag="Notification activity"
+    android:orientation="vertical"
+    android:background="@drawable/chat_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/notification_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/custom_gray_blue"
+        android:textAlignment="center"
+        android:text="@string/notification"
+        android:paddingStart="20dp"
+        android:textColor="@color/white"
+        android:textSize="40sp"/>
+    <LinearLayout
+        android:id="@+id/inside_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:background="@drawable/notification_background">
+    </LinearLayout>
+</RelativeLayout>
