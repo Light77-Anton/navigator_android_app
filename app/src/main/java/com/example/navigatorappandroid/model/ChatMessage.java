@@ -17,7 +17,18 @@ public class ChatMessage implements Comparable<ChatMessage> {
     private String content;
     private LocalDateTime time;
     private String status;
-    private boolean isImage;
+
+    public Vacancy getVacancy() {
+        return vacancy;
+    }
+
+    public void setVacancy(Vacancy vacancy) {
+        this.vacancy = vacancy;
+    }
+
+    private Vacancy vacancy;
+
+    private String type;
 
     public User getRecipient() {
         return recipient;
@@ -27,12 +38,12 @@ public class ChatMessage implements Comparable<ChatMessage> {
         this.recipient = recipient;
     }
 
-    public boolean isImage() {
-        return isImage;
+    public String getType() {
+        return type;
     }
 
-    public void setImage(boolean image) {
-        this.isImage = image;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getId() {

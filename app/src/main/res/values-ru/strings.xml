@@ -146,4 +146,7 @@
     <string name="skip">Пропустить</string>
     <string name="agreed_time_has_come">Согласованное время пришло</string>
     <string name="hidden">Скрыто</string>
+    <string name="offer_has_been_sent">Предложение было отправлено</string>
+    <string name="accept">Принять</string>
+    <string name="decline">Отказаться</string>
 </resources>

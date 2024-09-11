@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.navigatorappandroid.retrofit.request.ChatRequest;
+import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.response.ExtendedUserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.VacancyInfoResponse;
 import retrofit2.Call;
@@ -86,13 +87,28 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
         ChatRequest chatRequest = new ChatRequest();
         chatRequest.setEmployeeId(userInfoResponse.getId());
         chatRequest.setEmployerId(Long.parseLong(arguments.getString("employer_id")));
+        if (arguments.getString("vacancy_id") != null) {
+            Button button = findViewById(R.id.give_offer);
+            button.setVisibility(View.VISIBLE);
+            button.setClickable(true);
+        }
     }
 
     public void onSendOffer(View view) {
-        finish();
-        Intent intent = new Intent(this, EmployerExtendedInfoActivity.class); //?
-        intent.putExtras(arguments);
-        startActivity(intent);
+        VacancyRequest vacancyRequest = new VacancyRequest();
+        vacancyRequest.setVacancyId(Long.parseLong(arguments.getString("vacancy_id")));
+        chatApi.sendEmployeesOffer(arguments.getString("employer_id"), vacancyRequest).enqueue(new Callback<ExtendedUserInfoResponse>() {
+            @Override
+            public void onResponse(Call<ExtendedUserInfoResponse> call, Response<ExtendedUserInfoResponse> response) {
+                Toast.makeText(EmployerExtendedInfoActivity.this,
+                        getResources().getString(R.string.offer_has_been_sent), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onFailure(Call<ExtendedUserInfoResponse> call, Throwable t) {
+                Toast.makeText(EmployerExtendedInfoActivity.this, "Error " +
+                        "'sendEmployeesOffer' method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void onBack(View view) {

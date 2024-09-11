@@ -158,4 +158,7 @@
     <string name="skip">Skip</string>
     <string name="agreed_time_has_come">The agreed time has come</string>
     <string name="hidden">Hidden</string>
+    <string name="offer_has_been_sent">The offer has been sent</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
 </resources>

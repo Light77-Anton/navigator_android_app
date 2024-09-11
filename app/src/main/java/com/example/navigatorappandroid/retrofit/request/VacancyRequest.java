@@ -11,8 +11,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VacancyRequest implements Serializable { // возможно заменить на Parcelable
 
-    @JsonProperty("recipient_id")
-    private Long recipientId;
+    public Long getVacancyId() {
+        return vacancyId;
+    }
+
+    public void setVacancyId(Long vacancyId) {
+        this.vacancyId = vacancyId;
+    }
+
+    @JsonProperty("vacancy_id")
+    private Long vacancyId;
     @JsonProperty("profession_name")
     private String professionName;
     @JsonProperty("job_address")
@@ -21,14 +29,6 @@ public class VacancyRequest implements Serializable { // возможно зам
     private Double latitude;
     @JsonProperty("longitude")
     private Double longitude;
-
-    public Long getRecipientId() {
-        return recipientId;
-    }
-
-    public void setRecipientId(Long recipientId) {
-        this.recipientId = recipientId;
-    }
 
     public String getProfessionName() {
         return professionName;

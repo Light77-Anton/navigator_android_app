@@ -30,6 +30,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ua.naiksoftware.stomp.StompClient;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -47,6 +48,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Intent notificationIntent;
     protected String activityTag;
     private static final String CHANNEL_ID = "your_channel_id";
+    private StompClient stompClient;
+    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

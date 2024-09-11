@@ -8,18 +8,22 @@ import android.util.Base64;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import com.example.navigatorappandroid.model.ChatMessage;
 import com.example.navigatorappandroid.retrofit.request.ChatRequest;
+import com.example.navigatorappandroid.retrofit.request.DecisionRequest;
+import com.example.navigatorappandroid.retrofit.response.AnswerToOfferResponse;
 import com.example.navigatorappandroid.retrofit.response.ChatMessageResponse;
 import com.google.android.gms.common.util.IOUtils;
 import java.io.InputStream;
@@ -68,7 +72,7 @@ public class ChatActivity extends BaseActivity {
             public void onResponse(Call<ChatMessageResponse> call, Response<ChatMessageResponse> response) {
                 TreeSet<ChatMessage> set = response.body().getMessages();
                 for (ChatMessage message : set) {
-                    if (message.isImage()) {
+                    if (message.equals("Image")) {
                         ImageView imageView = new ImageView(linearLayout.getContext());
                         float density = getResources().getDisplayMetrics().density;
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
@@ -97,15 +101,37 @@ public class ChatActivity extends BaseActivity {
                         if (message.getSender().getId() == userInfoResponse.getId()) {
                             layoutParams.setMargins(0, 20, 10, 0);
                             layoutParams.gravity = Gravity.RIGHT;
-                            textView.setBackgroundResource(R.drawable.my_chat_message_background);
                             textView.setTextColor(getResources().getColor(R.color.black));
+                            if (message.getType().equals("Offer")) {
+                                textView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        showPopupMenu(view, message.getVacancy().getId());
+                                    }
+                                });
+                                textView.setBackgroundResource(R.drawable.my_chat_offer_background);
+                            } else {
+                                textView.setBackgroundResource(R.drawable.my_chat_message_background);
+                            }
                         } else {
                             layoutParams.setMargins(10, 20, 0, 0);
                             layoutParams.gravity = Gravity.LEFT;
-                            textView.setBackgroundResource(R.drawable.other_person_chat_message_background);
                             textView.setTextColor(getResources().getColor(R.color.white));
+                            if (message.getType().equals("Offer")) {
+                                textView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        showPopupMenu(view, message.getVacancy().getId());
+                                    }
+                                });
+                                textView.setBackgroundResource(R.drawable.other_person_chat_offer_background);
+                            } else {
+                                textView.setBackgroundResource(R.drawable.other_person_chat_message_background);
+                            }
                         }
                         textView.setLayoutParams(layoutParams);
+                        if (message.equals("Offer")) {
+                        }
                         linearLayout.addView(textView);
                     }
                 }
@@ -217,4 +243,50 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
+    private void showPopupMenu(View view, Long vacancyId) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.offer_decission_popup_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                DecisionRequest decision = new DecisionRequest();
+                decision.setVacancyId(vacancyId.toString());
+                decision.setRecipientId(userId);
+                if (menuItem.getItemId() == R.id.accept) {
+                    decision.setDecision("Accept");
+                } else {
+                    decision.setDecision("Decline");
+                }
+                chatApi.giveDecisionToOffer(decision).enqueue(new Callback<AnswerToOfferResponse>() {
+                    @Override
+                    public void onResponse(Call<AnswerToOfferResponse> call, Response<AnswerToOfferResponse> response) {
+                        TextView textView = new TextView(linearLayout.getContext());
+                        textView.setPadding(15, 15, 15, 15);
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+                                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        layoutParams.setMargins(0, 20, 10, 0);
+                        layoutParams.gravity = Gravity.RIGHT;
+                        textView.setTextColor(getResources().getColor(R.color.black));
+                        textView.setText(enterMessage.getText().toString());
+                        textView.setLayoutParams(layoutParams);
+                        if (response.body().isResult()) {
+                            textView.setBackgroundResource(R.drawable.my_chat_offer_acceptance_background);
+                        } else {
+                            textView.setBackgroundResource(R.drawable.my_chat_offer_refusing_background);
+                        }
+                        linearLayout.addView(textView);
+                    }
+                    @Override
+                    public void onFailure(Call<AnswerToOfferResponse> call, Throwable t) {
+                        Toast.makeText(ChatActivity.this, "error: 'giveDecisionToOffer' " +
+                                "method is failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
 }

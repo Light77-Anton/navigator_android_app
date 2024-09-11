@@ -19,6 +19,16 @@ public class Vacancy {
 
     private LocalDateTime waitingDateTime;
 
+    public ChatMessage getReferencedChatMessage() {
+        return referencedChatMessage;
+    }
+
+    public void setReferencedChatMessage(ChatMessage referencedChatMessage) {
+        this.referencedChatMessage = referencedChatMessage;
+    }
+
+    private ChatMessage referencedChatMessage;
+
     public String getType() {
         return type;
     }
