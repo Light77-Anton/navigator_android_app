@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -17,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import com.example.navigatorappandroid.dto.TimersDTO;
+import com.example.navigatorappandroid.handler.LanguageHandler;
 import com.example.navigatorappandroid.retrofit.AuthApi;
 import com.example.navigatorappandroid.retrofit.ChatApi;
 import com.example.navigatorappandroid.retrofit.GeneralApi;
@@ -27,13 +30,14 @@ import com.example.navigatorappandroid.retrofit.response.TimersListResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ua.naiksoftware.stomp.StompClient;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private LanguageHandler languageHandler;
     protected static final int REQUEST_IMAGE_PICK = 1;
     protected GeneralApi generalApi;
     protected AuthApi authApi;
@@ -45,11 +49,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected View rootView;
     protected static TimersDTO activeNotificationData;
     protected static boolean isQueueLocked;
-    protected Intent notificationIntent;
-    protected String activityTag;
+    //protected String activityTag;
     private static final String CHANNEL_ID = "your_channel_id";
-    private StompClient stompClient;
-    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +61,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
         searchApi = retrofitService.getRetrofit().create(SearchApi.class);
         chatApi = retrofitService.getRetrofit().create(ChatApi.class);
-        notificationIntent = new Intent(this, NotificationActivity.class);
         checkUserAuth();
         getUserInfo();
         startTimers();
+        languageHandler = new LanguageHandler();
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        Locale locale = new Locale(languageHandler.getLanguageCode(userInfoResponse.getEndonymInterfaceLanguage()));
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 
     private void startTimers() {
@@ -77,30 +83,30 @@ public abstract class BaseActivity extends AppCompatActivity {
                         isQueueLocked = true;
                         activeNotificationData = timersDTO;
                         rootView = findViewById(android.R.id.content).getRootView();
-                        activityTag = (String) rootView.getTag();
+                        //activityTag = (String) rootView.getTag();
                         showNotification(rootView.getContext(), getResources().getString(R.string.notification)
-                                , getResources().getString(R.string.agreed_time_has_come));
-                        if (!activityTag.equals("Notification activity")) {
-                            notificationIntent.putExtras(arguments);
-                            startActivity(notificationIntent);
-                        }
+                                , getResources().getString(R.string.agreed_time_has_come),
+                                timersDTO.getContactedPersonId(), timersDTO.getName());
                     }
                 }
             }.start();
         }
     }
 
-    private static void showNotification(Context context, String title, String message) {
+    private static void showNotification(Context context, String title, String message,
+                                         Long userId, String name) {
         createNotificationChannel(context);
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Intent intent = new Intent(context, NotificationActivity.class);
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra("user_id", userId);
+        intent.putExtra("user_name", name);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setSound(soundUri) // Set the notification sound
+                .setSound(soundUri)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -158,12 +164,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (!response.body().isResult()) {
+                    finish();
                     intent.putExtra("is_auth_error", true);
                     startActivity(intent);
                 }
             }
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                finish();
                 intent.putExtra("is_auth_error", true);
                 startActivity(intent);
             }

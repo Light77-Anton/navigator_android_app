@@ -179,11 +179,13 @@ public class EmployeeSettingsActivity extends BaseActivity {
 
     public void onProfessionListClick(View view) {
         Intent intent = new Intent(this, EmployeeProfessionListActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onChangePasswordClick(View view) {
         Intent intent = new Intent(this, ChangePasswordActivity.class);
+        finish();
         startActivity(intent);
     }
 
@@ -207,9 +209,11 @@ public class EmployeeSettingsActivity extends BaseActivity {
                 Intent intent;
                 if (userInfoResponse.getCurrentWorkDisplay() == 1) {
                     intent = new Intent(view.getContext(), WorkMapEmployeeActivity.class);
+                    finish();
                     startActivity(intent);
                 }
                 intent = new Intent(view.getContext(), WorkListEmployeeActivity.class);
+                finish();
                 startActivity(intent);
             }
 
@@ -226,6 +230,7 @@ public class EmployeeSettingsActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
+                finish();
                 startActivity(intent);
             }
 
@@ -241,9 +246,11 @@ public class EmployeeSettingsActivity extends BaseActivity {
         Intent intent;
         if (userInfoResponse.getCurrentWorkDisplay() == 1) {
             intent = new Intent(this, WorkMapEmployeeActivity.class);
+            finish();
             startActivity(intent);
         }
         intent = new Intent(this, WorkListEmployeeActivity.class);
+        finish();
         startActivity(intent);
     }
 }

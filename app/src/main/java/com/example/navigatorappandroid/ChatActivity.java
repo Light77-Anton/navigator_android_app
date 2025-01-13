@@ -187,11 +187,13 @@ public class ChatActivity extends BaseActivity {
         Intent intent = new Intent(this, ChatSettingsActivity.class);
         intent.putExtra("user_id", userId);
         intent.putExtra("user_name", userName);
+        finish();
         startActivity(intent);
     }
 
     public void onBack(View view) {
         Intent intent = new Intent(this, ChatListActivity.class);
+        finish();
         startActivity(intent);
     }
 

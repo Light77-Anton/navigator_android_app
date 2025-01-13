@@ -153,7 +153,7 @@ public class EmployeeProfessionListActivity extends BaseActivity {
                     languagesList.add(lang);
                 }
             }
-            for (InfoFromEmployee infoFromEmployee : userInfoResponse.getEmployeeData().getInfoFromEmployee()) { //
+            for (InfoFromEmployee infoFromEmployee : userInfoResponse.getEmployeeData().getInfoFromEmployee()) {
                 if (infoFromEmployee.getLanguage().getLanguageEndonym().equals(lang.getLanguageEndonym())) {
                     editText.setText(infoFromEmployee.getText());
                 }
@@ -200,6 +200,7 @@ public class EmployeeProfessionListActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
                 Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
+                finish();
                 startActivity(intent);
             }
 
@@ -214,12 +215,11 @@ public class EmployeeProfessionListActivity extends BaseActivity {
     public void onConfirmClick(View view) {
         setProfessionsToEmployee();
         setInfoFromEmployee(view);
-        Intent intent = new Intent(this, EmployeeSettingsActivity.class);
-        startActivity(intent);
     }
 
     public void onBackClick(View view) {
         Intent intent = new Intent(this, EmployeeSettingsActivity.class);
+        finish();
         startActivity(intent);
     }
 }

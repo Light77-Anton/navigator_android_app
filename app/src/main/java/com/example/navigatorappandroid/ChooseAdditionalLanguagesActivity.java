@@ -57,6 +57,7 @@ public class ChooseAdditionalLanguagesActivity extends BaseActivity {
             intent = new Intent(this, WorkListEmployeeActivity.class);
         }
         intent.putExtra("languages_array", languagesArray);
+        finish();
         startActivity(intent);
     }
 
@@ -64,9 +65,11 @@ public class ChooseAdditionalLanguagesActivity extends BaseActivity {
         Intent intent;
         if (userInfoResponse.getCurrentWorkDisplay() == 1) {
             intent = new Intent(this, WorkMapEmployeeActivity.class);
+            finish();
             startActivity(intent);
         }
         intent = new Intent(this, WorkListEmployeeActivity.class);
+        finish();
         startActivity(intent);
     }
 }

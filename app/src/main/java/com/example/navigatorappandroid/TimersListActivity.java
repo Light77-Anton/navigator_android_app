@@ -131,6 +131,7 @@ public class TimersListActivity extends BaseActivity {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("user_id", userId);
         intent.putExtra("user_name", userName);
+        finish();
         startActivity(intent);
     }
 }

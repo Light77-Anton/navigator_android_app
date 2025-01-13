@@ -130,6 +130,7 @@ public class ChatListActivity extends BaseActivity {
                     Intent intent = new Intent(view.getContext(), ChatActivity.class);
                     intent.putExtra("user_id", (long) entry.getValue().getO1());
                     intent.putExtra("user_name", (String) entry.getValue().getO2());
+                    finish();
                     startActivity(intent);
                 }
             });

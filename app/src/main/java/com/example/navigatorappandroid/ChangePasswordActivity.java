@@ -36,6 +36,7 @@ public class ChangePasswordActivity extends BaseActivity {
                     } else {
                         intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
                     }
+                    finish();
                     startActivity(intent);
                 } else {
                     StringBuilder sb = new StringBuilder();
@@ -62,6 +63,7 @@ public class ChangePasswordActivity extends BaseActivity {
         } else {
             intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
         }
+        finish();
         startActivity(intent);
     }
 }

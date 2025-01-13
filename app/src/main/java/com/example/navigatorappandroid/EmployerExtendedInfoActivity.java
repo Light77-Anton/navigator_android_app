@@ -6,7 +6,6 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.navigatorappandroid.retrofit.request.ChatRequest;
@@ -18,18 +17,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EmployerExtendedInfoActivity extends BaseActivity {
-    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extended_info_employer);
-        relativeLayout = findViewById(R.id.employer_info_layout);
-        TextView vacancyProfession = relativeLayout.findViewById(R.id.profession);
-        TextView vacancyJobLocation = relativeLayout.findViewById(R.id.job_location);
-        TextView vacancyStartDateTime = relativeLayout.findViewById(R.id.start_date_time);
-        TextView vacancyAvailability = relativeLayout.findViewById(R.id.vacancy_availability);
-        TextView vacancyInfo = relativeLayout.findViewById(R.id.payment_and_additional_info);
+        TextView vacancyProfession = findViewById(R.id.profession);
+        TextView vacancyJobLocation = findViewById(R.id.job_location);
+        TextView vacancyStartDateTime = findViewById(R.id.start_date_time);
+        TextView vacancyAvailability = findViewById(R.id.vacancy_availability);
+        TextView vacancyInfo = findViewById(R.id.payment_and_additional_info);
         searchApi.getVacancyById(arguments.getString("vacancy_id")).enqueue(new Callback<VacancyInfoResponse>() {
             @Override
             public void onResponse(Call<VacancyInfoResponse> call, Response<VacancyInfoResponse> response) {
@@ -45,14 +42,14 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
                         "'getVacancyById' method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-        TextView name = relativeLayout.findViewById(R.id.name);
-        Button rating = relativeLayout.findViewById(R.id.rating);
-        ImageView avatar = relativeLayout.findViewById(R.id.avatar);
-        TextView firmName = relativeLayout.findViewById(R.id.firm_name);
-        TextView languages = relativeLayout.findViewById(R.id.languages);
-        TextView email = relativeLayout.findViewById(R.id.email);
-        TextView phone = relativeLayout.findViewById(R.id.phone);
-        TextView socialNetworksLinks = relativeLayout.findViewById(R.id.social_networks_links);
+        TextView name = findViewById(R.id.name);
+        Button rating = findViewById(R.id.rating);
+        ImageView avatar = findViewById(R.id.avatar);
+        TextView firmName = findViewById(R.id.firm_name);
+        TextView languages = findViewById(R.id.languages);
+        TextView email = findViewById(R.id.email);
+        TextView phone = findViewById(R.id.phone);
+        TextView socialNetworksLinks = findViewById(R.id.social_networks_links);
         searchApi.getEmployerInfo(arguments.getString("employer_id")).enqueue(new Callback<ExtendedUserInfoResponse>() {
             @Override
             public void onResponse(Call<ExtendedUserInfoResponse> call, Response<ExtendedUserInfoResponse> response) {
@@ -115,9 +112,11 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
         Intent intent;
         if (userInfoResponse.getCurrentWorkDisplay() == 1) {
             intent = new Intent(this, WorkMapEmployeeActivity.class);
+            finish();
             startActivity(intent);
         }
         intent = new Intent(this, WorkListEmployeeActivity.class);
+        finish();
         startActivity(intent);
     }
 }

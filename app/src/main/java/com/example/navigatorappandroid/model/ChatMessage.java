@@ -9,14 +9,22 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ChatMessage implements Comparable<ChatMessage> {
     private Long id;
+
     private ChatRoom chat;
 
     private User sender;
 
     private User recipient;
+
     private String content;
+
     private LocalDateTime time;
+
     private String status;
+
+    private Vacancy vacancy;
+
+    private String type;
 
     public Vacancy getVacancy() {
         return vacancy;
@@ -25,10 +33,6 @@ public class ChatMessage implements Comparable<ChatMessage> {
     public void setVacancy(Vacancy vacancy) {
         this.vacancy = vacancy;
     }
-
-    private Vacancy vacancy;
-
-    private String type;
 
     public User getRecipient() {
         return recipient;

@@ -106,9 +106,11 @@ public class EmployeeStatusActivity extends BaseActivity {
                     Intent intent;
                     if (userInfoResponse.getCurrentWorkDisplay() == 1) {
                         intent = new Intent(view.getContext(), WorkMapEmployeeActivity.class);
+                        finish();
                         startActivity(intent);
                     }
                     intent = new Intent(view.getContext(), WorkListEmployeeActivity.class);
+                    finish();
                     startActivity(intent);
                 }
                 @Override

@@ -1,9 +1,5 @@
 package com.example.navigatorappandroid;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -15,17 +11,8 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-
-import com.example.navigatorappandroid.dto.KeyValuePairDTO;
 import com.example.navigatorappandroid.handler.EmployeeStatusHandler;
-import com.example.navigatorappandroid.handler.LanguageHandler;
-import com.example.navigatorappandroid.handler.LocationUpdateHandler;
-import com.example.navigatorappandroid.model.ChatMessage;
-import com.example.navigatorappandroid.model.EmployerRequests;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.model.Vacancy;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
@@ -33,34 +20,16 @@ import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WorkListEmployeeActivity extends BaseActivity {
+public class WorkListEmployeeActivity extends MainDisplayActivity {
 
-    private LanguageHandler languageHandler;
-    private LocationUpdateHandler locationUpdateHandler;
-    private Location lastKnownLocation;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private boolean locationPermissionGranted;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private EmployeeStatusHandler employeeStatusHandler;
-    private LinearLayout searchSettingsLayout;
-    private LinearLayout searchResultsLayout;
-    private boolean isSortRequestOpened = false;
-    private boolean isFiltersRequestOpened = false;
-    private Button sortRequestButton;
-    private Button filterRequestButton;
     private HashMap<String, View> viewMap;
-    private Button toChatsButton;
     private Button statusButton;
 
     @Override
@@ -69,8 +38,6 @@ public class WorkListEmployeeActivity extends BaseActivity {
         setContentView(R.layout.activity_work_list_employee);
         sortRequestButton = findViewById(R.id.sort_request);
         filterRequestButton = findViewById(R.id.filters_request);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        languageHandler = new LanguageHandler();
         searchSettingsLayout = findViewById(R.id.work_list_employee_sort_request_layout);
         searchResultsLayout = findViewById(R.id.work_list_employee_search_results_layout);
         changeSortRequestFieldCondition();
@@ -78,20 +45,10 @@ public class WorkListEmployeeActivity extends BaseActivity {
             executeSearchForVacancies(arguments.getString("profession"),
                     arguments.getStringArray("languages_array"));
         }
-        Resources resources = getResources();
-        Configuration configuration = resources.getConfiguration();
-        Locale locale = new Locale(languageHandler.getLanguageCode(userInfoResponse.getEndonymInterfaceLanguage()));
-        configuration.setLocale(locale);
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-        getLocationPermission();
-        getDeviceLocation();
-        locationUpdateHandler = new LocationUpdateHandler(lastKnownLocation.getLatitude(),
-                lastKnownLocation.getLongitude(), userInfoResponse.getId());
         if (userInfoResponse.getEmployeeData().getStatus() == 2) {
             employeeStatusHandler = new EmployeeStatusHandler();
         }
         setCurrentStatus();
-        countUnreadChatMessages();
     }
 
     @Override
@@ -100,7 +57,6 @@ public class WorkListEmployeeActivity extends BaseActivity {
         if (userInfoResponse.getEmployeeData().getStatus() == 2) {
             employeeStatusHandler.startStatusChecking();
         }
-        locationUpdateHandler.startLocationUpdates();
     }
 
     @Override
@@ -108,52 +64,6 @@ public class WorkListEmployeeActivity extends BaseActivity {
         super.onPause();
         if (userInfoResponse.getEmployeeData().getStatus() == 2) {
             employeeStatusHandler.stopStatusChecking();
-        }
-        locationUpdateHandler.stopLocationUpdates();
-    }
-
-    private void getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        locationPermissionGranted = false;
-        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                locationPermissionGranted = true;
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
-
-    private void getDeviceLocation() {
-        try {
-            if (locationPermissionGranted) {
-                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            lastKnownLocation = task.getResult();
-                        }
-                    }
-                });
-            }
-        } catch (SecurityException e)  {
-            e.printStackTrace();
         }
     }
 
@@ -255,7 +165,6 @@ public class WorkListEmployeeActivity extends BaseActivity {
                         executeSearchForVacancies(arguments.getString("profession"),
                                 arguments.getStringArray("languages_array"));
                     }
-
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {}
 
@@ -282,11 +191,13 @@ public class WorkListEmployeeActivity extends BaseActivity {
 
     public void onSettingsClick(View view) {
         Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onSearchClick(View view) {
         Intent intent = new Intent(this, SearchVacanciesActivity.class);
+        finish();
         startActivity(intent);
     }
 
@@ -312,52 +223,41 @@ public class WorkListEmployeeActivity extends BaseActivity {
 
     public void onStatusClick(View view) {
         Intent intent = new Intent(this, EmployeeStatusActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onMapClick(View view) {
         generalApi.changeWorkDisplay().enqueue(new Callback<ResultErrorsResponse>() {
             @Override
-            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
-
+            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                Intent intent = new Intent(view.getContext(), WorkMapEmployeeActivity.class);
+                finish();
+                startActivity(intent);
+            }
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(WorkListEmployeeActivity.this, "Error " +
                         "'changeWorkDisplay' method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-        Intent intent = new Intent(this, WorkMapEmployeeActivity.class);
-        startActivity(intent);
     }
 
     public void onTimersClick(View view) {
         Intent intent = new Intent(this, TimersListActivity.class);
+        finish();
         startActivity(intent);
-    }
-
-    private void countUnreadChatMessages() {
-        int unreadChatMessages = 0;
-        List<ChatMessage> receivedMessages = userInfoResponse.getReceivedMessages();
-        for (ChatMessage chatMessage : receivedMessages) {
-            if (chatMessage.getStatus().equals("Sent")) {
-                unreadChatMessages++;
-            }
-        }
-        toChatsButton.setText(unreadChatMessages);
-        if (unreadChatMessages == 0) {
-            toChatsButton.setBackground(ContextCompat.getDrawable(this, R.drawable.gray_blue_circle));
-        } else {
-            toChatsButton.setBackground(ContextCompat.getDrawable(this, R.drawable.red_circle));
-        }
     }
 
     public void onChatsClick(View view) {
         Intent intent = new Intent(this, ChatListActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onAddLanguagesClick(View view) {
         Intent intent = new Intent(this, ChooseAdditionalLanguagesActivity.class);
+        finish();
         startActivity(intent);
     }
 
@@ -395,7 +295,6 @@ public class WorkListEmployeeActivity extends BaseActivity {
                         public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
                             addVacancyButton(employer, vacancy, response.body().getDistance());
                         }
-
                         @Override
                         public void onFailure(Call<DistanceResponse> call, Throwable t) {
                             Toast.makeText(WorkListEmployeeActivity.this, "Error " +
@@ -421,47 +320,9 @@ public class WorkListEmployeeActivity extends BaseActivity {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                 (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         button.setLayoutParams(layoutParams);
-        button.setBackground(getResources().getDrawable(R.drawable.rectangle_button));
+        button.setBackground(ContextCompat.getDrawable(this, R.drawable.rectangle_button));
         button.setTextColor(getResources().getColor(R.color.black));
         button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), EmployerExtendedInfoActivity.class);
-                /*
-                ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
-                professionToUserRequest.setId(vacancy.getProfession().getId());
-                generalApi.getProfessionNameInSpecifiedLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
-                    @Override
-                    public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
-                        intent.putExtra("vacancy_profession", response.body().getString());
-                    }
-
-                    @Override
-                    public void onFailure(Call<StringResponse> call, Throwable t) {
-                        Toast.makeText(WorkListEmployeeActivity.this, "Error " +
-                                "'getProfessionNameInSpecifiedLanguage' method is failure", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                intent.putExtra("vacancy_job_address", vacancy.getJobLocation().getJobAddress());
-                intent.putExtra("vacancy_start_date_time", vacancy.getStartDateTime().toString());
-                for (String language : userInfoResponse.getCommunicationLanguages()) {
-                    for (InfoAboutVacancyFromEmployer info : vacancy.getPaymentAndAdditionalInfo()) {
-                        if (info.getLanguage().getLanguageEndonym().equals(language)) {
-                            intent.putExtra("vacancy_info", info.getText());
-                        }
-                    }
-                }
-                StringBuilder languagesList = new StringBuilder();
-                for (Language employeeLang : employer.getCommunicationLanguages()) {
-                    languagesList.append(employeeLang.getLanguageEndonym() + ",");
-                }
-                languagesList.deleteCharAt(languagesList.length() - 1);
-                 */
-                intent.putExtra("employer_id", employerId);
-                intent.putExtra("vacancy_id", vacancyId);
-                startActivity(intent);
-            }
-        });
         StringBuilder sb = new StringBuilder();
         sb.append(name);
         sb.append("   ");
@@ -469,6 +330,15 @@ public class WorkListEmployeeActivity extends BaseActivity {
         sb.append("   ");
         sb.append(distance);
         button.setText(sb);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), EmployerExtendedInfoActivity.class);
+                intent.putExtra("employer_id", employerId);
+                intent.putExtra("vacancy_id", vacancyId);
+                finish();
+                startActivity(intent);
+            }
+        });
         searchResultsLayout.addView(button);
     }
 }

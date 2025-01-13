@@ -11,7 +11,6 @@
         xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ea1ddfbd25d1e33e"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        tools:context=".WorkMapEmployerActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
@@ -21,14 +20,13 @@
         map:uiRotateGestures="true" />
     <android.widget.Button
         android:id="@+id/search_button"
-        android:contentDescription="."
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:text="@string/search"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="50dp"
         android:onClick="onSearchClick"
-        android:background="@color/custom_gray_blue"
+        android:background="@drawable/gray_blue_rectangle"
         android:drawableEnd="@drawable/ic_search"/>
     <android.widget.Button
         android:id="@+id/vacancies_button"
@@ -38,17 +36,17 @@
         android:layout_height="50dp"
         android:onClick="onVacanciesSettingClick"
         android:text="@string/show_info_about_my_vacancies"
-        android:background="@color/custom_gray_blue"
+        android:background="@drawable/gray_blue_rectangle"
         android:drawableEnd="@drawable/offers_and_employees_info_icon"/>
     <android.widget.Button
         android:id="@+id/settings_button"
         android:contentDescription="."
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="50dp"
         android:onClick="onSettingsClick"
-        android:background="@color/custom_gray_blue"
+        android:background="@drawable/gray_blue_rectangle"
         android:drawableLeft="@drawable/ic_settings"
         android:drawableRight="@drawable/ic_settings2"/>
     <android.widget.Button
@@ -72,11 +70,11 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:onClick="onChatsClick"
-        android:background="@drawable/red_circle"
+        android:background="@drawable/gray_blue_circle"
         android:paddingStart="5dp"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="3dp"
-        android:text="1"
+        android:text="0"
         android:textSize="20sp"
         android:drawableStart="@drawable/chats"/>
     <android.widget.Button
@@ -86,7 +84,7 @@
         android:layout_alignParentRight="true"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:onClick="onTimerssClick"
+        android:onClick="onTimersClick"
         android:background="@drawable/gray_blue_circle"
         android:paddingStart="13dp"
         android:layout_marginBottom="15dp"
@@ -128,7 +126,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sort_request"
         android:orientation="vertical"
-        tools:context=".WorkMapEmployerActivity"
         android:id="@+id/work_map_employer_sort_request_layout">
     </LinearLayout>
 </RelativeLayout>

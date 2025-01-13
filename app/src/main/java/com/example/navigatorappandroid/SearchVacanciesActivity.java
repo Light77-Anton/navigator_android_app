@@ -22,6 +22,7 @@ public class SearchVacanciesActivity extends BaseActivity {
             intent = new Intent(this, WorkListEmployeeActivity.class);
         }
         intent.putExtra("profession", profession);
+        finish();
         startActivity(intent);
     }
 
@@ -32,6 +33,7 @@ public class SearchVacanciesActivity extends BaseActivity {
         } else {
             intent = new Intent(this, WorkListEmployeeActivity.class);
         }
+        finish();
         startActivity(intent);
     }
 }

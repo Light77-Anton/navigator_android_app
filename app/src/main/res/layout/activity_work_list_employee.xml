@@ -19,6 +19,27 @@
         android:background="@drawable/gray_blue_rectangle"
         android:drawableEnd="@drawable/ic_search"/>
     <android.widget.Button
+        android:id="@+id/status_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="100dp"
+        android:layout_width="240dp"
+        android:layout_height="50dp"
+        android:onClick="onStatusClick"
+        android:text="@string/inactive"
+        android:background="@drawable/gray_blue_rectangle"
+        android:drawableEnd="@drawable/inactive"/>
+    <android.widget.Button
+        android:id="@+id/settings_button"
+        android:contentDescription="."
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:onClick="onSettingsClick"
+        android:background="@drawable/gray_blue_rectangle"
+        android:drawableLeft="@drawable/ic_settings"
+        android:drawableRight="@drawable/ic_settings2"/>
+    <android.widget.Button
         android:id="@+id/to_chats"
         android:contentDescription="."
         android:layout_above="@id/search_button"
@@ -34,16 +55,6 @@
         android:layout_marginLeft="5dp"
         android:drawableStart="@drawable/chats"/>
     <android.widget.Button
-        android:id="@+id/status_button"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="100dp"
-        android:layout_width="240dp"
-        android:layout_height="50dp"
-        android:onClick="onStatusClick"
-        android:text="@string/inactive"
-        android:background="@drawable/gray_blue_rectangle"
-        android:drawableEnd="@drawable/inactive"/>
-    <android.widget.Button
         android:id="@+id/to_timers"
         android:contentDescription="."
         android:layout_above="@id/status_button"
@@ -56,17 +67,6 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="180dp"
         android:drawableStart="@drawable/timer"/>
-    <android.widget.Button
-        android:id="@+id/settings_button"
-        android:contentDescription="."
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:onClick="onSettingsClick"
-        android:background="@drawable/gray_blue_rectangle"
-        android:drawableLeft="@drawable/ic_settings"
-        android:drawableRight="@drawable/ic_settings2"/>
     <android.widget.Button
         android:id="@+id/to_map"
         android:contentDescription="."

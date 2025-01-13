@@ -42,20 +42,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WorkListEmployerActivity extends BaseActivity {
-    private LanguageHandler languageHandler;
-    private FusedLocationProviderClient fusedLocationProviderClient;
+public class WorkListEmployerActivity extends MainDisplayActivity {
 
-    private boolean locationPermissionGranted;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private LocationUpdateHandler locationUpdateHandler;
-    private Location lastKnownLocation;
-    private LinearLayout searchSettingsLayout;
-    private LinearLayout searchResultsLayout;
-    private boolean isSortRequestOpened = false;
-    private boolean isFiltersRequestOpened = false;
-    private Button sortRequestButton;
-    private Button filterRequestButton;
     private HashMap<String, View> viewMap;
 
     @Override
@@ -64,79 +52,12 @@ public class WorkListEmployerActivity extends BaseActivity {
         setContentView(R.layout.activity_work_list_employer);
         sortRequestButton = findViewById(R.id.sort_request);
         filterRequestButton = findViewById(R.id.filters_request);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        languageHandler = new LanguageHandler();
         searchSettingsLayout = findViewById(R.id.work_list_employer_sort_request_layout);
         searchResultsLayout = findViewById(R.id.work_list_employer_search_results_layout);
         changeSortRequestFieldCondition();
         if (arguments != null && arguments.get("profession") != null) {
-            executeSearchForEmployees(arguments.getString("profession"));
-        }
-        Resources resources = getResources();
-        Configuration configuration = resources.getConfiguration();
-        Locale locale = new Locale(languageHandler.getLanguageCode(userInfoResponse.getEndonymInterfaceLanguage()));
-        configuration.setLocale(locale);
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-        getLocationPermission();
-        getDeviceLocation();
-        locationUpdateHandler = new LocationUpdateHandler(lastKnownLocation.getLatitude(),
-                lastKnownLocation.getLongitude(), userInfoResponse.getId());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        locationUpdateHandler.startLocationUpdates();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        locationUpdateHandler.stopLocationUpdates();
-    }
-
-    private void getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        locationPermissionGranted = false;
-        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                locationPermissionGranted = true;
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
-
-    private void getDeviceLocation() {
-        try {
-            if (locationPermissionGranted) {
-                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            lastKnownLocation = task.getResult();
-                        }
-                    }
-                });
-            }
-        } catch (SecurityException e)  {
-            e.printStackTrace();
+            executeSearchForEmployees(arguments.getString("profession"),
+                    arguments.getStringArray("languages_array"));
         }
     }
 
@@ -157,7 +78,8 @@ public class WorkListEmployerActivity extends BaseActivity {
                 radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                        executeSearchForEmployees(arguments.getString("profession"));
+                        executeSearchForEmployees(arguments.getString("profession")
+                                , arguments.getStringArray("languages_array"));
                     }
                 });
                 for (int i = 0; i < 3; i++) {
@@ -206,7 +128,8 @@ public class WorkListEmployerActivity extends BaseActivity {
                 seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                        executeSearchForEmployees(arguments.getString("profession"));
+                        executeSearchForEmployees(arguments.getString("profession"),
+                                arguments.getStringArray("languages_array"));
                     }
 
                     @Override
@@ -231,7 +154,8 @@ public class WorkListEmployerActivity extends BaseActivity {
             isAutoCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    executeSearchForEmployees(arguments.getString("profession"));
+                    executeSearchForEmployees(arguments.getString("profession"),
+                            arguments.getStringArray("languages_array"));
                 }
             });
             viewMap.put("is_auto", isAutoCheckbox);
@@ -243,7 +167,8 @@ public class WorkListEmployerActivity extends BaseActivity {
             showTemporarilyInactiveCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    executeSearchForEmployees(arguments.getString("profession"));
+                    executeSearchForEmployees(arguments.getString("profession"),
+                            arguments.getStringArray("languages_array"));
                 }
             });
             viewMap.put("show_temporarily_inactive", showTemporarilyInactiveCheckbox);
@@ -289,59 +214,61 @@ public class WorkListEmployerActivity extends BaseActivity {
 
     public void onSettingsClick(View view) {
         Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
-        /*
-        intent.putExtra("firm_name", userInfoResponse.getEmployerRequests().getFirmName());
-        intent.putExtra("avatar", userInfoResponse.getAvatar());
-        intent.putExtra("name", userInfoResponse.getName());
-        intent.putExtra("phone", userInfoResponse.getPhone());
-        intent.putExtra("social_networks_links", userInfoResponse.getSocialNetworksLinks());
-        intent.putExtra("interface_language", userInfoResponse.getEndonymInterfaceLanguage());
-        intent.putExtra("communication_languages", userInfoResponse.getCommunicationLanguages());
-        intent.putExtra("are_languages_matched", userInfoResponse.isAreLanguagesMatched());
-        intent.putExtra("limit_in_the_search", userInfoResponse.getLimitForTheSearch());
-        intent.putExtra("is_multivacancy_allowed", userInfoResponse.isMultivacancyAllowed());
-         */
+        finish();
         startActivity(intent);
     }
 
     public void onSearchClick(View view) {
         Intent intent = new Intent(this, SearchEmployeesActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onVacanciesSettingClick(View view) {
         Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onMapClick(View view) {
         generalApi.changeWorkDisplay().enqueue(new Callback<ResultErrorsResponse>() {
             @Override
-            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
-
+            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                Intent intent = new Intent(view.getContext(), WorkMapEmployerActivity.class);
+                finish();
+                startActivity(intent);
+            }
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(WorkListEmployerActivity.this, "Error " +
                         "'changeWorkDisplay' method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-        Intent intent = new Intent(this, WorkMapEmployerActivity.class);
-        startActivity(intent);
     }
 
     public void onTimersClick(View view) {
+        Intent intent = new Intent(this, TimersListActivity.class);
+        finish();
+        startActivity(intent);
     }
 
     public void onChatsClick(View view) {
+        Intent intent = new Intent(this, ChatListActivity.class);
+        finish();
+        startActivity(intent);
     }
 
     public void onAddLanguagesClick(View view) {
+        Intent intent = new Intent(this, ChooseAdditionalLanguagesActivity.class);
+        finish();
+        startActivity(intent);
     }
 
-    private void executeSearchForEmployees(String profession) {
+    private void executeSearchForEmployees(String profession, String[] additionalLanguages) {
         searchResultsLayout.removeAllViews();
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.setProfessionName(profession);
+        searchRequest.setAdditionalLanguages(additionalLanguages);
         RadioGroup radioGroup = (RadioGroup) viewMap.get("radio_group");
         int checkedButtonId = radioGroup.getCheckedRadioButtonId();
         if (checkedButtonId != -1) {
@@ -374,7 +301,6 @@ public class WorkListEmployerActivity extends BaseActivity {
                         public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
                             addEmployeeButton(employee, response.body().getDistance());
                         }
-
                         @Override
                         public void onFailure(Call<DistanceResponse> call, Throwable t) {
                             Toast.makeText(WorkListEmployerActivity.this, "Error: " +
@@ -395,13 +321,11 @@ public class WorkListEmployerActivity extends BaseActivity {
         long employeeId = employee.getId();
         String name = employee.getName();
         byte rating = employee.getRanking();
-        ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
-        professionToUserRequest.setId(employee.getId());
         Button button = new Button(searchResultsLayout.getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                 (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         button.setLayoutParams(layoutParams);
-        button.setBackground(getResources().getDrawable(R.drawable.rectangle_button));
+        button.setBackground(ContextCompat.getDrawable(this, R.drawable.rectangle_button));
         button.setTextColor(getResources().getColor(R.color.black));
         button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         String status;
@@ -424,48 +348,8 @@ public class WorkListEmployerActivity extends BaseActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
-                /*
-                intent.putExtra("name", name);
-                intent.putExtra("rating", rating);
-                intent.putExtra("avatar", avatar);
-                intent.putExtra("status", status);
-                StringBuilder languagesList = new StringBuilder();
-                for (Language employeeLang : employee.getCommunicationLanguages()) {
-                    languagesList.append(employeeLang.getLanguageEndonym() + ",");
-                }
-                languagesList.deleteCharAt(languagesList.length() - 1);
-                intent.putExtra("languages", languagesList.toString());
-                generalApi.getProfessionsToUserInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
-                    @Override
-                    public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
-                        String professions = response.body().getString();
-                        intent.putExtra("professions", professions);
-                    }
-
-                    @Override
-                    public void onFailure(Call<StringResponse> call, Throwable t) {
-                        Toast.makeText(WorkListEmployerActivity.this, "Error " +
-                                "'getProfessionsToUserInEmployersLanguage' method is failure", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                generalApi.getInfoFromEmployeeInEmployersLanguage(professionToUserRequest).enqueue(new Callback<StringResponse>() {
-                    @Override
-                    public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
-                        String info = response.body().getString();
-                        intent.putExtra("additional_info", info);
-                    }
-
-                    @Override
-                    public void onFailure(Call<StringResponse> call, Throwable t) {
-                        Toast.makeText(WorkListEmployerActivity.this, "Error: 'getInfoFromEmployeeInEmployersLanguage'" +
-                                " method is failure", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                intent.putExtra("email", employee.getEmail());
-                intent.putExtra("phone", employee.getPhone());
-                intent.putExtra("social_networks_links", employee.getSocialNetworksLinks());
-                 */
                 intent.putExtra("employee_id", employeeId);
+                finish();
                 startActivity(intent);
             }
         });

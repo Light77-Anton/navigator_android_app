@@ -82,6 +82,16 @@ public class UserInfoResponse {
     private ArrayList<User> favorites;
     private UserLocation userLocation;
 
+    public int getNotificationCount() {
+        return notificationCount;
+    }
+
+    public void setNotificationCount(int notificationCount) {
+        this.notificationCount = notificationCount;
+    }
+
+    private int notificationCount;
+
     public long getId() {
         return id;
     }

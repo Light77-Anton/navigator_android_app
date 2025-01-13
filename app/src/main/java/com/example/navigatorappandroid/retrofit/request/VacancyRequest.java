@@ -93,4 +93,25 @@ public class VacancyRequest implements Serializable { // возможно зам
     private LocalDateTime startTimestamp;
     @JsonProperty("payment_and_additional_info")
     private String paymentAndAdditionalInfo;
+    @JsonProperty("profession_name")
+    private Long employerId;
+
+    public Long getEmployerId() {
+        return employerId;
+    }
+
+    public void setEmployerId(Long employerId) {
+        this.employerId = employerId;
+    }
+
+    public String getEmployerName() {
+        return employerName;
+    }
+
+    public void setEmployerName(String employerName) {
+        this.employerName = employerName;
+    }
+
+    @JsonProperty("profession_name")
+    private String employerName;
 }

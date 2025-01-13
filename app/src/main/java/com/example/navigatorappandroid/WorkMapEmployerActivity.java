@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.handler.LanguageHandler;
@@ -43,107 +42,51 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMapReadyCallback {
 
-    private LanguageHandler languageHandler;
     private LatLng latLngMyLocation;
-    private Location lastKnownLocation;
-    private FusedLocationProviderClient fusedLocationProviderClient;
     private GoogleMap googleMap;
     private final LatLng defaultLocation = new LatLng(0.0, 0.0);
     private static final int DEFAULT_ZOOM = 15;
     private PlacesClient placesClient;
-    private boolean locationPermissionGranted;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final String KEY_CAMERA_POSITION = "camera_position";
-    private static final String KEY_LOCATION = "location";
     private CameraPosition cameraPosition;
-    private LocationUpdateHandler locationUpdateHandler;
-    private LinearLayout linearLayout;
-    private RetrofitService retrofitService;
-    private GeneralApi generalApi;
-    private SearchApi searchApi;
-    private AuthApi authApi;
-    private UserInfoResponse userInfoResponse;
-    private HashSet<Marker> currentMarkers = new HashSet<>();
+    private boolean isSortRequestOpened = false;
+    private boolean isFiltersRequestOpened = false;
+    private Button sortRequestButton;
+    private Button filterRequestButton;
+    private HashMap<String, View> viewMap;
+    private Button toChatsButton;
+    private Button statusButton;
+    private LinearLayout searchSettingsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, LoginActivity.class);
-        retrofitService = new RetrofitService();
-        searchApi = retrofitService.getRetrofit().create(SearchApi.class);
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        authApi = retrofitService.getRetrofit().create(AuthApi.class);
-        authApi.authCheck().enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (!response.body().isResult()) {
-                    intent.putExtra("is_auth_error", true);
-                    startActivity(intent);
-                }
-            }
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                intent.putExtra("is_auth_error", true);
-                startActivity(intent);
-            }
-        });
         setContentView(R.layout.activity_work_map_employer);
+        sortRequestButton = findViewById(R.id.sort_request);
+        filterRequestButton = findViewById(R.id.filters_request);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         placesClient = Places.createClient(this);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.ea1ddfbd25d1e33e);
         mapFragment.getMapAsync(this);
-        languageHandler = new LanguageHandler();
-        linearLayout = findViewById(R.id.work_map_employer_sort_request_layout);
+        searchSettingsLayout = findViewById(R.id.work_map_employer_sort_request_layout);
+        changeSortRequestFieldCondition();
         if (savedInstanceState != null) {
-            lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
-        changeSortRequestFieldCondition();
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
-            @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                userInfoResponse = response.body();
-            }
-            @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(WorkMapEmployerActivity.this, "Error: 'getUserInfo' " +
-                        "method is failure", Toast.LENGTH_SHORT).show();
-            }
-        });
-        Resources resources = getResources();
-        Configuration configuration = resources.getConfiguration();
-        Locale locale = new Locale(languageHandler.getLanguageCode(userInfoResponse.getEndonymInterfaceLanguage()));
-        configuration.setLocale(locale);
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        locationUpdateHandler.startLocationUpdates();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        locationUpdateHandler.stopLocationUpdates();
     }
 
     @Override
@@ -152,40 +95,10 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();
-        locationUpdateHandler = new LocationUpdateHandler(lastKnownLocation.getLatitude(),
-                lastKnownLocation.getLongitude(), userInfoResponse.getId());
-        Bundle arguments = getIntent().getExtras();
         if (arguments != null && arguments.get("profession") != null) {
-            executeSearchForEmployees(arguments.getString("profession"));
+            executeSearchForEmployees(arguments.getString("profession"),
+                    arguments.getStringArray("languages_array"));
         }
-    }
-
-    private void getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        locationPermissionGranted = false;
-        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                locationPermissionGranted = true;
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-        updateLocationUI();
     }
 
     private void updateLocationUI() {
@@ -207,104 +120,68 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
         }
     }
 
-    private void getDeviceLocation() {
-        try {
-            if (locationPermissionGranted) {
-                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            lastKnownLocation = task.getResult();
-                            if (lastKnownLocation != null) {
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(lastKnownLocation.getLatitude(),
-                                                lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-                                double lat = lastKnownLocation.getLatitude();
-                                double lng = lastKnownLocation.getLongitude();
-                                latLngMyLocation = new LatLng(lat, lng);
-                                googleMap.addMarker( new MarkerOptions()
-                                        .position(latLngMyLocation)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)));
-                            }
-                        } else {
-                            googleMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
-                            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                        }
-                    }
-                });
-            }
-        } catch (SecurityException e)  {
-            e.printStackTrace();
-        }
-    }
-
     public void onSettingsClick(View view) {
-        Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
-        /*
-        intent.putExtra("firm_name", userInfoResponse.getEmployerRequests().getFirmName());
-        intent.putExtra("avatar", userInfoResponse.getAvatar());
-        intent.putExtra("name", userInfoResponse.getName());
-        intent.putExtra("phone", userInfoResponse.getPhone());
-        intent.putExtra("social_networks_links", userInfoResponse.getSocialNetworksLinks());
-        intent.putExtra("interface_language", userInfoResponse.getEndonymInterfaceLanguage());
-        intent.putExtra("communication_languages", userInfoResponse.getCommunicationLanguages());
-        intent.putExtra("are_languages_matched", userInfoResponse.isAreLanguagesMatched());
-        intent.putExtra("limit_in_the_search", userInfoResponse.getLimitForTheSearch());
-        intent.putExtra("is_multivacancy_allowed", userInfoResponse.isMultivacancyAllowed());
-         */
+        Intent intent = new Intent(this, EmployerSettingsActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onSearchClick(View view) {
         Intent intent = new Intent(this, SearchEmployeesActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onListClick(View view) {
         generalApi.changeWorkDisplay().enqueue(new Callback<ResultErrorsResponse>() {
             @Override
-            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
-
+            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                Intent intent = new Intent(view.getContext(), WorkListEmployerActivity.class);
+                finish();
+                startActivity(intent);
+            }
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(WorkMapEmployerActivity.this, "Error " +
                         "'changeWorkDisplay' method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-        Intent intent = new Intent(this, WorkListEmployerActivity.class);
-        startActivity(intent);
     }
 
     public void onTimersClick(View view) {
+        Intent intent = new Intent(this, TimersListActivity.class);
+        finish();
+        startActivity(intent);
     }
 
     public void onChatsClick(View view) {
+        Intent intent = new Intent(this, ChatListActivity.class);
+        finish();
+        startActivity(intent);
     }
 
     private void enableLinearLayout() {
-        linearLayout.setEnabled(true);
-        linearLayout.setVisibility(View.VISIBLE);
-        for (int i = 0; i < linearLayout.getChildCount(); i++) {
-            View child = linearLayout.getChildAt(i);
+        searchSettingsLayout.setEnabled(true);
+        searchSettingsLayout.setVisibility(View.VISIBLE);
+        for (int i = 0; i < searchSettingsLayout.getChildCount(); i++) {
+            View child = searchSettingsLayout.getChildAt(i);
             child.setEnabled(true);
             child.setVisibility(View.VISIBLE);
         }
     }
 
     private void disableLinearLayout() {
-        linearLayout.setEnabled(false);
-        linearLayout.setVisibility(View.INVISIBLE);
-        for (int i = 0; i < linearLayout.getChildCount(); i++) {
-            View child = linearLayout.getChildAt(i);
+        searchSettingsLayout.setEnabled(false);
+        searchSettingsLayout.setVisibility(View.INVISIBLE);
+        for (int i = 0; i < searchSettingsLayout.getChildCount(); i++) {
+            View child = searchSettingsLayout.getChildAt(i);
             child.setEnabled(false);
             child.setVisibility(View.INVISIBLE);
         }
     }
 
     private void changeSortRequestFieldCondition() {
-        if (linearLayout.isEnabled()) {
+        if (searchSettingsLayout.isEnabled()) {
             disableLinearLayout();
         } else {
             enableLinearLayout();
@@ -313,6 +190,7 @@ public class WorkMapEmployerActivity extends AppCompatActivity implements OnMapR
 
     public void onVacanciesSettingClick(View view) {
         Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
+        finish();
         startActivity(intent);
     }
 

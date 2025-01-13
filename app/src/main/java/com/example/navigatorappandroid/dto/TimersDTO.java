@@ -50,4 +50,14 @@ public class TimersDTO {
 
     private String profession;
     private long millisInFuture;
+
+    public Long getContactedPersonId() {
+        return contactedPersonId;
+    }
+
+    public void setContactedPersonId(Long contactedPersonId) {
+        this.contactedPersonId = contactedPersonId;
+    }
+
+    private Long contactedPersonId;
 }
