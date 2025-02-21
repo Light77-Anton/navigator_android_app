@@ -4,26 +4,24 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
-import com.example.navigatorappandroid.retrofit.SearchApi;
+import com.example.navigatorappandroid.model.ProfessionName;
+import com.example.navigatorappandroid.model.Vacancy;
 import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
-import com.example.navigatorappandroid.retrofit.request.StringRequest;
-import com.example.navigatorappandroid.retrofit.response.IdResponse;
+import com.example.navigatorappandroid.retrofit.response.ProfessionNamesListResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
-import com.example.navigatorappandroid.retrofit.response.TextListResponse;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.VacancyInfoResponse;
+import com.example.navigatorappandroid.retrofit.response.VacancyListResponse;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -33,32 +31,40 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EmployerVacancyEditActivity extends AppCompatActivity {
+public class EmployerVacancyEditActivity extends BaseActivity {
 
     private PlacesClient placesClient;
     byte AUTOCOMPLETE_REQUEST_CODE = 1;
-    UserInfoResponse userInfoResponse;
-    RetrofitService retrofitService;
-    GeneralApi generalApi;
-    SearchApi searchApi;
     LinearLayout linearLayout;
+    Spinner templatesSpinner;
     Spinner requiredProfessionSpinner;
-    Long professionId;
+    EditText quotasNumberEditText;
     Button jobAddressButton;
     Double jobAddressLatitude;
     Double jobAddressLongitude;
     DatePicker datePicker;
+    DatePicker acceptableDateForWaiting;
+    TimePicker timePicker;
+    TimePicker acceptableTimeForWaiting;
+    CheckBox waitUntilStartDateTimeCheckbox;
     EditText paymentAndAdditionalInfoEditText;
-    ArrayList<String> professionNamesList;
+    CheckBox isRequiredToCloseAllQuotasCheckbox;
+    CheckBox saveTemplateCheckbox;
+    EditText templateNameEditText;
+    List<ProfessionName> professionNamesList;
+    List<Vacancy> templatesList;
     VacancyInfoResponse vacancyInfoResponse;
 
     @Override
@@ -67,36 +73,24 @@ public class EmployerVacancyEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vacancy_edit);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         placesClient = Places.createClient(this);
-        ScrollView scrollView = (ScrollView) getLayoutInflater().inflate(R.layout.activity_vacancy_edit, null);
-        linearLayout = scrollView.findViewById(R.id.activity_vacancy_edit_layout);
-        Bundle arguments = getIntent().getExtras();
-        retrofitService = new RetrofitService();
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        searchApi = retrofitService.getRetrofit().create(SearchApi.class);
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
-            @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                userInfoResponse = response.body();
-            }
-            @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(EmployerVacancyEditActivity.this, "fail", Toast.LENGTH_SHORT).show();
-            }
-        });
+        linearLayout = findViewById(R.id.activity_vacancy_edit_layout);
+        templatesSpinner = linearLayout.findViewById(R.id.templates);
         requiredProfessionSpinner = linearLayout.findViewById(R.id.required_profession);
+        quotasNumberEditText = linearLayout.findViewById(R.id.quotas_number);
         professionNamesList = new ArrayList<>();
-        generalApi.getProfessionsNamesInSpecifiedLanguage().enqueue(new Callback<TextListResponse>() {
+        generalApi.getProfessionsNamesInSpecifiedLanguage().enqueue(new Callback<ProfessionNamesListResponse>() {
             @Override
-            public void onResponse(Call<TextListResponse> call, Response<TextListResponse> response) {
+            public void onResponse(Call<ProfessionNamesListResponse> call, Response<ProfessionNamesListResponse> response) {
                 professionNamesList.addAll(response.body().getList());
             }
-
             @Override
-            public void onFailure(Call<TextListResponse> call, Throwable t) {
-
+            public void onFailure(Call<ProfessionNamesListResponse> call, Throwable t) {
+                Toast.makeText(EmployerVacancyEditActivity.this, "Error " +
+                        "'getProfessionsNamesInSpecifiedLanguage' method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-        ArrayAdapter<String> professionNamesAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, professionNamesList);
+        ArrayAdapter<String> professionNamesAdapter = new ArrayAdapter
+                (this,android.R.layout.simple_spinner_item, professionNamesList);
         professionNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         requiredProfessionSpinner.setAdapter(professionNamesAdapter);
         jobAddressButton = linearLayout.findViewById(R.id.job_address);
@@ -120,37 +114,97 @@ public class EmployerVacancyEditActivity extends AppCompatActivity {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {}
                 });
+        LocalTime currentTime = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalTime();
+        timePicker.setIs24HourView(true);
+        timePicker.setHour(currentTime.getHour());
+        timePicker.setMinute(currentTime.getMinute());
         paymentAndAdditionalInfoEditText = linearLayout.findViewById(R.id.payment_and_additional_info);
+        waitUntilStartDateTimeCheckbox = linearLayout.findViewById(R.id.waiting_until_start_date_time_checkbox);
+        isRequiredToCloseAllQuotasCheckbox = linearLayout.findViewById(R.id.is_required_to_close_all_quotas_checkbox);
+        saveTemplateCheckbox = linearLayout.findViewById(R.id.save_template_checkbox);
+        templateNameEditText = linearLayout.findViewById(R.id.template_name);
         if (arguments.getString("vacancy_id") != null) {
             String vacancyId = arguments.getString("vacancy_id");
-            StringRequest stringRequest = new StringRequest();
-            stringRequest.setString(vacancyId);
-            searchApi.getVacancyById(stringRequest).enqueue(new Callback<VacancyInfoResponse>() {
+            searchApi.getVacancyById(vacancyId).enqueue(new Callback<VacancyInfoResponse>() {
                 @Override
                 public void onResponse(Call<VacancyInfoResponse> call, Response<VacancyInfoResponse> response) {
-                    vacancyInfoResponse.setProfessionName(response.body().getProfessionName());
-                    vacancyInfoResponse.setJobAddress(response.body().getJobAddress());
-                    vacancyInfoResponse.setPaymentAndAdditionalInfo(response.body().getPaymentAndAdditionalInfo());
-                    vacancyInfoResponse.setLocalDate(response.body().getLocalDate());
+                    vacancyInfoResponse = response.body();
                     int positionInSpinner = professionNamesAdapter.getPosition(vacancyInfoResponse.getProfessionName());
                     requiredProfessionSpinner.setSelection(positionInSpinner);
+                    quotasNumberEditText.setText(vacancyInfoResponse.getQuotasNumber());
                     jobAddressButton.setText(vacancyInfoResponse.getJobAddress());
-                    datePicker.init(vacancyInfoResponse.getLocalDate().getYear(),
-                            vacancyInfoResponse.getLocalDate().getMonthValue(),
-                            vacancyInfoResponse.getLocalDate().getDayOfMonth(),
+                    jobAddressLatitude = vacancyInfoResponse.getJobAddressLatitude();
+                    jobAddressLongitude = vacancyInfoResponse.getJobAddressLongitude();
+                    datePicker.init(vacancyInfoResponse.getLocalDateTime().getYear(),
+                            vacancyInfoResponse.getLocalDateTime().getMonthValue(),
+                            vacancyInfoResponse.getLocalDateTime().getDayOfMonth(),
                             new DatePicker.OnDateChangedListener() {
                                 @Override
                                 public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {}
                             });
+                    timePicker.setHour(vacancyInfoResponse.getLocalDateTime().getHour());
+                    timePicker.setMinute(vacancyInfoResponse.getLocalDateTime().getMinute());
                     paymentAndAdditionalInfoEditText.setText(vacancyInfoResponse.getPaymentAndAdditionalInfo());
+                    acceptableDateForWaiting.init(vacancyInfoResponse.getVacancyAvailability().getYear(),
+                            vacancyInfoResponse.getVacancyAvailability().getMonthValue(),
+                            vacancyInfoResponse.getVacancyAvailability().getDayOfMonth(),
+                            new DatePicker.OnDateChangedListener() {
+                                @Override
+                                public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {}
+                            });
+                    acceptableTimeForWaiting.setHour(vacancyInfoResponse.getVacancyAvailability().getHour());
+                    acceptableTimeForWaiting.setMinute(vacancyInfoResponse.getVacancyAvailability().getMinute());
                 }
-
                 @Override
                 public void onFailure(Call<VacancyInfoResponse> call, Throwable t) {
-                    Toast.makeText(EmployerVacancyEditActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EmployerVacancyEditActivity.this, "Error " +
+                            "'getVacancyById' method is failure", Toast.LENGTH_SHORT).show();
                 }
             });
         }
+        templatesList = new ArrayList<>();
+        generalApi.getTemplatesList().enqueue(new Callback<VacancyListResponse>() {
+            @Override
+            public void onResponse(Call<VacancyListResponse> call, Response<VacancyListResponse> response) {
+                templatesList.addAll(response.body().getList());
+            }
+            @Override
+            public void onFailure(Call<VacancyListResponse> call, Throwable t) {
+                Toast.makeText(EmployerVacancyEditActivity.this, "Error " +
+                        "'getTemplatesList' method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+        List<String> templatesNames = templatesList.stream().map(Vacancy::getTemplateName).collect(Collectors.toList());
+        templatesNames.add(getResources().getString(R.string.no_template));
+        ArrayAdapter<String> templatesAdapter = new ArrayAdapter
+                (this,android.R.layout.simple_spinner_item, templatesNames);
+        templatesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        templatesSpinner.setAdapter(templatesAdapter);
+        templatesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = (String) adapterView.getItemAtPosition(i);
+                for (Vacancy template : templatesList) {
+                    if (template.getTemplateName().equals(selectedItem)) {
+                        for (ProfessionName name : template.getProfession().getProfessionNames()) {
+                            if (name.getLanguage().getLanguageEndonym()
+                                    .equals(userInfoResponse.getEndonymInterfaceLanguage())) {
+                                int position = templatesAdapter.getPosition(name.getProfessionName());
+                                requiredProfessionSpinner.setSelection(position);
+                            }
+                        }
+                        quotasNumberEditText.setText(template.getQuotasNumber());
+                        jobAddressButton.setText(template.getJobLocation().getJobAddress());
+                        jobAddressLatitude = template.getJobLocation().getLatitude();
+                        jobAddressLongitude = template.getJobLocation().getLongitude();
+                        paymentAndAdditionalInfoEditText.setText(template.getPaymentAndAdditionalInfo());
+                        isRequiredToCloseAllQuotasCheckbox.setChecked(template.isNecessaryToCloseAllQuotas());
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
     }
 
     @Override
@@ -169,21 +223,19 @@ public class EmployerVacancyEditActivity extends AppCompatActivity {
     }
 
     public void onDeleteClick(View view) {
-        Bundle arguments = getIntent().getExtras();
         if (arguments.getString("vacancy_id") != null) {
-            StringRequest stringRequest = new StringRequest();
-            stringRequest.setString(arguments.getString("vacancy_id"));
-            searchApi.deleteVacancyById(stringRequest).enqueue(new Callback<ResultErrorsResponse>() {
+            searchApi.deleteVacancyById(arguments.getString("vacancy_id")).enqueue(new Callback<ResultErrorsResponse>() {
                 @Override
                 public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
-
                 @Override
                 public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                    Toast.makeText(EmployerVacancyEditActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EmployerVacancyEditActivity.this, "Error " +
+                            "'deleteVacancyById' method is failure", Toast.LENGTH_SHORT).show();
                 }
             });
         }
         Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
+        finish();
         startActivity(intent);
     }
 
@@ -191,38 +243,58 @@ public class EmployerVacancyEditActivity extends AppCompatActivity {
         VacancyRequest vacancyRequest = new VacancyRequest();
         String enteredJobAddress = jobAddressButton.getText().toString();
         if (isAddressValid(enteredJobAddress)) {
-            String professionName = requiredProfessionSpinner.toString();
-            StringRequest stringRequest = new StringRequest();
-            stringRequest.setString(professionName);
-            generalApi.getProfessionIdByName(stringRequest).enqueue(new Callback<IdResponse>() {
-                @Override
-                public void onResponse(Call<IdResponse> call, Response<IdResponse> response) {
-                    vacancyRequest.setProfessionId(response.body().getId());
-                }
-
-                @Override
-                public void onFailure(Call<IdResponse> call, Throwable t) {
-                    Toast.makeText(EmployerVacancyEditActivity.this, "fail", Toast.LENGTH_SHORT).show();
-                }
-            });
-            LocalDate localDate = LocalDate.of(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
-            vacancyRequest.setTimestamp(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
+            if (arguments.getString("vacancy_id") != null) {
+                vacancyRequest.setVacancyId(Long.parseLong(arguments.getString("vacancy_id")));
+            }
+            if (requiredProfessionSpinner.getSelectedItem() != null) {
+                vacancyRequest.setProfessionName(requiredProfessionSpinner.getSelectedItem().toString());
+            }
+            LocalDateTime startDateTime = LocalDateTime.of(datePicker.getYear(), datePicker.getMonth(),
+                    datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute());
+            vacancyRequest.setStartTimestamp(startDateTime);
+            if (waitUntilStartDateTimeCheckbox.isChecked()) {
+                vacancyRequest.setWaitingTimestamp(startDateTime);
+            } else {
+                LocalDateTime acceptableWaitingTime = LocalDateTime.of(
+                        acceptableDateForWaiting.getYear(),
+                        acceptableDateForWaiting.getMonth(),
+                        acceptableDateForWaiting.getDayOfMonth(),
+                        acceptableTimeForWaiting.getHour(),
+                        acceptableTimeForWaiting.getMinute());
+                vacancyRequest.setWaitingTimestamp(acceptableWaitingTime);
+            }
             String info = paymentAndAdditionalInfoEditText.getText().toString();
             vacancyRequest.setPaymentAndAdditionalInfo(info);
+            vacancyRequest.setQuotasNumber(Integer.parseInt(quotasNumberEditText.getText().toString()));
             vacancyRequest.setJobAddress(enteredJobAddress);
             vacancyRequest.setLatitude(jobAddressLatitude);
             vacancyRequest.setLongitude(jobAddressLongitude);
+            vacancyRequest.setEmployerId(userInfoResponse.getId());
+            vacancyRequest.setEmployerName(userInfoResponse.getName());
+            vacancyRequest.setRequiredToCloseAllQuotas(isRequiredToCloseAllQuotasCheckbox.isChecked());
+            vacancyRequest.setSaveTemplate(saveTemplateCheckbox.isChecked());
+            vacancyRequest.setTemplateName(templateNameEditText.getText().toString());
             searchApi.setVacancy(vacancyRequest).enqueue(new Callback<ResultErrorsResponse>() {
                 @Override
-                public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
-
+                public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                    if (response.body().isResult()) {
+                        Intent intent = new Intent(view.getContext(), EmployerVacanciesSettingActivity.class);
+                        finish();
+                        startActivity(intent);
+                    } else {
+                        StringBuilder sb = new StringBuilder();
+                        for (String error : response.body().getErrors()) {
+                            sb.append(error).append(" ");
+                        }
+                        Toast.makeText(EmployerVacancyEditActivity.this, sb.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
                 @Override
                 public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                    Toast.makeText(EmployerVacancyEditActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EmployerVacancyEditActivity.this, "Error " +
+                            "'setVacancy' method is failure", Toast.LENGTH_SHORT).show();
                 }
             });
-            Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
-            startActivity(intent);
         } else {
             Toast.makeText(EmployerVacancyEditActivity.this, "Job address not exists", Toast.LENGTH_SHORT).show();
         }
@@ -230,6 +302,7 @@ public class EmployerVacancyEditActivity extends AppCompatActivity {
 
     public void onBackClick(View view) {
         Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
+        finish();
         startActivity(intent);
     }
 

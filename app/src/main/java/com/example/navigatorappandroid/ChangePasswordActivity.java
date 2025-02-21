@@ -47,7 +47,6 @@ public class ChangePasswordActivity extends BaseActivity {
                     Toast.makeText(ChangePasswordActivity.this, sb.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(ChangePasswordActivity.this, "error: 'changePassword' " +

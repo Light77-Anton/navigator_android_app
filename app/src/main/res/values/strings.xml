@@ -91,13 +91,16 @@
     <string name="logout">Logout</string>
     <string name="show_info_about_my_vacancies">Show info about my vacancies</string>
     <string name="required_profession">Required profession :</string>
+    <string name="choose_from_templates">If you have saved templates - you can choose one of them from the list and set new date and time :</string>
+    <string name="no_template">No template</string>
     <string name="job_address">Job address :</string>
     <string name="start_date">Start date :</string>
-    <string name="payment_and_additional_info">Payment and additional info(optional) :</string>
+    <string name="payment_and_additional_info">Payment and additional info(optional) *if you have multiple communication languages - you can double your text in appropriate languages:</string>
     <string name="delete_vacancy">Delete vacancy</string>
     <string name="my_vacancies">My vacancies</string>
     <string name="click_to_edit">Click to edit</string>
-    <string name="leave_vacancy_active_after_start_date_or_vacancy_is_confirmed">Leave vacancy active after start date or vacancy is confirmed</string>
+    <string name="leave_vacancy_active_after_start_date_if_quotas_are_not_filled">Leave vacancy active after start date if quotas are not filled</string>
+    <string name="save_pattern">Save pattern</string>
     <string name="is_vacancy_active">Is vacancy active?</string>
     <string name="choice_communication_language_info">Choice the communication language; if you do not choice the language - it will not be taken into account in the search</string>
     <string name="sort_request">Sort request</string>
@@ -152,7 +155,8 @@
     <string name="user_was_removed_from_favorites"> was removed from favorites</string>
     <string name="user_was_added_to_black_list"> was added to the black list</string>
     <string name="user_was_removed_from_black_list"> was removed from the black list</string>
-    <string name="save_vacancy_as_template">Save vacancy as a template?</string>
+    <string name="save_template">Save template</string>
+    <string name="name_for_template">If you save the template, give it a name</string>
     <string name="rate_user_now_or_later">You can rate the user right away or you can do it after in settings</string>
     <string name="go_to_rate_user">Go to rate the user</string>
     <string name="skip">Skip</string>
@@ -161,4 +165,6 @@
     <string name="offer_has_been_sent">The offer has been sent</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
+    <string name="quotas_number">Quotas number: </string>
+    <string name="set_acceptable_waiting_time">Set acceptable waiting time :</string>
 </resources>

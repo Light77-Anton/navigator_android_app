@@ -82,13 +82,16 @@
     <string name="logout">Выход</string>
     <string name="show_info_about_my_vacancies">Мои вакансии</string>
     <string name="required_profession">Требуемая профессия :</string>
+    <string name="choose_from_templates">Если у вас есть сохраненные шаблоны - вы можете выбрать один из списка и установить новую дату и время :</string>
+    <string name="no_template">Нет шаблона</string>
     <string name="job_address">Рабочий адрес :</string>
     <string name="start_date">Дата начала :</string>
-    <string name="payment_and_additional_info">Оплата и дополнительная информация(опционально) :</string>
+    <string name="payment_and_additional_info">Оплата и дополнительная информация(опционально) *если у вас есть больше одного языка общения - вы можете продублировать ваш текст на соответствующих языках:</string>
     <string name="delete_vacancy">Удалить вакансию</string>
     <string name="my_vacancies">Мои вакансии</string>
     <string name="click_to_edit">Нажмите для редактирования</string>
-    <string name="leave_vacancy_active_after_start_date_or_vacancy_is_confirmed">Оставить вакансию открытой после даты начала или закрытия квот</string>
+    <string name="leave_vacancy_active_after_start_date_if_quotas_are_not_filled">Оставить вакансию открытой после даты начала, если квоты не закрыты</string>
+    <string name="save_pattern">Сохранить шаблон</string>
     <string name="is_vacancy_active">Вакансия активна?</string>
     <string name="choice_communication_language_info">Выберите язык коммуникации; если вы не выберите  - в противном случае он не будет учитываться в поиске</string>
     <string name="sort_request">Сортировка запроса</string>
@@ -140,7 +143,8 @@
     <string name="user_was_removed_from_favorites"> был убран из фаворитов</string>
     <string name="user_was_added_to_black_list"> был добавлен в черный список</string>
     <string name="user_was_removed_from_black_list"> был убран из черного списка</string>
-    <string name="save_vacancy_as_template">Сохранить вакансию как шаблон?</string>
+    <string name="save_template">Сохранить шаблон</string>
+    <string name="name_for_template">Если вы сохраняете шаблон - дайте ему имя</string>
     <string name="rate_user_now_or_later">Вы можете оценить пользователя сейчас или позже в настройках</string>
     <string name="go_to_rate_user">Оценить пользователя</string>
     <string name="skip">Пропустить</string>
@@ -149,4 +153,6 @@
     <string name="offer_has_been_sent">Предложение было отправлено</string>
     <string name="accept">Принять</string>
     <string name="decline">Отказаться</string>
+    <string name="quotas_number">Кол-во квот: </string>
+    <string name="set_acceptable_waiting_time">Установить допустимое время ожидания :</string>
 </resources>

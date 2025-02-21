@@ -20,7 +20,6 @@ import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -319,8 +318,6 @@ public class WorkMapEmployeeActivity extends MainDisplayActivity implements OnMa
                 for (Vacancy vacancy : vacancies) {
                     LatLng jobLocation = new LatLng(vacancy.getJobLocation().getLatitude(),
                             vacancy.getJobLocation().getLongitude());
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                            new LatLng(jobLocation.latitude, jobLocation.longitude), DEFAULT_ZOOM));
                     Marker marker = googleMap.addMarker( new MarkerOptions()
                             .position(jobLocation)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.other_user_icon)));
@@ -328,7 +325,6 @@ public class WorkMapEmployeeActivity extends MainDisplayActivity implements OnMa
                 }
                 googleMap.setInfoWindowAdapter(new WorkMapEmployeeActivity.CustomInfoWindowAdapter(map));
             }
-
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
                 Toast.makeText(WorkMapEmployeeActivity.this, "Error: 'getVacanciesByProfession' " +

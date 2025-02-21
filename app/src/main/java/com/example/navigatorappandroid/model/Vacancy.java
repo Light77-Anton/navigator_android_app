@@ -49,7 +49,7 @@ public class Vacancy {
 
     private List<EmployeeData> hiredEmployees;
 
-    private List<InfoAboutVacancyFromEmployer> paymentAndAdditionalInfo;
+    private String paymentAndAdditionalInfo;
     private EmployerRequests employerRequests;
 
     public int getQuotasNumber() {
@@ -108,11 +108,31 @@ public class Vacancy {
         this.employerRequests = employerRequests;
     }
 
-    public List<InfoAboutVacancyFromEmployer> getPaymentAndAdditionalInfo() {
+    public String getPaymentAndAdditionalInfo() {
         return paymentAndAdditionalInfo;
     }
 
-    public void setPaymentAndAdditionalInfo(List<InfoAboutVacancyFromEmployer> paymentAndAdditionalInfo) {
+    public void setPaymentAndAdditionalInfo(String paymentAndAdditionalInfo) {
         this.paymentAndAdditionalInfo = paymentAndAdditionalInfo;
     }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    private String templateName;
+
+    public boolean isNecessaryToCloseAllQuotas() {
+        return isNecessaryToCloseAllQuotas;
+    }
+
+    public void setNecessaryToCloseAllQuotas(boolean necessaryToCloseAllQuotas) {
+        isNecessaryToCloseAllQuotas = necessaryToCloseAllQuotas;
+    }
+
+    private boolean isNecessaryToCloseAllQuotas;
 }

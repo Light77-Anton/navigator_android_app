@@ -13,7 +13,7 @@ public class SearchVacanciesActivity extends BaseActivity {
     }
 
     public void onConfirm(View view) {
-        AutoCompleteTextView autoCompleteTextView = findViewById(R.id.search_employees_autocomplete);
+        AutoCompleteTextView autoCompleteTextView = findViewById(R.id.search_vacancies_autocomplete);
         String profession = autoCompleteTextView.getText().toString();
         Intent intent;
         if (userInfoResponse.getCurrentWorkDisplay() == 1) {

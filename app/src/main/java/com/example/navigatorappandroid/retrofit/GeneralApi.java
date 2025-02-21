@@ -27,6 +27,7 @@ import com.example.navigatorappandroid.retrofit.response.MapTextResponse;
 import com.example.navigatorappandroid.retrofit.response.TextListResponse;
 import com.example.navigatorappandroid.retrofit.response.TimersListResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
+import com.example.navigatorappandroid.retrofit.response.VacancyListResponse;
 import com.example.navigatorappandroid.retrofit.response.VoteResponse;
 import java.security.Principal;
 import okhttp3.MultipartBody;
@@ -43,6 +44,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface GeneralApi {
+
+    @GET("api/templates/get")
+    Call<VacancyListResponse> getTemplatesList();
 
     @PUT("api/moderator")
     Call<ResultErrorsResponse> setModerator();
@@ -135,7 +139,7 @@ public interface GeneralApi {
     Call<ProfessionNamesListResponse> getProfessionsNamesInSpecifiedLanguage();
 
     @GET("api/profession/get/by/name")
-    Call<IdResponse> getProfessionIdByName(@Body StringRequest stringRequest);
+    Call<IdResponse> getProfessionIdByName(@Body String professionName);
 
     @GET("api/vacancy/info/get")
     Call<StringResponse> getAdditionalInfoAboutVacancyInSpecifiedLanguage(@Body ProfessionToUserRequest professionToUserRequest);

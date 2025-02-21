@@ -11,6 +11,7 @@ import com.example.navigatorappandroid.retrofit.response.ProfessionsResponse;
 import com.example.navigatorappandroid.retrofit.response.VacancyInfoResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -29,8 +30,8 @@ public interface SearchApi {
     @GET("api/search/vacancy/{id}/get")
     Call<VacancyInfoResponse> getVacancyById(@Path("id") String id);
 
-    @GET("api/search/employer/vacancy/delete")
-    Call<ResultErrorsResponse> deleteVacancyById(@Body StringRequest stringRequest);
+    @DELETE("api/search/vacancy/{id}/delete")
+    Call<ResultErrorsResponse> deleteVacancyById(@Body String id);
 
     @GET("api/search/employees")
     Call<SearchResponse> getEmployeesOfChosenProfession(@Body SearchRequest searchRequest);

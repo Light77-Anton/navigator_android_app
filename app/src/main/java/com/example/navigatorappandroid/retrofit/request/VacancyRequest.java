@@ -93,7 +93,7 @@ public class VacancyRequest implements Serializable { // возможно зам
     private LocalDateTime startTimestamp;
     @JsonProperty("payment_and_additional_info")
     private String paymentAndAdditionalInfo;
-    @JsonProperty("profession_name")
+    @JsonProperty("employer_id")
     private Long employerId;
 
     public Long getEmployerId() {
@@ -112,6 +112,50 @@ public class VacancyRequest implements Serializable { // возможно зам
         this.employerName = employerName;
     }
 
-    @JsonProperty("profession_name")
+    @JsonProperty("employer_name")
     private String employerName;
+
+    public int getQuotasNumber() {
+        return quotasNumber;
+    }
+
+    public void setQuotasNumber(int quotasNumber) {
+        this.quotasNumber = quotasNumber;
+    }
+
+    @JsonProperty("quotas_number")
+    private int quotasNumber;
+
+    @JsonProperty("is_required_to_close_all_quotas")
+    private boolean isRequiredToCloseAllQuotas;
+
+    public boolean isRequiredToCloseAllQuotas() {
+        return isRequiredToCloseAllQuotas;
+    }
+
+    public void setRequiredToCloseAllQuotas(boolean requiredToCloseAllQuotas) {
+        isRequiredToCloseAllQuotas = requiredToCloseAllQuotas;
+    }
+
+    public boolean isSaveTemplate() {
+        return saveTemplate;
+    }
+
+    public void setSaveTemplate(boolean saveTemplate) {
+        this.saveTemplate = saveTemplate;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    @JsonProperty("save_template")
+    private boolean saveTemplate;
+
+    @JsonProperty("template_name")
+    private String templateName;
 }

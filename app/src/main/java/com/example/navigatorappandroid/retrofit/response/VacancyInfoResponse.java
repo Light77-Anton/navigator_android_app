@@ -6,6 +6,16 @@ import lombok.Data;
 public class VacancyInfoResponse {
 
     private String professionName;
+
+    public int getQuotasNumber() {
+        return quotasNumber;
+    }
+
+    public void setQuotasNumber(int quotasNumber) {
+        this.quotasNumber = quotasNumber;
+    }
+
+    private int quotasNumber;
     private String jobAddress;
 
     public String getProfessionName() {
@@ -51,4 +61,23 @@ public class VacancyInfoResponse {
     private LocalDateTime localDateTime;
     private LocalDateTime vacancyAvailability;
     private String paymentAndAdditionalInfo;
+
+    public double getJobAddressLatitude() {
+        return jobAddressLatitude;
+    }
+
+    public void setJobAddressLatitude(double jobAddressLatitude) {
+        this.jobAddressLatitude = jobAddressLatitude;
+    }
+
+    public double getJobAddressLongitude() {
+        return jobAddressLongitude;
+    }
+
+    public void setJobAddressLongitude(double jobAddressLongitude) {
+        this.jobAddressLongitude = jobAddressLongitude;
+    }
+
+    private double jobAddressLatitude;
+    private double jobAddressLongitude;
 }

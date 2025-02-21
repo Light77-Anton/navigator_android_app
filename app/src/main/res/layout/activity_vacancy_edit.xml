@@ -15,6 +15,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:text="@string/choose_from_templates"
+            android:textColor="@color/white"
+            android:textSize="40sp"/>
+        <Spinner
+            android:id="@+id/templates"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/spinner"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:text="@string/required_profession"
             android:textColor="@color/white"
             android:textSize="40sp"/>
@@ -31,6 +47,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:text="@string/quotas_number"
+            android:labelFor="@id/quotas_number"
+            android:textColor="@color/white"
+            android:textSize="40sp"/>
+        <EditText
+            android:id="@+id/quotas_number"
+            android:text="1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:paddingStart="10dp"
+            android:background="@drawable/rectangle_button"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:labelFor="@id/job_address"
             android:text="@string/job_address"
             android:textColor="@color/white"
             android:textSize="40sp"/>
@@ -59,27 +95,100 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/payment_and_additional_info"
+            android:text="@string/choose_start_time"
             android:textColor="@color/white"
             android:textSize="40sp"/>
+        <TimePicker
+            android:id="@+id/vacancy_time_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/custom_green"
+            android:timePickerMode="spinner"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/payment_and_additional_info"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+
         <EditText
             android:id="@+id/payment_and_additional_info"
             android:hint="."
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="30dp"
+            android:inputType="text"
             android:background="@drawable/rectangle_button"
             android:textColor="@color/white"
             android:textSize="30sp"/>
-        <CheckBox
-            android:onClick="OnIsPermanentlyActive"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/leave_vacancy_active_after_start_date_or_vacancy_is_confirmed"
+            android:text="@string/set_acceptable_waiting_time"
+            android:textColor="@color/white"
+            android:textSize="40sp"/>
+        <CheckBox
+            android:id="@+id/waiting_until_start_date_time_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/waiting_until_start_date_time_checkbox"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:textSize="40sp"
+            android:background="@drawable/edit_text"/>
+        <DatePicker
+            android:id="@+id/acceptable_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dark_red"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp" />
+        <TimePicker
+            android:id="@+id/acceptable_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dark_red"
+            android:timePickerMode="spinner"
+            android:layout_marginTop="30dp"/>
+        <CheckBox
+            android:id="@+id/is_required_to_close_all_quotas_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/leave_vacancy_active_after_start_date_if_quotas_are_not_filled"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:background="@drawable/edit_text"/>
+        <CheckBox
+            android:id="@+id/save_template_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/save_template"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:background="@drawable/edit_text"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/name_for_template"
+            android:labelFor="@id/template_name"
+            android:textColor="@color/white"
+            android:textSize="40sp"/>
+        <EditText
+            android:id="@+id/template_name"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="30dp"
+            android:inputType="text"
+            android:background="@drawable/rectangle_button"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
         <android.widget.Button
             android:id="@+id/first_button"
             android:onClick="onConfirmClick"

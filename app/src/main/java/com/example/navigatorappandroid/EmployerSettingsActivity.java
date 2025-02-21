@@ -14,15 +14,10 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.model.Language;
-import com.example.navigatorappandroid.retrofit.AuthApi;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
-import com.example.navigatorappandroid.retrofit.response.LoginResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.TextListResponse;
 import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
@@ -38,16 +33,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EmployerSettingsActivity extends AppCompatActivity {
+public class EmployerSettingsActivity extends BaseActivity {
 
     private Uri selectedImageUri;
     private static final int REQUEST_IMAGE_PICK = 1;
     private ImageView avatarImageView;
-    private RetrofitService retrofitService;
-    private GeneralApi generalApi;
-    private AuthApi authApi;
     private EditText nameEditText;
-    private EditText firmNameEditText;
     private EditText phoneEditText;
     private CheckBox isPhoneHiddenCheckBox;
     private CheckBox isEmailHiddenCheckBox;
@@ -62,35 +53,6 @@ public class EmployerSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, LoginActivity.class);
-        retrofitService = new RetrofitService();
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        authApi = retrofitService.getRetrofit().create(AuthApi.class);
-        authApi.authCheck().enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (!response.body().isResult()) {
-                    intent.putExtra("is_auth_error", true);
-                    startActivity(intent);
-                }
-            }
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                intent.putExtra("is_auth_error", true);
-                startActivity(intent);
-            }
-        });
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
-            @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                userInfoResponse = response.body();
-            }
-            @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(EmployerSettingsActivity.this, "error: 'getUserInfo' " +
-                        "method is failure", Toast.LENGTH_SHORT).show();
-            }
-        });
         setContentView(R.layout.activity_settings_employer);
         avatarImageView = findViewById(R.id.avatar);
         Button uploadButton = findViewById(R.id.avatar_upload);
@@ -106,9 +68,6 @@ public class EmployerSettingsActivity extends AppCompatActivity {
                 }
             }
         });
-        String firmName = userInfoResponse.getEmployerRequests().getFirmName();
-        firmNameEditText = findViewById(R.id.firm_name);
-        firmNameEditText.setText(firmName);
         String name = userInfoResponse.getName();
         nameEditText = findViewById(R.id.first_and_last_name);
         nameEditText.setText(name);
@@ -132,7 +91,6 @@ public class EmployerSettingsActivity extends AppCompatActivity {
             public void onResponse(Call<TextListResponse> call, Response<TextListResponse> response) {
                 languagesList.addAll(response.body().getList());
             }
-
             @Override
             public void onFailure(Call<TextListResponse> call, Throwable t) {
                 Toast.makeText(EmployerSettingsActivity.this, "error: 'getLanguagesList' " +
@@ -147,6 +105,7 @@ public class EmployerSettingsActivity extends AppCompatActivity {
         List<String> communicationLanguages = userInfoResponse.getCommunicationLanguages().stream()
                 .map(Language::getLanguageEndonym).collect(Collectors.toList());
         communicationLanguagesSpinner = findViewById(R.id.communication_language_first);
+        communicationLanguagesSpinner.setBackground(ContextCompat.getDrawable(this, R.drawable.spinner));
         communicationLanguagesSpinner.setAdapter(languagesAdapter);
         ArrayList<Integer> multiSpinnerPositions = new ArrayList<>();
         for (String lang : communicationLanguages) {
@@ -191,7 +150,6 @@ public class EmployerSettingsActivity extends AppCompatActivity {
             generalApi.profileAvatar(body).enqueue(new Callback<AvatarResponse>() {
                 @Override
                 public void onResponse(Call<AvatarResponse> call, Response<AvatarResponse> response) {}
-
                 @Override
                 public void onFailure(Call<AvatarResponse> call, Throwable t) {
                     Toast.makeText(EmployerSettingsActivity.this, "Failed to set avatar", Toast.LENGTH_SHORT).show();
@@ -213,12 +171,12 @@ public class EmployerSettingsActivity extends AppCompatActivity {
 
     public void onChangePasswordClick(View view) {
         Intent intent = new Intent(this, ChangePasswordActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onConfirmClick(View view) {
         ProfileRequest profileRequest = new ProfileRequest();
-        profileRequest.setFirmName(firmNameEditText.getText().toString());
         profileRequest.setName(nameEditText.getText().toString());
         profileRequest.setPhone(phoneEditText.getText().toString());
         profileRequest.setPhoneHidden(isPhoneHiddenCheckBox.isChecked());
@@ -235,12 +193,13 @@ public class EmployerSettingsActivity extends AppCompatActivity {
                 Intent intent;
                 if (userInfoResponse.getCurrentWorkDisplay() == 1) {
                     intent = new Intent(view.getContext(), WorkMapEmployerActivity.class);
+                    finish();
                     startActivity(intent);
                 }
                 intent = new Intent(view.getContext(), WorkListEmployerActivity.class);
+                finish();
                 startActivity(intent);
             }
-
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(EmployerSettingsActivity.this, "error: 'profile' " +
@@ -254,9 +213,9 @@ public class EmployerSettingsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
+                finish();
                 startActivity(intent);
             }
-
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(EmployerSettingsActivity.this, "error: 'logout' " +
@@ -269,6 +228,7 @@ public class EmployerSettingsActivity extends AppCompatActivity {
         Intent intent;
         if (userInfoResponse.getCurrentWorkDisplay() == 1) {
             intent = new Intent(this, WorkMapEmployerActivity.class);
+            finish();
             startActivity(intent);
         }
         intent = new Intent(this, WorkListEmployerActivity.class);

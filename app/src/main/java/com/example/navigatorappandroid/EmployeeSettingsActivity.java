@@ -157,7 +157,6 @@ public class EmployeeSettingsActivity extends BaseActivity {
             generalApi.profileAvatar(body).enqueue(new Callback<AvatarResponse>() {
                 @Override
                 public void onResponse(Call<AvatarResponse> call, Response<AvatarResponse> response) {}
-
                 @Override
                 public void onFailure(Call<AvatarResponse> call, Throwable t) {
                     Toast.makeText(EmployeeSettingsActivity.this, "Failed to set avatar", Toast.LENGTH_SHORT).show();
@@ -216,7 +215,6 @@ public class EmployeeSettingsActivity extends BaseActivity {
                 finish();
                 startActivity(intent);
             }
-
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(EmployeeSettingsActivity.this, "error: 'profile' " +
@@ -233,7 +231,6 @@ public class EmployeeSettingsActivity extends BaseActivity {
                 finish();
                 startActivity(intent);
             }
-
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(EmployeeSettingsActivity.this, "error: 'logout' " +

@@ -6,48 +6,23 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.model.Vacancy;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import java.util.List;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class EmployerVacanciesSettingActivity extends AppCompatActivity {
-
-    UserInfoResponse userInfoResponse;
-    RetrofitService retrofitService;
-    GeneralApi generalApi;
+public class EmployerVacanciesSettingActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacancies_setting);
-        ScrollView scrollView = (ScrollView) getLayoutInflater().inflate(R.layout.activity_vacancies_setting, null);
-        LinearLayout linearLayout = scrollView.findViewById(R.id.activity_vacancies_setting_layout);
-        retrofitService = new RetrofitService();
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        generalApi.getUserInfo().enqueue(new Callback<UserInfoResponse>() {
-            @Override
-            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                userInfoResponse = response.body();
-            }
-            @Override
-            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
-                Toast.makeText(EmployerVacanciesSettingActivity.this, "fail", Toast.LENGTH_SHORT).show();
-            }
-        });
+        LinearLayout linearLayout = findViewById(R.id.activity_vacancies_setting_layout);
         List<Vacancy> vacancyList = userInfoResponse.getEmployerRequests().getVacancies();
         for (Vacancy vacancy : vacancyList) {
             Button button = new Button(this);
             button.setWidth(ActionBar.LayoutParams.MATCH_PARENT);
             button.setHeight(ActionBar.LayoutParams.WRAP_CONTENT);
-            button.setBackground(getResources().getDrawable(R.drawable.rectangle_button));
+            button.setBackground(ContextCompat.getDrawable(this, R.drawable.rectangle_button));
             button.setTextColor(getResources().getColor(R.color.white));
             button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30.0f);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
@@ -60,6 +35,7 @@ public class EmployerVacanciesSettingActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), EmployerVacancyEditActivity.class);
                     intent.putExtra("vacancy_id", button.getText().toString());
+                    finish();
                     startActivity(intent);
                 }
             });
@@ -69,17 +45,18 @@ public class EmployerVacanciesSettingActivity extends AppCompatActivity {
 
     public void onAddVacancy(View view) {
         Intent intent = new Intent(this, EmployerVacancyEditActivity.class);
+        finish();
         startActivity(intent);
     }
 
     public void onBackClick(View view) {
         Intent intent;
-        Bundle arguments = getIntent().getExtras();
-        if (arguments.getString("activity").equals("map")) {
-            intent = new Intent(this, WorkMapEmployeeActivity.class);
-            startActivity(intent);
+        if (userInfoResponse.getCurrentWorkDisplay() == 1) {
+            intent = new Intent(this, WorkMapEmployerActivity.class);
+        } else {
+            intent = new Intent(this, WorkListEmployerActivity.class);
         }
-        intent = new Intent(this, WorkListEmployerActivity.class);
+        finish();
         startActivity(intent);
     }
 }
