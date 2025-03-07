@@ -18,9 +18,9 @@
     <string name="first_and_last_name_java">FIRST_AND_LAST_NAME</string>
     <string name="email">Email</string>
     <string name="email_java">EMAIL</string>
-    <string name="phone">Phone</string>
+    <string name="phone">Phone: </string>
     <string name="phone_java">PHONE</string>
-    <string name="social_networks_links">Social networks links</string>
+    <string name="social_networks_links">Social networks links: </string>
     <string name="social_networks_links_java">SOCIAL_NETWORKS_LINKS</string>
     <string name="password">Password</string>
     <string name="password_java">PASSWORD</string>
@@ -65,7 +65,7 @@
     <string name="do_you_have_the_drivers_license">Do you have the driver\'s license?</string>
     <string name="do_you_have_the_auto">Do you have the auto?</string>
     <string name="interface_language">Interface language</string>
-    <string name="communication_languages">Communication languages</string>
+    <string name="communication_languages">Communication languages: </string>
     <string name="additional_info">Additional info</string>
     <string name="your_status">Your status</string>
     <string name="active_status_description">Active - you are opened for another users in search</string>
@@ -167,4 +167,8 @@
     <string name="decline">Decline</string>
     <string name="quotas_number">Quotas number: </string>
     <string name="set_acceptable_waiting_time">Set acceptable waiting time :</string>
+    <string name="rating">Rating: </string>
+    <string name="professions">Professions: </string>
+    <string name="professions_info_from_employee">Info from employee: </string>
+    <string name="email_view">Email: </string>
 </resources>

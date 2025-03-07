@@ -192,7 +192,12 @@ public class ChatActivity extends BaseActivity {
     }
 
     public void onBack(View view) {
-        Intent intent = new Intent(this, ChatListActivity.class);
+        Intent intent = ;
+        if (lastActivityToReturn.equals("timers")) {
+            intent = new Intent(this, TimersListActivity.class);
+        } else {
+            intent = new Intent(this, ChatListActivity.class);
+        }
         finish();
         startActivity(intent);
     }

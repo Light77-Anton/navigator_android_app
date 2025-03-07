@@ -74,21 +74,19 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
                 avatar.setImageBitmap(BitmapFactory.decodeByteArray
                         (decodedBytes, 0 , decodedBytes.length));
             }
-
             @Override
             public void onFailure(Call<ExtendedUserInfoResponse> call, Throwable t) {
                 Toast.makeText(EmployerExtendedInfoActivity.this, "Error " +
                         "'getEmployerInfo' method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-        ChatRequest chatRequest = new ChatRequest();
-        chatRequest.setEmployeeId(userInfoResponse.getId());
-        chatRequest.setEmployerId(Long.parseLong(arguments.getString("employer_id")));
-        if (arguments.getString("vacancy_id") != null) {
-            Button button = findViewById(R.id.give_offer);
-            button.setVisibility(View.VISIBLE);
-            button.setClickable(true);
-        }
+    }
+
+    public void onRatingClick(View view) {
+        Intent intent = new Intent(this, CommentsListActivity.class);
+        intent.putExtras(arguments);
+        finish();
+        startActivity(intent);
     }
 
     public void onSendOffer(View view) {
@@ -110,6 +108,11 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
 
     public void onBack(View view) {
         Intent intent;
+        if (arguments.getString("")) {
+
+        } else {
+
+        }
         if (userInfoResponse.getCurrentWorkDisplay() == 1) {
             intent = new Intent(this, WorkMapEmployeeActivity.class);
             finish();

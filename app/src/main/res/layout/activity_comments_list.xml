@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:tag="Comments list activity"
     android:orientation="vertical"
     android:background="@color/custom_gray_blue"
@@ -10,8 +10,8 @@
         android:onClick="onBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:background="@drawable/rectangle_button"
+        android:layout_marginTop="30dp"
         android:text="@string/back"
         android:textColor="@color/white"
         android:textSize="50sp"
@@ -21,13 +21,89 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/comments_list"
-        android:layout_below="@id/back"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:paddingStart="70dp"
         android:textColor="@color/white"
         android:textSize="40sp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <GridLayout android:id="@+id/comments_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rowCount="4"
+            android:columnCount="3">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/dislike"/>
+            <ImageView
+                android:id="@+id/vadims_avatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/avatar_example_round"/>
+            <TextView
+                android:id="@+id/vadims_username"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Vadims Baumansssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+                android:textColor="@color/black"
+                android:textSize="30sp"/>
+            <TextView
+                android:id="@+id/vadims_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/comment_background"
+                android:layout_columnSpan="3"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:paddingBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:text="Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент "
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/like" />
+            <ImageView
+                android:id="@+id/antons_avatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/default_user_avatar"/>
+            <TextView
+                android:id="@+id/antons_username"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Antons Baumans"
+                android:textColor="@color/black"
+                android:textSize="30sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/comment_background"
+                android:layout_columnSpan="3"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:paddingBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:text="Положительный коммент Положительный коммент  Положительный коммент  Положительный коммент Положительный коммент Положительный коммент Положительный коммент Положительный коммент "
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+        </GridLayout>
+    </ScrollView>
     <!--
-    -->
     <ImageView
         android:id="@+id/vadims_avatar"
         android:layout_width="50dp"
@@ -105,4 +181,5 @@
         android:text="Положительный коммент"
         android:textColor="@color/black"
         android:textSize="30sp"/>
-</RelativeLayout>
+    -->
+</LinearLayout>

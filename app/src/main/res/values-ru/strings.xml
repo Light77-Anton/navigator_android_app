@@ -14,7 +14,7 @@
     <string name="email_java">EMAIL</string>
     <string name="phone">Телефон</string>
     <string name="phone_java">PHONE</string>
-    <string name="social_networks_links">Ссылки на соц.сети</string>
+    <string name="social_networks_links">Ссылки на соц.сети: </string>
     <string name="social_networks_links_java">SOCIAL_NETWORKS_LINKS</string>
     <string name="password">Пароль</string>
     <string name="password_java">PASSWORD</string>
@@ -155,4 +155,8 @@
     <string name="decline">Отказаться</string>
     <string name="quotas_number">Кол-во квот: </string>
     <string name="set_acceptable_waiting_time">Установить допустимое время ожидания :</string>
+    <string name="rating">Рейтинг: </string>
+    <string name="professions">Профессии: </string>
+    <string name="professions_info_from_employee">Информация от рабочего: </string>
+    <string name="email_view">Почта: </string>
 </resources>

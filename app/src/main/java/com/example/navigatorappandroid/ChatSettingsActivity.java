@@ -58,6 +58,7 @@ public class ChatSettingsActivity extends BaseActivity {
 
     public void onBack(View view) {
         Intent intent = new Intent(this, ChatActivity.class);
+        finish();
         startActivity(intent);
     }
 
@@ -75,7 +76,6 @@ public class ChatSettingsActivity extends BaseActivity {
                     favoriteButton.setText(R.string.add_to_favorites);
                 }
             }
-
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(ChatSettingsActivity.this, "error: 'favorite' " +
@@ -115,6 +115,8 @@ public class ChatSettingsActivity extends BaseActivity {
             intent = new Intent(this, EmployerExtendedInfoActivity.class);
         }
         intent.putExtra("user_id", userId);
+        intent.putExtra("last_activity_to_return", "chat_settings");
+        finish();
         startActivity(intent);
     }
 }

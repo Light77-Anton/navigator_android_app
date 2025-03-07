@@ -151,7 +151,7 @@ public interface GeneralApi {
     Call<StringResponse> getInfoFromEmployeeInEmployersLanguage(@Body ProfessionToUserRequest professionToUserRequest);
 
     @GET("api/professions/to/user/get")
-    Call<StringResponse> getProfessionsToUserInEmployersLanguage(@Body ProfessionToUserRequest professionToUserRequest);
+    Call<StringResponse> getProfessionsToUserInEmployersLanguage(@Body long id);
 
     @GET("api/profession/to/user/get")
     Call<ProfessionToUserResponse> getProfessionToUser(@Body ProfessionToUserRequest professionToUserRequest);

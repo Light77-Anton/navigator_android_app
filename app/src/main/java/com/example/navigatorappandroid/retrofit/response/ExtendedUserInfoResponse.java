@@ -1,6 +1,7 @@
 package com.example.navigatorappandroid.retrofit.response;
+import com.example.navigatorappandroid.model.Vote;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import java.util.HashMap;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -158,6 +159,17 @@ public class ExtendedUserInfoResponse {
     private boolean isAuto;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String professions;
+
+    public List<Vote> getVotesToUser() {
+        return votesToUser;
+    }
+
+    public void setVotesToUser(List<Vote> votesToUser) {
+        this.votesToUser = votesToUser;
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<Vote> votesToUser;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String error;
 }

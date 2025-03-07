@@ -150,12 +150,10 @@
             android:textSize="30dp" />
         <android.widget.Button
             android:id="@+id/give_offer"
-            android:onClick="onOfferClick"
+            android:onClick="onSendOffer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/social_networks_links"
-            android:clickable="false"
-            android:visibility="invisible"
             android:background="@drawable/rectangle_button"
             android:layout_marginTop="60dp"
             android:text="@string/send_offer"

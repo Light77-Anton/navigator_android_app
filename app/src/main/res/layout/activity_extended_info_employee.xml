@@ -34,6 +34,7 @@
             android:layout_below="@id/name"
             android:layout_marginTop="30dp"
             android:background="@color/custom_gray_blue"
+            android:onClick="onRatingClick"
             android:text="Rating -10/10"
             android:textColor="@color/dark_red"
             android:textSize="25sp" />
@@ -61,14 +62,23 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/status"
             android:layout_marginTop="60dp"
-            android:text="Professions : first: additional info about first profession, second: additional info about second profession"
+            android:text="Professions : list"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+        <TextView
+            android:id="@+id/professions_info_from_employee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/professions"
+            android:layout_marginTop="60dp"
+            android:text="Professions : info from employee"
             android:textColor="@color/black"
             android:textSize="30sp" />
         <TextView
             android:id="@+id/languages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/professions"
+            android:layout_below="@id/professions_info_from_employee"
             android:layout_marginTop="60dp"
             android:text="Communication languages : Русский, English"
             android:textColor="@color/black"
@@ -112,24 +122,11 @@
             android:textColor="@color/white"
             android:textSize="50sp" />
         <android.widget.Button
-            android:id="@+id/open_chat"
-            android:onClick="onOpenChat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/give_offer"
-            android:background="@drawable/rectangle_button"
-            android:layout_marginTop="60dp"
-            android:enabled="false"
-            android:visibility="invisible"
-            android:text="@string/open_chat"
-            android:textColor="@color/white"
-            android:textSize="50sp" />
-        <android.widget.Button
             android:id="@+id/back"
             android:onClick="onBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/open_chat"
+            android:layout_below="@id/give_offer"
             android:background="@drawable/rectangle_button"
             android:text="@string/back"
             android:textColor="@color/white"

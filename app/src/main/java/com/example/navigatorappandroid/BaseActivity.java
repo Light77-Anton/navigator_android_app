@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -37,6 +38,7 @@ import retrofit2.Response;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private List<Activity> enteredActivitiesQueue;
     private LanguageHandler languageHandler;
     protected static final int REQUEST_IMAGE_PICK = 1;
     protected GeneralApi generalApi;
@@ -176,5 +178,23 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public Activity getLastActivity() {
+        if (!enteredActivitiesQueue.isEmpty()) {
+           return enteredActivitiesQueue.get(enteredActivitiesQueue.size() - 1);
+        }
+
+        return null;
+    }
+
+    public void addActivityToQueue(Activity activity) {
+        enteredActivitiesQueue.add(activity);
+    }
+
+    public void removeActivityFromQueue() {
+        if (!enteredActivitiesQueue.isEmpty()) {
+            enteredActivitiesQueue.remove(enteredActivitiesQueue.size() - 1);
+        }
     }
 }
