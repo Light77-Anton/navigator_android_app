@@ -1,4 +1,6 @@
 package com.example.navigatorappandroid.model;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +16,7 @@ public class Comment {
 
     private User recipient;
 
-    private EmployeeData employeeSender;
-
-    private Company companyRecipient;
-
-    private boolean isOfficialComment;
+    private boolean isInitialComment;
 
     public Long getId() {
         return id;
@@ -44,44 +42,36 @@ public class Comment {
         this.recipient = recipient;
     }
 
-    public EmployeeData getEmployeeSender() {
-        return employeeSender;
+    public boolean isInitialComment() {
+        return isInitialComment;
     }
 
-    public void setEmployeeSender(EmployeeData employeeSender) {
-        this.employeeSender = employeeSender;
+    public void setInitialComment(boolean initialComment) {
+        isInitialComment = initialComment;
     }
 
-    public Company getCompanyRecipient() {
-        return companyRecipient;
+    public boolean isResponseForAnotherComment() {
+        return isResponseForAnotherComment;
     }
 
-    public void setCompanyRecipient(Company companyRecipient) {
-        this.companyRecipient = companyRecipient;
+    public void setResponseForAnotherComment(boolean responseForAnotherComment) {
+        isResponseForAnotherComment = responseForAnotherComment;
     }
 
-    public boolean isOfficialComment() {
-        return isOfficialComment;
+    public List<Comment> getReplies() {
+        return replies;
     }
 
-    public void setOfficialComment(boolean officialComment) {
-        isOfficialComment = officialComment;
+    public void setReplies(List<Comment> replies) {
+        this.replies = replies;
     }
 
-    public boolean isCommentForUser() {
-        return isCommentForUser;
+    public Comment getInitialComment() {
+        return initialComment;
     }
 
-    public void setCommentForUser(boolean commentForUser) {
-        isCommentForUser = commentForUser;
-    }
-
-    public boolean isCommentForCompany() {
-        return isCommentForCompany;
-    }
-
-    public void setCommentForCompany(boolean commentForCompany) {
-        isCommentForCompany = commentForCompany;
+    public void setInitialComment(Comment initialComment) {
+        this.initialComment = initialComment;
     }
 
     public String getContent() {
@@ -92,9 +82,31 @@ public class Comment {
         this.content = content;
     }
 
-    private boolean isCommentForUser;
+    public Vote getVote() {
+        return vote;
+    }
 
-    private boolean isCommentForCompany;
+    public void setVote(Vote vote) {
+        this.vote = vote;
+    }
+
+    private boolean isResponseForAnotherComment;
+
+    private List<Comment> replies;
+
+    private Comment initialComment;
 
     private String content;
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    private LocalDateTime dateTime;
+
+    private Vote vote;
 }

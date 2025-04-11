@@ -20,7 +20,6 @@ import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.TextListResponse;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +46,6 @@ public class EmployerSettingsActivity extends BaseActivity {
     private MaterialSpinner communicationLanguagesSpinner;
     private CheckBox areLanguagesMatchedCheckBox;
     private CheckBox isMultivacancyAllowedCheckBox;
-    private UserInfoResponse userInfoResponse;
     private SeekBar seekBar;
 
     @Override

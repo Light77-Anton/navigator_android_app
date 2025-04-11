@@ -105,7 +105,7 @@
     <string name="search_settings">Настройки поиска</string>
     <string name="limit_of_positions_in_the_search">Лимит позиций в поиске</string>
     <string name="ignore_matched_communication_language_in_the_search">Игнорировать языки коммуникации в поиске</string>
-    <string name="comments_list">Список комментариев</string>
+    <string name="comments_list">Список комментариев: сортировать по</string>
     <string name="open_chat">Открыть переписку</string>
     <string name="send_offer">Отправить предложение</string>
     <string name="choose_start_date">Выберите дату начала :</string>
@@ -134,6 +134,8 @@
     <string name="multivacancy_is_allowed">Разрешить принимать множество вакансий одновременно</string>
     <string name="waiting">Ожидание...</string>
     <string name="all">Все</string>
+    <string name="positive_only">Только положительные</string>
+    <string name="negative_only">Только отрицательные</string>
     <string name="notification">Оповещение</string>
     <string name="add_to_favorites">Добавить в избранное</string>
     <string name="add_to_black_list">Добавить в черный список</string>

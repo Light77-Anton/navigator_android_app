@@ -23,163 +23,209 @@
         android:text="@string/comments_list"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
-        android:paddingStart="70dp"
+        android:paddingStart="10dp"
         android:textColor="@color/white"
         android:textSize="40sp" />
+    <Spinner
+        android:id="@+id/sort_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/spinner"
+        android:textAlignment="center"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <GridLayout android:id="@+id/comments_layout"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
+        <LinearLayout
+            android:id="@+id/comments_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:rowCount="4"
-            android:columnCount="3">
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/dislike"/>
-            <ImageView
-                android:id="@+id/vadims_avatar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@mipmap/avatar_example_round"/>
-            <TextView
-                android:id="@+id/vadims_username"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="Vadims Baumansssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
-                android:textColor="@color/black"
-                android:textSize="30sp"/>
-            <TextView
-                android:id="@+id/vadims_comment"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/comment_background"
-                android:layout_columnSpan="3"
-                android:paddingLeft="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:text="Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент "
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/vadims_vote"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/dislike"/>
+                <ImageView
+                    android:id="@+id/vadims_avatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@id/vadims_vote"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/avatar_example_round"/>
+                <TextView
+                    android:id="@+id/vadims_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@id/vadims_avatar"
+                    android:text="Vadims Baumansssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"/>
+                <TextView
+                    android:id="@+id/vadims_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/vadims_avatar"
+                    android:background="@drawable/comment_background"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент Негативный коммент "
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/date_time_vadim"
+                    android:layout_below="@id/vadims_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textAlignment="textEnd"
+                    android:text="11.04.2025"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
+            </RelativeLayout>
+            <Button
+                android:id="@+id/show_replies"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/notification_background"
+                android:text="Show reply(3)"
+                android:drawableEnd="@drawable/ic_spinner_arrow"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/like" />
-            <ImageView
-                android:id="@+id/antons_avatar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/default_user_avatar"/>
-            <TextView
-                android:id="@+id/antons_username"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="Antons Baumans"
-                android:textColor="@color/black"
-                android:textSize="30sp"/>
-            <TextView
+            <RelativeLayout
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/comment_background"
-                android:layout_columnSpan="3"
-                android:paddingLeft="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:text="Положительный коммент Положительный коммент  Положительный коммент  Положительный коммент Положительный коммент Положительный коммент Положительный коммент Положительный коммент "
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/antons_vote"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/like" />
+                <ImageView
+                    android:id="@+id/antons_avatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@id/antons_vote"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/default_user_avatar"/>
+                <TextView
+                    android:id="@+id/antons_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@id/antons_avatar"
+                    android:text="Antons Baumans"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"/>
+                <TextView
+                    android:id="@+id/antons_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/comment_background"
+                    android:layout_below="@id/antons_avatar"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Положительный коммент Положительный коммент  Положительный коммент  Положительный коммент Положительный коммент Положительный коммент Положительный коммент Положительный коммент "
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/date_time_anton"
+                    android:layout_below="@id/antons_comment"
+                    android:layout_marginBottom="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textAlignment="textEnd"
+                    android:text="13.04.2025"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/petrovich_avatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/default_user_avatar"/>
+                <TextView
+                    android:id="@+id/petrovich_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@id/petrovich_avatar"
+                    android:text="Petrovich"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"/>
+                <TextView
+                    android:id="@+id/petrovich_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/comment_background"
+                    android:layout_below="@id/petrovich_avatar"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Ответ на коммент Антона"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/date_time_petrovich"
+                    android:layout_below="@id/petrovich_comment"
+                    android:layout_marginBottom="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textAlignment="textEnd"
+                    android:text="14.04.2025"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
+            </RelativeLayout>
+            <Button
+                android:id="@+id/hide_replies"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/notification_background"
+                android:text="hide replies"
+                android:drawableEnd="@drawable/ic_spinner_arrow"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
-        </GridLayout>
+        </LinearLayout>
     </ScrollView>
-    <!--
-    <ImageView
-        android:id="@+id/vadims_avatar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/avatar_example_round"
-        android:layout_marginTop="60dp"
-        android:layout_below="@id/comments_list"/>
-    <TextView
-        android:id="@+id/vadims_username"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:paddingStart="10dp"
-        android:paddingTop="15dp"
-        android:layout_marginTop="60dp"
-        android:layout_below="@id/comments_list"
-        android:layout_toRightOf="@id/vadims_avatar"
-        android:text="Vadims Baumans"
-        android:textColor="@color/black"
-        android:textSize="30sp"/>
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:paddingTop="25dp"
-        android:src="@drawable/dislike"
-        android:layout_marginTop="60dp"
-        android:layout_toRightOf="@id/vadims_username"
-        android:layout_below="@id/comments_list"/>
-    <TextView
-        android:id="@+id/vadims_comment"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/vadims_avatar"
-        android:background="@drawable/comment_background"
-        android:text="Негативный коммент"
-        android:textColor="@color/black"
-        android:textSize="30sp"/>
-    <ImageView
-        android:id="@+id/antons_avatar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/default_user_avatar"
-        android:layout_marginTop="60dp"
-        android:layout_below="@id/vadims_comment"/>
-    <TextView
-        android:id="@+id/antons_username"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:paddingStart="10dp"
-        android:paddingTop="15dp"
-        android:layout_marginTop="60dp"
-        android:layout_below="@id/vadims_comment"
-        android:layout_toRightOf="@id/antons_avatar"
-        android:text="Antons Baumans"
-        android:textColor="@color/black"
-        android:textSize="30sp"/>
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:paddingTop="25dp"
-        android:src="@drawable/like"
-        android:layout_marginTop="60dp"
-        android:layout_toRightOf="@id/antons_username"
-        android:layout_below="@id/vadims_comment"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/antons_avatar"
-        android:background="@drawable/comment_background"
-        android:text="Положительный коммент"
-        android:textColor="@color/black"
-        android:textSize="30sp"/>
-    -->
 </LinearLayout>

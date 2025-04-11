@@ -44,7 +44,17 @@ public class Vote {
         this.recipient = recipient;
     }
 
+    public Comment getInitialComment() {
+        return initialComment;
+    }
+
+    public void setInitialComment(Comment initialComment) {
+        this.initialComment = initialComment;
+    }
+
     private User sender;
 
     private User recipient;
+
+    private Comment initialComment;
 }

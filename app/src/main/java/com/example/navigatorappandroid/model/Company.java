@@ -29,14 +29,6 @@ public class Company {
         this.name = name;
     }
 
-    public List<Comment> getCommentsToCompany() {
-        return commentsToCompany;
-    }
-
-    public void setCommentsToCompany(List<Comment> commentsToCompany) {
-        this.commentsToCompany = commentsToCompany;
-    }
-
     public List<EmployerRequests> getEmployers() {
         return employers;
     }
@@ -44,8 +36,6 @@ public class Company {
     public void setEmployers(List<EmployerRequests> employers) {
         this.employers = employers;
     }
-
-    private List<Comment> commentsToCompany;
 
     private List<EmployerRequests> employers;
 }

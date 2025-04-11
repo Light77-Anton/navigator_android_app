@@ -16,6 +16,7 @@ import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.request.TextListInSpecifiedLanguageRequest;
 import com.example.navigatorappandroid.retrofit.request.VoteRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
+import com.example.navigatorappandroid.retrofit.response.CommentsListResponse;
 import com.example.navigatorappandroid.retrofit.response.IdResponse;
 import com.example.navigatorappandroid.retrofit.response.JobListResponse;
 import com.example.navigatorappandroid.retrofit.response.ProfessionNamesListResponse;
@@ -101,6 +102,9 @@ public interface GeneralApi {
 
     @POST("api/comment")
     Call<ResultErrorsResponse> comment(@Body CommentRequest commentRequest);
+
+    @GET("api/get/{id}/comments")
+    Call<CommentsListResponse> getCommentsListByUserId(@Query("id") String id);
 
     @POST("api/employer/search/passive")
     Call<ResultErrorsResponse> setPassiveSearch(@Body VacancyRequest vacancyRequest);

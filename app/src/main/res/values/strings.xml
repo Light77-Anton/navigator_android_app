@@ -116,7 +116,7 @@
     <string name="search_settings">Search settings</string>
     <string name="limit_of_positions_in_the_search">Limit of positions in the search</string>
     <string name="ignore_matched_communication_language_in_the_search">Ignore matched communication language in the search</string>
-    <string name="comments_list">Comments list</string>
+    <string name="comments_list">Comments list: sort by</string>
     <string name="open_chat">Open chat</string>
     <string name="send_offer">Send offer</string>
     <string name="choose_start_date">Choose start date :</string>
@@ -146,6 +146,8 @@
     <string name="multivacancy_is_allowed">Allow accept many vacancies in the same time</string>
     <string name="waiting">Waiting...</string>
     <string name="all">All</string>
+    <string name="positive_only">Positive only</string>
+    <string name="negative_only">Negative only</string>
     <string name="notification">Notification</string>
     <string name="add_to_favorites">Add to favorites</string>
     <string name="add_to_black_list">Add to black list</string>
