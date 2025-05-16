@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -6,37 +7,24 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.navigatorappandroid.model.Vote;
-import com.example.navigatorappandroid.retrofit.ChatApi;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
-import com.example.navigatorappandroid.retrofit.SearchApi;
-import com.example.navigatorappandroid.retrofit.request.ChatRequest;
-import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.response.ExtendedUserInfoResponse;
-import com.example.navigatorappandroid.retrofit.response.ProfessionNamesListResponse;
-import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
-import com.example.navigatorappandroid.retrofit.response.StringResponse;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EmployeeExtendedInfoActivity extends BaseActivity {
 
-    private List<Vote> votesToUser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extended_info_employee);
+        setCurrentActivity(this);
+        if (arguments.getBoolean("is_offer_sent")) {
+            Toast.makeText(EmployeeExtendedInfoActivity.this,
+                    getResources().getString(R.string.offer_has_been_sent), Toast.LENGTH_SHORT).show();
+        }
         TextView name = findViewById(R.id.name);
         Button rating = findViewById(R.id.rating);
         ImageView avatar = findViewById(R.id.avatar);
@@ -53,19 +41,30 @@ public class EmployeeExtendedInfoActivity extends BaseActivity {
                 ExtendedUserInfoResponse eui = response.body();
                 name.setText(eui.getName());
                 rating.setText(getResources().getString(R.string.rating) + eui.getRating());
-                byte[] decodedBytes = Base64.decode(eui.getAvatar(), Base64.DEFAULT);
-                avatar.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.length));
+                if (eui.getAvatar() != null) {
+                    byte[] decodedBytes = Base64.decode(eui.getAvatar(), Base64.DEFAULT);
+                    avatar.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.length));
+                } else {
+                    avatar.setImageDrawable(getResources().getDrawable(R.drawable.default_user_avatar));
+                }
                 status.setText(getResources().getString(R.string.employee_status) + eui.getStatus());
                 professions.setText(getResources().getString(R.string.professions) + eui.getProfessions());
                 professionsInfoFromEmployee.setText(
                         getResources().getString(R.string.professions_info_from_employee)
                                 + eui.getInfoFromEmployee());
                 languages.setText(getResources().getString(R.string.communication_languages) + eui.getLanguages());
-                email.setText(getResources().getString(R.string.email_view) + eui.getEmail());
-                phone.setText(getResources().getString(R.string.phone) + eui.getPhone());
+                if (response.body().getEmail().equals("hidden")) {
+                    email.setText(getResources().getString(R.string.email_view) + getResources().getString(R.string.hidden));
+                } else {
+                    email.setText(getResources().getString(R.string.email_view) + eui.getEmail());
+                }
+                if (response.body().getPhone().equals("hidden")) {
+                    phone.setText(getResources().getString(R.string.phone) + getResources().getString(R.string.hidden));
+                } else {
+                    phone.setText(getResources().getString(R.string.phone) + eui.getPhone());
+                }
                 socialNetworksLinks.setText(getResources().getString(R.string.social_networks_links)
                         + eui.getSocialNetworksLinks());
-                votesToUser.addAll(eui.getVotesToUser());
             }
             @Override
             public void onFailure(Call<ExtendedUserInfoResponse> call, Throwable t) {
@@ -76,29 +75,32 @@ public class EmployeeExtendedInfoActivity extends BaseActivity {
     }
 
     public void onRatingClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, CommentsListActivity.class);
         intent.putExtras(arguments);
-        intent.putExtra("votes", votesToUser);
+        intent.putExtra("is_offer_sent", false);
         finish();
         startActivity(intent);
     }
 
     public void onSendOffer(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, OfferSendingChooseActivity.class);
         intent.putExtras(arguments);
+        intent.putExtra("is_offer_sent", false);
         finish();
         startActivity(intent);
     }
 
     public void onBack(View view) {
-        Intent intent;
-        if (arguments.getString("activity").equals("map")) {
-            intent = new Intent(this, WorkMapEmployerActivity.class);
-        } else {
-            intent = new Intent(this, WorkListEmployerActivity.class);
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            intent.putExtra("is_offer_sent", false);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
         }
-        intent.putExtras(arguments);
-        finish();
-        startActivity(intent);
     }
 }

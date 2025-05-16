@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -54,6 +55,7 @@ public class EmployeeSettingsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_employee);
+        setCurrentActivity(this);
         avatarImageView = findViewById(R.id.avatar);
         Button uploadButton = findViewById(R.id.avatar_upload);
         Button setAvatarButton = findViewById(R.id.set_avatar);
@@ -177,12 +179,14 @@ public class EmployeeSettingsActivity extends BaseActivity {
     }
 
     public void onProfessionListClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, EmployeeProfessionListActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onChangePasswordClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChangePasswordActivity.class);
         finish();
         startActivity(intent);
@@ -205,15 +209,14 @@ public class EmployeeSettingsActivity extends BaseActivity {
         generalApi.profile(profileRequest).enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
-                Intent intent;
-                if (userInfoResponse.getCurrentWorkDisplay() == 1) {
-                    intent = new Intent(view.getContext(), WorkMapEmployeeActivity.class);
+                Activity lastActivity = getLastActivity();
+                if (lastActivity != null) {
+                    Intent intent = new Intent(getCurrentActivity(), lastActivity.getClass());
+                    intent.putExtras(arguments);
+                    removeActivityFromQueue();
                     finish();
                     startActivity(intent);
                 }
-                intent = new Intent(view.getContext(), WorkListEmployeeActivity.class);
-                finish();
-                startActivity(intent);
             }
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
@@ -227,7 +230,8 @@ public class EmployeeSettingsActivity extends BaseActivity {
         authApi.logout().enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                Intent intent = new Intent(getCurrentActivity(), MainActivity.class);
+                clearQueue();
                 finish();
                 startActivity(intent);
             }
@@ -240,14 +244,13 @@ public class EmployeeSettingsActivity extends BaseActivity {
     }
 
     public void onBackClick(View view) {
-        Intent intent;
-        if (userInfoResponse.getCurrentWorkDisplay() == 1) {
-            intent = new Intent(this, WorkMapEmployeeActivity.class);
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
             finish();
             startActivity(intent);
         }
-        intent = new Intent(this, WorkListEmployeeActivity.class);
-        finish();
-        startActivity(intent);
     }
 }

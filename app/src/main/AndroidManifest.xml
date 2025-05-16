@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.NavigatorAppAndroid"
-        tools:targetApi="34">
+        tools:targetApi="35">
 
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
@@ -43,6 +43,90 @@
         </activity>
         <activity
             android:name=".StartVideoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".WorkMapEmployerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".WorkMapEmployeeActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".WorkListEmployerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".WorkListEmployeeActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".VacanciesListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".TimersListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".SearchVacanciesActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".SearchEmployeesActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".RegistrationSuccessActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".RegistrationActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".OfferSendingNewActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".OfferSendingChooseActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ModeratorSettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployerVacancyEditActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployerVacanciesSettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployerSettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployerExtendedInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeStatusActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeSettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeProfessionListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeExtendedInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CommentsListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ChooseAdditionalLanguagesActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ChatSettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ChatListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ChatActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ChangePasswordActivity"
             android:screenOrientation="portrait"/>
         <meta-data
             android:name="android.app.lib_name"

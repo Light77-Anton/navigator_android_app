@@ -12,7 +12,6 @@ import com.example.navigatorappandroid.retrofit.request.PasswordRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfileRequest;
-import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.request.TextListInSpecifiedLanguageRequest;
 import com.example.navigatorappandroid.retrofit.request.VoteRequest;
 import com.example.navigatorappandroid.retrofit.response.AvatarResponse;
@@ -63,6 +62,7 @@ public interface GeneralApi {
 
     @PUT("api/profile/password/change")
     Call<ResultErrorsResponse> changePassword(@Body ChangePasswordRequest changePasswordRequest); // добавить на backend
+
     @Multipart
     @PUT("api/profile/avatar")
     Call<AvatarResponse> profileAvatar(@Part MultipartBody.Part avatar);
@@ -148,8 +148,8 @@ public interface GeneralApi {
     @GET("api/vacancy/info/get")
     Call<StringResponse> getAdditionalInfoAboutVacancyInSpecifiedLanguage(@Body ProfessionToUserRequest professionToUserRequest);
 
-    @GET("api/profession/name/get")
-    Call<StringResponse> getProfessionNameInSpecifiedLanguage(@Body ProfessionToUserRequest professionToUserRequest);
+    @GET("api/profession/{id}/name/get")
+    Call<StringResponse> getProfessionNameInSpecifiedLanguage(@Path("id") long id);
 
     @GET("api/info/from/employee/get")
     Call<StringResponse> getInfoFromEmployeeInEmployersLanguage(@Body ProfessionToUserRequest professionToUserRequest);

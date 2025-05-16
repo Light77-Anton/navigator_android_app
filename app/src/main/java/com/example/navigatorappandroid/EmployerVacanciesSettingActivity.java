@@ -1,5 +1,6 @@
 package com.example.navigatorappandroid;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -16,6 +17,7 @@ public class EmployerVacanciesSettingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacancies_setting);
+        setCurrentActivity(this);
         LinearLayout linearLayout = findViewById(R.id.activity_vacancies_setting_layout);
         List<Vacancy> vacancyList = userInfoResponse.getEmployerRequests().getVacancies();
         for (Vacancy vacancy : vacancyList) {
@@ -33,6 +35,7 @@ public class EmployerVacanciesSettingActivity extends BaseActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    addActivityToQueue(getCurrentActivity());
                     Intent intent = new Intent(v.getContext(), EmployerVacancyEditActivity.class);
                     intent.putExtra("vacancy_id", button.getText().toString());
                     finish();
@@ -44,19 +47,20 @@ public class EmployerVacanciesSettingActivity extends BaseActivity {
     }
 
     public void onAddVacancy(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, EmployerVacancyEditActivity.class);
         finish();
         startActivity(intent);
     }
 
-    public void onBackClick(View view) {
-        Intent intent;
-        if (userInfoResponse.getCurrentWorkDisplay() == 1) {
-            intent = new Intent(this, WorkMapEmployerActivity.class);
-        } else {
-            intent = new Intent(this, WorkListEmployerActivity.class);
+    public void onBack(View view) {
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
         }
-        finish();
-        startActivity(intent);
     }
 }

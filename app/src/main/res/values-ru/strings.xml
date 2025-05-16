@@ -161,4 +161,11 @@
     <string name="professions">Профессии: </string>
     <string name="professions_info_from_employee">Информация от рабочего: </string>
     <string name="email_view">Почта: </string>
+    <string name="show_replies">Показать ответы</string>
+    <string name="hide_replies">Скрыть ответы</string>
+    <string name="leave_own_comment">Оставить свой комметарий...</string>
+    <string name="firm">Фирма: </string>
+    <string name="or_set_separately">Или установить отдельно: </string>
+    <string name="address_is_not_exist">Такой адрес не существует</string>
+    <string name="additional_info_is_too_long">Дополнительная информация слишком длинная</string>
 </resources>

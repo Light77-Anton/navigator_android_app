@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -46,6 +47,7 @@ public class ChatActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        setCurrentActivity(this);
         scrollView = findViewById(R.id.chat_scroll_view);
         // Wait until the layout is ready, then scroll to the bottom
         scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -184,6 +186,7 @@ public class ChatActivity extends BaseActivity {
     }
 
     public void onSettingsClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChatSettingsActivity.class);
         intent.putExtra("user_id", userId);
         intent.putExtra("user_name", userName);
@@ -192,14 +195,14 @@ public class ChatActivity extends BaseActivity {
     }
 
     public void onBack(View view) {
-        Intent intent = ;
-        if (lastActivityToReturn.equals("timers")) {
-            intent = new Intent(this, TimersListActivity.class);
-        } else {
-            intent = new Intent(this, ChatListActivity.class);
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
         }
-        finish();
-        startActivity(intent);
     }
 
     private void openGallery() {

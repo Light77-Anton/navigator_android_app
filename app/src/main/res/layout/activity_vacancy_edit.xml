@@ -86,7 +86,7 @@
             android:textColor="@color/white"
             android:textSize="40sp"/>
         <DatePicker
-            android:id="@+id/start_date"
+            android:id="@+id/start_start_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -99,13 +99,12 @@
             android:textColor="@color/white"
             android:textSize="40sp"/>
         <TimePicker
-            android:id="@+id/vacancy_time_picker"
+            android:id="@+id/start_time_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/custom_green"
             android:timePickerMode="spinner"
             android:layout_marginTop="30dp"/>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,7 +112,6 @@
             android:text="@string/payment_and_additional_info"
             android:textColor="@color/white"
             android:textSize="40sp" />
-
         <EditText
             android:id="@+id/payment_and_additional_info"
             android:hint="."
@@ -140,20 +138,28 @@
             android:layout_marginTop="10dp"
             android:textSize="40sp"
             android:background="@drawable/edit_text"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/or_set_separately"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:textSize="40sp" />
         <DatePicker
-            android:id="@+id/acceptable_date"
+            android:id="@+id/waiting_date_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_red"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp" />
+            android:background="@drawable/chat_background"
+            android:paddingStart="20dp"
+            android:visibility="visible"
+            android:clickable="false"
+            android:layout_marginTop="10dp"/>
         <TimePicker
-            android:id="@+id/acceptable_time"
+            android:id="@+id/waiting_time_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_red"
-            android:timePickerMode="spinner"
-            android:layout_marginTop="30dp"/>
+            android:background="@drawable/chat_background"
+            android:timePickerMode="spinner" />
         <CheckBox
             android:id="@+id/is_required_to_close_all_quotas_checkbox"
             android:layout_width="match_parent"

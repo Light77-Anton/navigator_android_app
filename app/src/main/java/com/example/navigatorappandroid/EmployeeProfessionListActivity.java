@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -27,6 +28,7 @@ import android.widget.AdapterView;
 import androidx.core.content.ContextCompat;
 
 public class EmployeeProfessionListActivity extends BaseActivity {
+
     private List<ProfessionName> professionNamesList;
     private List<String> professionNamesSpinner;
     private LinearLayout layout;
@@ -39,6 +41,7 @@ public class EmployeeProfessionListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_professions_list);
+        setCurrentActivity(this);
         layout = findViewById(R.id.layout);
         professionNamesList = new ArrayList<>();
         professionNamesSpinner = new ArrayList<>();
@@ -199,11 +202,8 @@ public class EmployeeProfessionListActivity extends BaseActivity {
         generalApi.changeInfoFromEmployeeForEmployers(employeeInfoForEmployersRequest).enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
-                Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
-                finish();
-                startActivity(intent);
+               onBack(view);
             }
-
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                 Toast.makeText(EmployeeProfessionListActivity.this, "Error " +
@@ -217,9 +217,14 @@ public class EmployeeProfessionListActivity extends BaseActivity {
         setInfoFromEmployee(view);
     }
 
-    public void onBackClick(View view) {
-        Intent intent = new Intent(this, EmployeeSettingsActivity.class);
-        finish();
-        startActivity(intent);
+    public void onBack(View view) {
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
+        }
     }
 }

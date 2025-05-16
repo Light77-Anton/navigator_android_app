@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -8,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.navigatorappandroid.retrofit.request.ChatRequest;
 import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.response.ExtendedUserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.VacancyInfoResponse;
@@ -22,6 +22,7 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extended_info_employer);
+        setCurrentActivity(this);
         TextView vacancyProfession = findViewById(R.id.profession);
         TextView vacancyJobLocation = findViewById(R.id.job_location);
         TextView vacancyStartDateTime = findViewById(R.id.start_date_time);
@@ -53,9 +54,10 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
         searchApi.getEmployerInfo(arguments.getString("employer_id")).enqueue(new Callback<ExtendedUserInfoResponse>() {
             @Override
             public void onResponse(Call<ExtendedUserInfoResponse> call, Response<ExtendedUserInfoResponse> response) {
-                name.setText(response.body().getName());
-                rating.setText(response.body().getRating());
-                languages.setText(response.body().getLanguages());
+                ExtendedUserInfoResponse eui = response.body();
+                name.setText(eui.getName());
+                rating.setText(getResources().getString(R.string.rating) + eui.getRating());
+                languages.setText(getResources().getString(R.string.communication_languages) + eui.getLanguages());
                 if (response.body().getEmail().equals("hidden")) {
                     email.setText(getResources().getString(R.string.hidden));
                 } else {
@@ -66,13 +68,17 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
                 } else {
                     phone.setText(response.body().getPhone());
                 }
-                socialNetworksLinks.setText(response.body().getSocialNetworksLinks());
+                socialNetworksLinks.setText(getResources().getString(R.string.social_networks_links)
+                        + eui.getSocialNetworksLinks());
                 if (response.body().getFirmName() != null) {
-                    firmName.setText(response.body().getFirmName());
+                    firmName.setText(getResources().getString(R.string.firm) + eui.getFirmName());
                 }
-                byte[] decodedBytes = Base64.decode(response.body().getAvatar(), Base64.DEFAULT);
-                avatar.setImageBitmap(BitmapFactory.decodeByteArray
-                        (decodedBytes, 0 , decodedBytes.length));
+                if (eui.getAvatar() != null) {
+                    byte[] decodedBytes = Base64.decode(eui.getAvatar(), Base64.DEFAULT);
+                    avatar.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.length));
+                } else {
+                    avatar.setImageDrawable(getResources().getDrawable(R.drawable.default_user_avatar));
+                }
             }
             @Override
             public void onFailure(Call<ExtendedUserInfoResponse> call, Throwable t) {
@@ -83,6 +89,7 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
     }
 
     public void onRatingClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, CommentsListActivity.class);
         intent.putExtras(arguments);
         finish();
@@ -107,19 +114,13 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
     }
 
     public void onBack(View view) {
-        Intent intent;
-        if (arguments.getString("")) {
-
-        } else {
-
-        }
-        if (userInfoResponse.getCurrentWorkDisplay() == 1) {
-            intent = new Intent(this, WorkMapEmployeeActivity.class);
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
             finish();
             startActivity(intent);
         }
-        intent = new Intent(this, WorkListEmployeeActivity.class);
-        finish();
-        startActivity(intent);
     }
 }

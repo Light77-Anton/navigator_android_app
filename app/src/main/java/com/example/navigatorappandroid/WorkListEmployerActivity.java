@@ -1,9 +1,5 @@
 package com.example.navigatorappandroid;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -17,27 +13,17 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import com.example.navigatorappandroid.handler.LanguageHandler;
-import com.example.navigatorappandroid.handler.LocationUpdateHandler;
 import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
-import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +36,7 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_list_employer);
+        setCurrentActivity(this);
         sortRequestButton = findViewById(R.id.sort_request);
         filterRequestButton = findViewById(R.id.filters_request);
         searchSettingsLayout = findViewById(R.id.work_list_employer_sort_request_layout);
@@ -213,18 +200,21 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
     }
 
     public void onSettingsClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onSearchClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, SearchEmployeesActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onVacanciesSettingClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
         finish();
         startActivity(intent);
@@ -247,18 +237,21 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
     }
 
     public void onTimersClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, TimersListActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onChatsClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChatListActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onAddLanguagesClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChooseAdditionalLanguagesActivity.class);
         finish();
         startActivity(intent);
@@ -347,6 +340,7 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
         button.setText(sb);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                addActivityToQueue(getCurrentActivity());
                 Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
                 intent.putExtra("employee_id", employeeId);
                 finish();

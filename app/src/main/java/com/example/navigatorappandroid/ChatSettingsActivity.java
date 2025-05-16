@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,7 @@ public class ChatSettingsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_settings);
+        setCurrentActivity(this);
         favoriteButton = findViewById(R.id.favorite_button);
         blackListButton = findViewById(R.id.black_list_button);
         extendedInfoButton = findViewById(R.id.extended_info_button);
@@ -57,9 +59,14 @@ public class ChatSettingsActivity extends BaseActivity {
     }
 
     public void onBack(View view) {
-        Intent intent = new Intent(this, ChatActivity.class);
-        finish();
-        startActivity(intent);
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
+        }
     }
 
     public void onFavorite(View view) {
@@ -108,14 +115,15 @@ public class ChatSettingsActivity extends BaseActivity {
 
 
     public void onExtendedInfo(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent;
         if (userInfoResponse.getRole().equals("Employer")) {
             intent = new Intent(this, EmployeeExtendedInfoActivity.class);
+            intent.putExtra("employee_id", userId);
         } else {
             intent = new Intent(this, EmployerExtendedInfoActivity.class);
+            intent.putExtra("employer_id", userId);
         }
-        intent.putExtra("user_id", userId);
-        intent.putExtra("last_activity_to_return", "chat_settings");
         finish();
         startActivity(intent);
     }

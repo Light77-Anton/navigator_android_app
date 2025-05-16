@@ -38,7 +38,8 @@ import retrofit2.Response;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private List<Activity> enteredActivitiesQueue;
+    private Activity currentActivity;
+    private static List<Activity> enteredActivitiesQueue;
     private LanguageHandler languageHandler;
     protected static final int REQUEST_IMAGE_PICK = 1;
     protected GeneralApi generalApi;
@@ -180,7 +181,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
-    public Activity getLastActivity() {
+    public static Activity getLastActivity() {
         if (!enteredActivitiesQueue.isEmpty()) {
            return enteredActivitiesQueue.get(enteredActivitiesQueue.size() - 1);
         }
@@ -188,13 +189,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         return null;
     }
 
-    public void addActivityToQueue(Activity activity) {
+    public static void addActivityToQueue(Activity activity) {
         enteredActivitiesQueue.add(activity);
     }
 
-    public void removeActivityFromQueue() {
+    public static void removeActivityFromQueue() {
         if (!enteredActivitiesQueue.isEmpty()) {
             enteredActivitiesQueue.remove(enteredActivitiesQueue.size() - 1);
         }
+    }
+
+    public static void clearQueue() {
+       enteredActivitiesQueue.clear();
+    }
+
+    public Activity getCurrentActivity() {
+        return currentActivity;
+    }
+
+    public void setCurrentActivity(Activity currentActivity) {
+        this.currentActivity = currentActivity;
     }
 }

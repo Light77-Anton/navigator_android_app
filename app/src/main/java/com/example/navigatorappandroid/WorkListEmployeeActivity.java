@@ -36,6 +36,7 @@ public class WorkListEmployeeActivity extends MainDisplayActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_list_employee);
+        setCurrentActivity(this);
         sortRequestButton = findViewById(R.id.sort_request);
         filterRequestButton = findViewById(R.id.filters_request);
         searchSettingsLayout = findViewById(R.id.work_list_employee_sort_request_layout);
@@ -190,12 +191,14 @@ public class WorkListEmployeeActivity extends MainDisplayActivity {
     }
 
     public void onSettingsClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onSearchClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, SearchVacanciesActivity.class);
         finish();
         startActivity(intent);
@@ -222,6 +225,7 @@ public class WorkListEmployeeActivity extends MainDisplayActivity {
     }
 
     public void onStatusClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, EmployeeStatusActivity.class);
         finish();
         startActivity(intent);
@@ -244,18 +248,21 @@ public class WorkListEmployeeActivity extends MainDisplayActivity {
     }
 
     public void onTimersClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, TimersListActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onChatsClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChatListActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onAddLanguagesClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChooseAdditionalLanguagesActivity.class);
         finish();
         startActivity(intent);
@@ -332,6 +339,7 @@ public class WorkListEmployeeActivity extends MainDisplayActivity {
         button.setText(sb);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                addActivityToQueue(getCurrentActivity());
                 Intent intent = new Intent(v.getContext(), EmployerExtendedInfoActivity.class);
                 intent.putExtra("employer_id", employerId);
                 intent.putExtra("vacancy_id", vacancyId);

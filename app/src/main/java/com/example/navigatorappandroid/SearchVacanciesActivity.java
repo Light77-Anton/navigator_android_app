@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,30 +11,35 @@ public class SearchVacanciesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_vacancies);
+        setCurrentActivity(this);
     }
 
     public void onConfirm(View view) {
         AutoCompleteTextView autoCompleteTextView = findViewById(R.id.search_vacancies_autocomplete);
         String profession = autoCompleteTextView.getText().toString();
-        Intent intent;
-        if (userInfoResponse.getCurrentWorkDisplay() == 1) {
-            intent = new Intent(this, WorkMapEmployeeActivity.class);
-        } else {
-            intent = new Intent(this, WorkListEmployeeActivity.class);
+        onBack(profession);
+    }
+
+    public void onBack(String profession) {
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            intent.putExtra("profession", profession);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
         }
-        intent.putExtra("profession", profession);
-        finish();
-        startActivity(intent);
     }
 
     public void onBack(View view) {
-        Intent intent;
-        if (userInfoResponse.getCurrentWorkDisplay() == 1) {
-            intent = new Intent(this, WorkMapEmployeeActivity.class);
-        } else {
-            intent = new Intent(this, WorkListEmployeeActivity.class);
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
         }
-        finish();
-        startActivity(intent);
     }
 }

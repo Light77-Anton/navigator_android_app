@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -71,6 +72,7 @@ public class EmployerVacancyEditActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacancy_edit);
+        setCurrentActivity(this);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         placesClient = Places.createClient(this);
         linearLayout = findViewById(R.id.activity_vacancy_edit_layout);
@@ -90,7 +92,7 @@ public class EmployerVacancyEditActivity extends BaseActivity {
             }
         });
         ArrayAdapter<String> professionNamesAdapter = new ArrayAdapter
-                (this,android.R.layout.simple_spinner_item, professionNamesList);
+                (this, android.R.layout.simple_spinner_item, professionNamesList);
         professionNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         requiredProfessionSpinner.setAdapter(professionNamesAdapter);
         jobAddressButton = linearLayout.findViewById(R.id.job_address);
@@ -106,7 +108,7 @@ public class EmployerVacancyEditActivity extends BaseActivity {
                 }
             }
         });
-        datePicker = linearLayout.findViewById(R.id.start_date);
+        datePicker = linearLayout.findViewById(R.id.start_date_picker);
         long timestamp = System.currentTimeMillis();
         LocalDate currentDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate();
         datePicker.init(currentDate.getYear(), currentDate.getMonthValue(), currentDate.getDayOfMonth(),
@@ -114,10 +116,13 @@ public class EmployerVacancyEditActivity extends BaseActivity {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {}
                 });
+        timePicker = linearLayout.findViewById(R.id.start_time_picker);
         LocalTime currentTime = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalTime();
         timePicker.setIs24HourView(true);
         timePicker.setHour(currentTime.getHour());
         timePicker.setMinute(currentTime.getMinute());
+        acceptableDateForWaiting = linearLayout.findViewById(R.id.waiting_date_picker);
+        acceptableTimeForWaiting = linearLayout.findViewById(R.id.waiting_time_picker);
         paymentAndAdditionalInfoEditText = linearLayout.findViewById(R.id.payment_and_additional_info);
         waitUntilStartDateTimeCheckbox = linearLayout.findViewById(R.id.waiting_until_start_date_time_checkbox);
         isRequiredToCloseAllQuotasCheckbox = linearLayout.findViewById(R.id.is_required_to_close_all_quotas_checkbox);
@@ -226,7 +231,9 @@ public class EmployerVacancyEditActivity extends BaseActivity {
         if (arguments.getString("vacancy_id") != null) {
             searchApi.deleteVacancyById(arguments.getString("vacancy_id")).enqueue(new Callback<ResultErrorsResponse>() {
                 @Override
-                public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
+                public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                    onBack(view);
+                }
                 @Override
                 public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
                     Toast.makeText(EmployerVacancyEditActivity.this, "Error " +
@@ -234,9 +241,6 @@ public class EmployerVacancyEditActivity extends BaseActivity {
                 }
             });
         }
-        Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
-        finish();
-        startActivity(intent);
     }
 
     public void onConfirmClick(View view) {
@@ -278,9 +282,7 @@ public class EmployerVacancyEditActivity extends BaseActivity {
                 @Override
                 public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
                     if (response.body().isResult()) {
-                        Intent intent = new Intent(view.getContext(), EmployerVacanciesSettingActivity.class);
-                        finish();
-                        startActivity(intent);
+                        onBack(view);
                     } else {
                         StringBuilder sb = new StringBuilder();
                         for (String error : response.body().getErrors()) {
@@ -296,14 +298,20 @@ public class EmployerVacancyEditActivity extends BaseActivity {
                 }
             });
         } else {
-            Toast.makeText(EmployerVacancyEditActivity.this, "Job address not exists", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EmployerVacancyEditActivity.this,
+                    getResources().getString(R.string.address_is_not_exist), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void onBackClick(View view) {
-        Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
-        finish();
-        startActivity(intent);
+    public void onBack(View view) {
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
+        }
     }
 
     private boolean isAddressValid(String enteredAddress) {

@@ -1,6 +1,5 @@
 package com.example.navigatorappandroid;
 import android.os.Bundle;
-
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +35,6 @@ public class RegistrationSuccessActivity extends AppCompatActivity {
                 textView.setText(response.body().getString());
                 setContentView(coreView);
             }
-
             @Override
             public void onFailure(Call<StringResponse> call, Throwable t) {
                 Toast.makeText(RegistrationSuccessActivity.this, "Error: 'getMessageInSpecifiedLanguage'" +

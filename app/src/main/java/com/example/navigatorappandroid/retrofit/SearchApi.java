@@ -2,7 +2,6 @@ package com.example.navigatorappandroid.retrofit;
 import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
-import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
 import com.example.navigatorappandroid.retrofit.response.ExtendedUserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;

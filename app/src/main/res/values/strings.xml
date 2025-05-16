@@ -173,4 +173,11 @@
     <string name="professions">Professions: </string>
     <string name="professions_info_from_employee">Info from employee: </string>
     <string name="email_view">Email: </string>
+    <string name="show_replies">Show replies</string>
+    <string name="hide_replies">Hide replies</string>
+    <string name="leave_own_comment">Leave own comment...</string>
+    <string name="firm">Firm: </string>
+    <string name="or_set_separately">Or set separately: </string>
+    <string name="address_is_not_exist">Address is not exist</string>
+    <string name="additional_info_is_too_long">Additional info is too long</string>
 </resources>

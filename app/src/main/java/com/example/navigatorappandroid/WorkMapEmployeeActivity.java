@@ -59,6 +59,7 @@ public class WorkMapEmployeeActivity extends MainDisplayActivity implements OnMa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_map_employee);
+        setCurrentActivity(this);
         sortRequestButton = findViewById(R.id.sort_request);
         filterRequestButton = findViewById(R.id.filters_request);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
@@ -125,18 +126,21 @@ public class WorkMapEmployeeActivity extends MainDisplayActivity implements OnMa
     }
 
     public void onStatusClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, EmployeeStatusActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onSettingsClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onSearchClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, SearchVacanciesActivity.class);
         finish();
         startActivity(intent);
@@ -159,12 +163,14 @@ public class WorkMapEmployeeActivity extends MainDisplayActivity implements OnMa
     }
 
     public void onTimersClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, TimersListActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onChatsClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChatListActivity.class);
         finish();
         startActivity(intent);
@@ -334,6 +340,7 @@ public class WorkMapEmployeeActivity extends MainDisplayActivity implements OnMa
     }
 
     public void onAddLanguagesClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChooseAdditionalLanguagesActivity.class);
         finish();
         startActivity(intent);
@@ -388,7 +395,6 @@ public class WorkMapEmployeeActivity extends MainDisplayActivity implements OnMa
                 public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
                     distance.setText(response.body().getDistance().toString());
                 }
-
                 @Override
                 public void onFailure(Call<DistanceResponse> call, Throwable t) {
                     Toast.makeText(WorkMapEmployeeActivity.this, "Error: 'getMeasuredDistance' " +
@@ -399,6 +405,7 @@ public class WorkMapEmployeeActivity extends MainDisplayActivity implements OnMa
             extendedInfoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    addActivityToQueue(getCurrentActivity());
                     Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
                     intent.putExtra("vacancy_id", vacancy.getId());
                     intent.putExtra("employer_id", vacancy.getEmployerRequests().getEmployer().getId().toString());

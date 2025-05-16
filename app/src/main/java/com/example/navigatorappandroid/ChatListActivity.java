@@ -30,6 +30,7 @@ public class ChatListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_list);
+        setCurrentActivity(this);
         insideLayout = findViewById(R.id.chat_inside_layout);
         map = new TreeMap<>(new Comparator<Integer>() {
             @Override
@@ -127,7 +128,8 @@ public class ChatListActivity extends BaseActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                    addActivityToQueue(getCurrentActivity());
+                    Intent intent = new Intent(getCurrentActivity(), ChatActivity.class);
                     intent.putExtra("user_id", (long) entry.getValue().getO1());
                     intent.putExtra("user_name", (String) entry.getValue().getO2());
                     finish();

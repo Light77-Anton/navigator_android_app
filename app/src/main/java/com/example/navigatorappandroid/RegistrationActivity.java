@@ -128,7 +128,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
                 imageView.setImageBitmap(decodedBitmap);
             }
-
             @Override
             public void onFailure(Call<CaptchaResponse> call, Throwable t) {
                 Toast.makeText(RegistrationActivity.this, "Error: 'captcha'" +

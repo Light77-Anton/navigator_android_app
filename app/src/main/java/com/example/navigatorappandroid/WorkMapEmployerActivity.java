@@ -58,6 +58,7 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_map_employer);
+        setCurrentActivity(this);
         sortRequestButton = findViewById(R.id.sort_request);
         filterRequestButton = findViewById(R.id.filters_request);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
@@ -104,12 +105,14 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
     }
 
     public void onSettingsClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, EmployerSettingsActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onSearchClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, SearchEmployeesActivity.class);
         finish();
         startActivity(intent);
@@ -132,12 +135,14 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
     }
 
     public void onTimersClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, TimersListActivity.class);
         finish();
         startActivity(intent);
     }
 
     public void onChatsClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChatListActivity.class);
         finish();
         startActivity(intent);
@@ -172,6 +177,7 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
     }
 
     public void onVacanciesSettingClick(View view) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, EmployerVacanciesSettingActivity.class);
         finish();
         startActivity(intent);
@@ -259,7 +265,6 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
                         ContextCompat.getDrawable(this, R.drawable.baseline_arrow_upward_24), null);
             }
         } else {
-            // пока фильтров у рабочего нет
             if (isFiltersRequestOpened) {
                 isFiltersRequestOpened = false;
                 filterRequestButton.setCompoundDrawablesWithIntrinsicBounds(null, null,
@@ -274,7 +279,6 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
                     checkbox.setLayoutParams(buttonParams);
                     checkbox.setBackground(ContextCompat.getDrawable(this, R.color.custom_gray_blue));
                     checkbox.setId(View.generateViewId());
-                    searchSettingsLayout.addView(checkbox);
                    if (i == 0) {
                        checkbox.setText(getResources().getString(R.string.is_auto));
                        viewMap.put("is_auto", checkbox);
@@ -331,13 +335,19 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
                 }
                 googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(map));
             }
-
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
                 Toast.makeText(WorkMapEmployerActivity.this, "Error: 'getEmployeesOfChosenProfession' " +
                         "method is failure", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void onAddLanguagesClick(View view) {
+        addActivityToQueue(getCurrentActivity());
+        Intent intent = new Intent(this, ChooseAdditionalLanguagesActivity.class);
+        finish();
+        startActivity(intent);
     }
 
     public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -369,7 +379,6 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
                 public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
                     distance.setText(response.body().getDistance().toString());
                 }
-
                 @Override
                 public void onFailure(Call<DistanceResponse> call, Throwable t) {
                     Toast.makeText(WorkMapEmployerActivity.this, "Error: 'getMeasuredDistance' " +
@@ -380,6 +389,7 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
             extendedInfoButton.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
+                   addActivityToQueue(getCurrentActivity());
                    Intent intent = new Intent(v.getContext(), EmployeeExtendedInfoActivity.class);
                    intent.putExtra("employee_id", employee.getId().toString());
                    finish();

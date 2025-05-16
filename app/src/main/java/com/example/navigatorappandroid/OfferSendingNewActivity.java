@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -6,22 +7,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.navigatorappandroid.retrofit.ChatApi;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
-import com.example.navigatorappandroid.retrofit.SearchApi;
+import com.example.navigatorappandroid.model.ProfessionName;
 import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
+import com.example.navigatorappandroid.retrofit.response.ProfessionNamesListResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
-import com.example.navigatorappandroid.retrofit.response.TextListResponse;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
@@ -29,6 +28,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,49 +38,46 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OfferSendingNewActivity extends AppCompatActivity {
+public class OfferSendingNewActivity extends BaseActivity {
 
+    private PlacesClient placesClient;
     byte AUTOCOMPLETE_REQUEST_CODE = 1;
-    private RetrofitService retrofitService;
-    private GeneralApi generalApi;
-    private SearchApi searchApi;
-    private ChatApi chatApi;
-    private UserInfoResponse userInfoResponse;
-    private View entireView;
     VacancyRequest vacancyRequest;
     Spinner professionSpinner;
     Button jobAddressButton;
-    DatePicker datePicker;
-    TimePicker timePicker;
+    DatePicker startDatePicker;
+    TimePicker startTimePicker;
+    DatePicker waitingDatePicker;
+    TimePicker waitingTimePicker;
     EditText info;
     LocalDate currentDate;
-    Bundle arguments;
+    CheckBox waitingUntilStartDateTimeCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        arguments = getIntent().getExtras();
-        retrofitService = new RetrofitService();
-        generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
-        searchApi = retrofitService.getRetrofit().create(SearchApi.class);
-        entireView = getLayoutInflater().inflate(R.layout.activity_offer_sending_new, null);
-        professionSpinner = entireView.findViewById(R.id.profession);
-        ArrayList<String> professionNamesList = new ArrayList<>();
-        generalApi.getProfessionsNamesInSpecifiedLanguage().enqueue(new Callback<TextListResponse>() {
+        setContentView(R.layout.activity_offer_sending_new);
+        setCurrentActivity(this);
+        Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
+        placesClient = Places.createClient(this);
+        professionSpinner = findViewById(R.id.profession);
+        ArrayList<ProfessionName> professionNamesList = new ArrayList<>();
+        generalApi.getProfessionsNamesInSpecifiedLanguage().enqueue(new Callback<ProfessionNamesListResponse>() {
             @Override
-            public void onResponse(Call<TextListResponse> call, Response<TextListResponse> response) {
+            public void onResponse(Call<ProfessionNamesListResponse> call, Response<ProfessionNamesListResponse> response) {
                 professionNamesList.addAll(response.body().getList());
             }
-
             @Override
-            public void onFailure(Call<TextListResponse> call, Throwable t) {
-                Toast.makeText(OfferSendingNewActivity.this, "fail", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ProfessionNamesListResponse> call, Throwable t) {
+                Toast.makeText(OfferSendingNewActivity.this, "Error " +
+                        "'getProfessionsNamesInSpecifiedLanguage' method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-        ArrayAdapter<String> professionNamesAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, professionNamesList);
+        ArrayAdapter<String> professionNamesAdapter = new ArrayAdapter
+                (this, android.R.layout.simple_spinner_item, professionNamesList);
         professionNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         professionSpinner.setAdapter(professionNamesAdapter);
-        Button jobAddressButton = entireView.findViewById(R.id.job_address);
+        Button jobAddressButton = findViewById(R.id.job_address);
         jobAddressButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 List<Place.Field> fields = Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG);
@@ -93,43 +90,61 @@ public class OfferSendingNewActivity extends AppCompatActivity {
                 }
             }
         });
-        info = entireView.findViewById(R.id.payment_and_additional_info);
-        datePicker = entireView.findViewById(R.id.date_picker);
+        info = findViewById(R.id.payment_and_additional_info);
+        startDatePicker = findViewById(R.id.start_date_picker);
         long timestamp = System.currentTimeMillis();
         currentDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate();
-        datePicker.init(currentDate.getYear(), currentDate.getMonthValue(), currentDate.getDayOfMonth(),
+        startDatePicker.init(currentDate.getYear(), currentDate.getMonthValue(), currentDate.getDayOfMonth(),
                 new DatePicker.OnDateChangedListener() {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {}
                 });
-        timePicker = entireView.findViewById(R.id.vacancy_time_picker);
-        setContentView(R.layout.activity_offer_sending_new);
+        startTimePicker = findViewById(R.id.start_time_picker);
+        LocalTime currentTime = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalTime();
+        startTimePicker.setIs24HourView(true);
+        startTimePicker.setHour(currentTime.getHour());
+        startTimePicker.setMinute(currentTime.getMinute());
+        waitingUntilStartDateTimeCheckbox = findViewById(R.id.waiting_until_start_date_time_checkbox);
+        waitingDatePicker = findViewById(R.id.waiting_date_picker);
+        waitingTimePicker = findViewById(R.id.waiting_time_picker);
     }
 
-    public void onContinue(View view) {
-        if (isAddressValid(jobAddressButton.getText().toString())) {
+    public void onSend(View view) {
+        boolean isDataValid = true;
+        if (!isAddressValid(jobAddressButton.getText().toString())) {
+            isDataValid = false;
+            Toast.makeText(OfferSendingNewActivity.this,
+                    getResources().getString(R.string.address_is_not_exist), Toast.LENGTH_SHORT).show();
+        }
+        if (info.getText().toString().length() > 200) {
+            isDataValid = false;
+            Toast.makeText(OfferSendingNewActivity.this,
+                    getResources().getString(R.string.additional_info_is_too_long), Toast.LENGTH_SHORT).show();
+        }
+        if (isDataValid) {
             vacancyRequest = new VacancyRequest();
             vacancyRequest.setProfessionName(professionSpinner.toString());
             vacancyRequest.setJobAddress(jobAddressButton.getText().toString());
             vacancyRequest.setPaymentAndAdditionalInfo(info.getText().toString());
-            vacancyRequest.setStartTimestamp(LocalDateTime.of(datePicker.getYear(), datePicker.getMonth(),
-                    datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute()));
-            chatApi.sendOfferFromEmployer(arguments.getString("id"), vacancyRequest).enqueue(new Callback<ResultErrorsResponse>() {
+            vacancyRequest.setStartTimestamp(LocalDateTime.of(startDatePicker.getYear(), startDatePicker.getMonth(),
+                    startDatePicker.getDayOfMonth(), startTimePicker.getHour(), startTimePicker.getMinute()));
+            if (waitingUntilStartDateTimeCheckbox.isChecked()) {
+                vacancyRequest.setWaitingTimestamp(vacancyRequest.getStartTimestamp());
+            } else {
+                vacancyRequest.setWaitingTimestamp(LocalDateTime.of(waitingDatePicker.getYear(), waitingDatePicker.getMonth(),
+                        waitingDatePicker.getDayOfMonth(), waitingTimePicker.getHour(), waitingTimePicker.getMinute()));
+            }
+            chatApi.sendOfferFromEmployer(arguments.getString("employee_id"), vacancyRequest).enqueue(new Callback<ResultErrorsResponse>() {
                 @Override
                 public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
-                    Intent intent = new Intent(view.getContext(), SettingWaitingDateTimeActivity.class);
-                    intent.putExtras(arguments);
-                    intent.putExtra("vacancy_request", vacancyRequest);
-                    startActivity(intent);
+                    onBack(true);
                 }
-
                 @Override
                 public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                    Toast.makeText(OfferSendingNewActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OfferSendingNewActivity.this, "Error " +
+                            "'sendOfferFromEmployer' method is failure", Toast.LENGTH_SHORT).show();
                 }
             });
-        } else {
-            Toast.makeText(OfferSendingNewActivity.this, "address is not exist", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -161,9 +176,27 @@ public class OfferSendingNewActivity extends AppCompatActivity {
         return false;
     }
 
+    public void onBack(boolean isOfferSent) {
+        removeActivityFromQueue();
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            intent.putExtra("is_offer_sent", isOfferSent);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
+        }
+    }
+
     public void onBack(View view) {
-        Intent intent = new Intent(this, OfferSendingChooseActivity.class);
-        intent.putExtras(arguments);
-        startActivity(intent);
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
+        }
     }
 }

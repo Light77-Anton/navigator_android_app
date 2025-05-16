@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,12 +18,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TimersListActivity extends BaseActivity {
+
     private LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timers_list);
+        setCurrentActivity(this);
         layout = findViewById(R.id.layout);
         generalApi.getTimersList().enqueue(new Callback<TimersListResponse>() {
             @Override
@@ -128,10 +131,22 @@ public class TimersListActivity extends BaseActivity {
     }
 
     private void toChatClick(Long userId, String userName) {
+        addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("user_id", userId);
         intent.putExtra("user_name", userName);
         finish();
         startActivity(intent);
+    }
+
+    public void onBack(View view) {
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
+        }
     }
 }

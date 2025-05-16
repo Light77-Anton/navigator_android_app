@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ public class EmployeeStatusActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_status);
+        setCurrentActivity(this);
         DatePicker datePicker = findViewById(R.id.datePicker);
         statusRequest = new StatusRequest();
         RadioGroup radios = findViewById(R.id.radios);
@@ -103,15 +105,14 @@ public class EmployeeStatusActivity extends BaseActivity {
             generalApi.employeeStatus(statusRequest).enqueue(new Callback<ResultErrorsResponse>() {
                 @Override
                 public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
-                    Intent intent;
-                    if (userInfoResponse.getCurrentWorkDisplay() == 1) {
-                        intent = new Intent(view.getContext(), WorkMapEmployeeActivity.class);
+                    Activity lastActivity = getLastActivity();
+                    if (lastActivity != null) {
+                        Intent intent = new Intent(getCurrentActivity(), lastActivity.getClass());
+                        intent.putExtras(arguments);
+                        removeActivityFromQueue();
                         finish();
                         startActivity(intent);
                     }
-                    intent = new Intent(view.getContext(), WorkListEmployeeActivity.class);
-                    finish();
-                    startActivity(intent);
                 }
                 @Override
                 public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {

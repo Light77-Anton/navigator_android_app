@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import java.util.List;
 
-public class MainDisplayActivity extends BaseActivity {
+public abstract class MainDisplayActivity extends BaseActivity {
 
     protected boolean isSortRequestOpened = false;
     protected boolean isFiltersRequestOpened = false;

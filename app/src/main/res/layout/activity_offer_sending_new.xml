@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".OfferSendingNewActivity"
     android:tag="Offer sending new activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,6 +29,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:labelFor="@id/job_address"
             android:layout_marginTop="30dp"
             android:text="@string/job_address"
             android:textColor="@color/white"
@@ -43,12 +45,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:labelFor="@id/payment_and_additional_info"
             android:layout_marginTop="30dp"
             android:text="@string/payment_and_additional_info"
             android:textColor="@color/white"
             android:textSize="40sp"/>
         <EditText
             android:id="@+id/payment_and_additional_info"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="30dp"
@@ -63,7 +67,7 @@
             android:textColor="@color/white"
             android:textSize="40sp"/>
         <DatePicker
-            android:id="@+id/date_picker"
+            android:id="@+id/start_date_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
@@ -78,20 +82,58 @@
             android:textColor="@color/white"
             android:textSize="40sp"/>
         <TimePicker
-            android:id="@+id/vacancy_time_picker"
+            android:id="@+id/start_time_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/custom_green"
             android:timePickerMode="spinner"
             android:layout_marginTop="30dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/set_acceptable_waiting_time"
+            android:textColor="@color/white"
+            android:textSize="40sp"/>
+        <CheckBox
+            android:id="@+id/waiting_until_start_date_time_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/waiting_until_start_date_time_checkbox"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:textSize="40sp"
+            android:background="@drawable/edit_text"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/or_set_separately"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:textSize="40sp" />
+        <DatePicker
+            android:id="@+id/waiting_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chat_background"
+            android:paddingStart="20dp"
+            android:visibility="visible"
+            android:clickable="false"
+            android:layout_marginTop="10dp"/>
+        <TimePicker
+            android:id="@+id/waiting_time_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chat_background"
+            android:timePickerMode="spinner" />
         <android.widget.Button
-            android:onClick="onContinue"
+            android:onClick="onSend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:background="@drawable/rectangle_button"
             android:textAlignment="center"
-            android:text="@string/continue_and_set_waiting_date_time"
+            android:text="@string/send"
             android:textColor="@color/red"
             android:textSize="50sp"/>
         <android.widget.Button

@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChangePasswordActivity extends BaseActivity {
+
     private EditText passwordEditText;
     private EditText repeatPasswordEditText;
 
@@ -18,6 +20,7 @@ public class ChangePasswordActivity extends BaseActivity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+        setCurrentActivity(this);
         passwordEditText = findViewById(R.id.password);
         repeatPasswordEditText = findViewById(R.id.repeat_password);
     }
@@ -30,14 +33,7 @@ public class ChangePasswordActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
                 if (response.body().isResult()) {
-                    Intent intent;
-                    if (userInfoResponse.getRole().equals("Employee")) {
-                        intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
-                    } else {
-                        intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
-                    }
-                    finish();
-                    startActivity(intent);
+                    onBackClick(view);
                 } else {
                     StringBuilder sb = new StringBuilder();
                     for (String error : response.body().getErrors()) {
@@ -56,13 +52,13 @@ public class ChangePasswordActivity extends BaseActivity {
     }
 
     public void onBackClick(View view) {
-        Intent intent;
-        if (userInfoResponse.getRole().equals("Employee")) {
-            intent = new Intent(view.getContext(), EmployeeSettingsActivity.class);
-        } else {
-            intent = new Intent(view.getContext(), EmployerSettingsActivity.class);
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
         }
-        finish();
-        startActivity(intent);
     }
 }

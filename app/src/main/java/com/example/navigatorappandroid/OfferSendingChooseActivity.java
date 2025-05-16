@@ -1,45 +1,42 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.navigatorappandroid.retrofit.GeneralApi;
-import com.example.navigatorappandroid.retrofit.RetrofitService;
-import com.example.navigatorappandroid.retrofit.SearchApi;
-import com.example.navigatorappandroid.retrofit.response.UserInfoResponse;
 
-public class OfferSendingChooseActivity extends AppCompatActivity {
-
-    private RetrofitService retrofitService;
-    private GeneralApi generalApi;
-    private SearchApi searchApi;
-    private UserInfoResponse userInfoResponse;
-    private RelativeLayout relativeLayout;
-    Bundle arguments;
+public class OfferSendingChooseActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        arguments = getIntent().getExtras();
         setContentView(R.layout.activity_offer_sending_choose);
+        setCurrentActivity(this);
     }
 
     public void onCreateNewVacancy(View view) {
-        Intent intent = new Intent(this, OfferSendingChooseActivity.class);;
+        addActivityToQueue(getCurrentActivity());
+        Intent intent = new Intent(this, OfferSendingNewActivity.class);
         intent.putExtras(arguments);
+        finish();
         startActivity(intent);
     }
 
     public void onChooseFromList(View view) {
-        Intent intent = new Intent(this, .class);;
+        addActivityToQueue(getCurrentActivity());
+        Intent intent = new Intent(this, VacanciesListActivity.class);
         intent.putExtras(arguments);
+        finish();
         startActivity(intent);
     }
 
     public void onBack(View view) {
-        Intent intent = new Intent(this, EmployeeExtendedInfoActivity.class);;
-        intent.putExtras(arguments);
-        startActivity(intent);
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
+        }
     }
 }

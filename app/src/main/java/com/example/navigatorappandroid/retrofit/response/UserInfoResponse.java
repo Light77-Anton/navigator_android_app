@@ -1,5 +1,6 @@
 package com.example.navigatorappandroid.retrofit.response;
 import com.example.navigatorappandroid.model.ChatMessage;
+import com.example.navigatorappandroid.model.Comment;
 import com.example.navigatorappandroid.model.EmployeeData;
 import com.example.navigatorappandroid.model.EmployerRequests;
 import com.example.navigatorappandroid.model.Language;
@@ -91,6 +92,16 @@ public class UserInfoResponse {
     }
 
     private int notificationCount;
+
+    public List<Comment> getCommentsToUsers() {
+        return commentsToUsers;
+    }
+
+    public void setCommentsToUsers(List<Comment> commentsToUsers) {
+        this.commentsToUsers = commentsToUsers;
+    }
+
+    private List<Comment> commentsToUsers;
 
     public long getId() {
         return id;
