@@ -7,7 +7,16 @@ import lombok.Data;
 @Data
 public class ExtendedUserInfoResponse {
 
+    public long getVacancyId() {
+        return vacancyId;
+    }
 
+    public void setVacancyId(long vacancyId) {
+        this.vacancyId = vacancyId;
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private long vacancyId;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String status;
     @JsonInclude(JsonInclude.Include.NON_NULL)

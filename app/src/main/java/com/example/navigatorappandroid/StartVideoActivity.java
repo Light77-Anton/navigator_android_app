@@ -13,7 +13,7 @@ public class StartVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_video);
         videoPlayer = findViewById(R.id.videoPlayer);
-        videoPlayer.setVideoPath("http://techslides.com/demos/sample-videos/small.mp4");
+        videoPlayer.setVideoPath("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
         MediaController mediaController = new MediaController(this);
         videoPlayer.setMediaController(mediaController);
         mediaController.setMediaPlayer(videoPlayer);

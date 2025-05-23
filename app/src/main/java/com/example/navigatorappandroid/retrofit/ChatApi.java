@@ -20,7 +20,7 @@ public interface ChatApi {
     @GET("api/chat/messages/find")
     Call<ChatMessageResponse> findChatMessages(@Body ChatRequest chatRequest);
 
-    @GET("api/chat/messages/{id}")
+    @GET("api/chat/message/{id}")
     Call<ChatMessageResponse> findMessage(@Path("id") long id);
 
     @POST("api/chat/message/{userId}")

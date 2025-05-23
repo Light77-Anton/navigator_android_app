@@ -10,8 +10,8 @@ import lombok.Setter;
 public class ChatRoom {
     private ChatRoomId id;
 
-    private long employeeId;
-    private long employerId;
+    private long senderId;
+    private long recipientId;
     private List<ChatMessage> messages;
 
     public ChatRoomId getId() {
@@ -22,20 +22,20 @@ public class ChatRoom {
         this.id = id;
     }
 
-    public long getEmployeeId() {
-        return employeeId;
+    public long getSenderId() {
+        return senderId;
     }
 
-    public void setEmployeeId(long employeeId) {
-        this.employeeId = employeeId;
+    public void setSenderId(long senderId) {
+        this.senderId = senderId;
     }
 
-    public long getEmployerId() {
-        return employerId;
+    public long getRecipientId() {
+        return recipientId;
     }
 
-    public void setEmployerId(long employerId) {
-        this.employerId = employerId;
+    public void setRecipientId(long recipientId) {
+        this.recipientId = recipientId;
     }
 
     public List<ChatMessage> getMessages() {

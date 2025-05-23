@@ -63,18 +63,18 @@ public class ChatActivity extends BaseActivity {
         userName = String.valueOf(arguments.getString("user_name"));
         chatRequest = new ChatRequest();
         if (userInfoResponse.getRole().equals("Employee")) {
-            chatRequest.setEmployeeId(userInfoResponse.getId());
-            chatRequest.setEmployerId(arguments.getLong("user_id"));
+            chatRequest.setSenderId(userInfoResponse.getId());
+            chatRequest.setRecipientId(arguments.getLong("user_id"));
         } else {
-            chatRequest.setEmployeeId(arguments.getLong("user_id"));
-            chatRequest.setEmployerId(userInfoResponse.getId());
+            chatRequest.setSenderId(arguments.getLong("user_id"));
+            chatRequest.setRecipientId(userInfoResponse.getId());
         }
         chatApi.findChatMessages(chatRequest).enqueue(new Callback<ChatMessageResponse>() {
             @Override
             public void onResponse(Call<ChatMessageResponse> call, Response<ChatMessageResponse> response) {
                 TreeSet<ChatMessage> set = response.body().getMessages();
                 for (ChatMessage message : set) {
-                    if (message.equals("Image")) {
+                    if (message.getType().equals("IMAGE")) {
                         ImageView imageView = new ImageView(linearLayout.getContext());
                         float density = getResources().getDisplayMetrics().density;
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
@@ -104,7 +104,7 @@ public class ChatActivity extends BaseActivity {
                             layoutParams.setMargins(0, 20, 10, 0);
                             layoutParams.gravity = Gravity.RIGHT;
                             textView.setTextColor(getResources().getColor(R.color.black));
-                            if (message.getType().equals("Offer")) {
+                            if (message.getType().equals("OFFER")) {
                                 textView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -112,6 +112,10 @@ public class ChatActivity extends BaseActivity {
                                     }
                                 });
                                 textView.setBackgroundResource(R.drawable.my_chat_offer_background);
+                            } else if (message.getType().equals("OFFER ACCEPTANCE")) {
+                                textView.setBackgroundResource(R.drawable.my_chat_offer_acceptance_background);
+                            } else if (message.getType().equals("OFFER REFUSING")) {
+                                textView.setBackgroundResource(R.drawable.my_chat_offer_refusing_background);
                             } else {
                                 textView.setBackgroundResource(R.drawable.my_chat_message_background);
                             }
@@ -119,7 +123,7 @@ public class ChatActivity extends BaseActivity {
                             layoutParams.setMargins(10, 20, 0, 0);
                             layoutParams.gravity = Gravity.LEFT;
                             textView.setTextColor(getResources().getColor(R.color.white));
-                            if (message.getType().equals("Offer")) {
+                            if (message.getType().equals("OFFER")) {
                                 textView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -127,12 +131,16 @@ public class ChatActivity extends BaseActivity {
                                     }
                                 });
                                 textView.setBackgroundResource(R.drawable.other_person_chat_offer_background);
+                            } else if (message.getType().equals("OFFER ACCEPTANCE")) {
+                                textView.setBackgroundResource(R.drawable.other_person_chat_offer_acceptance_background);
+                            } else if (message.getType().equals("OFFER REFUSING")) {
+                                textView.setBackgroundResource(R.drawable.other_person_chat_offer_refusion_background);
                             } else {
                                 textView.setBackgroundResource(R.drawable.other_person_chat_message_background);
                             }
                         }
                         textView.setLayoutParams(layoutParams);
-                        if (message.equals("Offer")) {
+                        if (message.equals("OFFER")) {
                         }
                         linearLayout.addView(textView);
                     }
@@ -263,9 +271,9 @@ public class ChatActivity extends BaseActivity {
                 decision.setVacancyId(vacancyId.toString());
                 decision.setRecipientId(userId);
                 if (menuItem.getItemId() == R.id.accept) {
-                    decision.setDecision("Accept");
+                    decision.setDecision("ACCEPT");
                 } else {
-                    decision.setDecision("Decline");
+                    decision.setDecision("DECLINE");
                 }
                 chatApi.giveDecisionToOffer(decision).enqueue(new Callback<AnswerToOfferResponse>() {
                     @Override

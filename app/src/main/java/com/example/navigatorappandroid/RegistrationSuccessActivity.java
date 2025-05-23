@@ -20,10 +20,10 @@ public class RegistrationSuccessActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registration_success);
         Bundle arguments = getIntent().getExtras();
         String language = arguments.get("language").toString();
-        View coreView = getLayoutInflater().inflate(R.layout.activity_registration_success, null);
-        TextView textView = coreView.findViewById(R.id.message);
+        TextView textView = findViewById(R.id.message);
         RetrofitService retrofitService = new RetrofitService();
         GeneralApi generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
         InProgramMessageRequest inProgramMessageRequest = new InProgramMessageRequest();
@@ -33,7 +33,6 @@ public class RegistrationSuccessActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<StringResponse> call, Response<StringResponse> response) {
                 textView.setText(response.body().getString());
-                setContentView(coreView);
             }
             @Override
             public void onFailure(Call<StringResponse> call, Throwable t) {

@@ -5,6 +5,15 @@ import lombok.Data;
 @Data
 public class AnswerToOfferResponse {
 
+    public byte getDecision() {
+        return decision;
+    }
+
+    public void setDecision(byte decision) {
+        this.decision = decision;
+    }
+
+    private byte decision;
     private boolean result;
 
     public boolean isResult() {

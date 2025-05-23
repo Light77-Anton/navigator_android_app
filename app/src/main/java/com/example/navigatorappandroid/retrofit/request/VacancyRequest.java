@@ -158,4 +158,15 @@ public class VacancyRequest implements Serializable { // возможно зам
 
     @JsonProperty("template_name")
     private String templateName;
+
+    public String getEmployeeOfferContent() {
+        return employeeOfferContent;
+    }
+
+    public void setEmployeeOfferContent(String employeeOfferContent) {
+        this.employeeOfferContent = employeeOfferContent;
+    }
+
+    @JsonProperty("employee_offer_content")
+    private String employeeOfferContent;
 }

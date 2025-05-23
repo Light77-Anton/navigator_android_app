@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatRequest {
 
-    @JsonProperty("employee_id")
-    private long employeeId;
+    @JsonProperty("sender_id")
+    private long senderId;
 
-    @JsonProperty("employer_id")
-    private long employerId;
+    @JsonProperty("recipient_id")
+    private long recipientId;
 
     @JsonProperty("content")
     private String content;
@@ -36,19 +36,19 @@ public class ChatRequest {
     public void setImage(boolean image) {
         isImage = image;
     }
-    public long getEmployeeId() {
-        return employeeId;
+    public long getSenderId() {
+        return senderId;
     }
 
-    public void setEmployeeId(long employeeId) {
-        this.employeeId = employeeId;
+    public void setSenderId(long senderId) {
+        this.senderId = senderId;
     }
 
-    public long getEmployerId() {
-        return employerId;
+    public long getRecipientId() {
+        return recipientId;
     }
 
-    public void setEmployerId(long employerId) {
-        this.employerId = employerId;
+    public void setRecipientId(long recipientId) {
+        this.recipientId = recipientId;
     }
 }
