@@ -19,8 +19,10 @@ import androidx.annotation.Nullable;
 import com.example.navigatorappandroid.model.ProfessionName;
 import com.example.navigatorappandroid.model.Vacancy;
 import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
+import com.example.navigatorappandroid.retrofit.response.IdResponse;
 import com.example.navigatorappandroid.retrofit.response.ProfessionNamesListResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
+import com.example.navigatorappandroid.retrofit.response.StringResponse;
 import com.example.navigatorappandroid.retrofit.response.VacancyInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.VacancyListResponse;
 import com.google.android.libraries.places.api.Places;
@@ -130,7 +132,7 @@ public class EmployerVacancyEditActivity extends BaseActivity {
         templateNameEditText = linearLayout.findViewById(R.id.template_name);
         if (arguments.getString("vacancy_id") != null) {
             String vacancyId = arguments.getString("vacancy_id");
-            searchApi.getVacancyById(vacancyId).enqueue(new Callback<VacancyInfoResponse>() {
+            searchApi.getVacancyById(Long.parseLong(vacancyId)).enqueue(new Callback<VacancyInfoResponse>() {
                 @Override
                 public void onResponse(Call<VacancyInfoResponse> call, Response<VacancyInfoResponse> response) {
                     vacancyInfoResponse = response.body();
@@ -229,7 +231,7 @@ public class EmployerVacancyEditActivity extends BaseActivity {
 
     public void onDeleteClick(View view) {
         if (arguments.getString("vacancy_id") != null) {
-            searchApi.deleteVacancyById(arguments.getString("vacancy_id")).enqueue(new Callback<ResultErrorsResponse>() {
+            searchApi.deleteVacancyById(Long.parseLong(arguments.getString("vacancy_id"))).enqueue(new Callback<ResultErrorsResponse>() {
                 @Override
                 public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
                     onBack(view);
@@ -251,7 +253,18 @@ public class EmployerVacancyEditActivity extends BaseActivity {
                 vacancyRequest.setVacancyId(Long.parseLong(arguments.getString("vacancy_id")));
             }
             if (requiredProfessionSpinner.getSelectedItem() != null) {
-                vacancyRequest.setProfessionName(requiredProfessionSpinner.getSelectedItem().toString());
+                generalApi.getProfessionIdByName(requiredProfessionSpinner.getSelectedItem()
+                        .toString()).enqueue(new Callback<IdResponse>() {
+                    @Override
+                    public void onResponse(Call<IdResponse> call, Response<IdResponse> response) {
+                        vacancyRequest.setProfessionId(response.body().getId());
+                    }
+                    @Override
+                    public void onFailure(Call<IdResponse> call, Throwable t) {
+                        Toast.makeText(EmployerVacancyEditActivity.this, "Error " +
+                                "'getProfessionIdByName' method is failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             LocalDateTime startDateTime = LocalDateTime.of(datePicker.getYear(), datePicker.getMonth(),
                     datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute());

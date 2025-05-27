@@ -9,19 +9,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SearchRequest {
 
-    @JsonProperty("profession")
-    private String professionName;
-
-    public String[] getAdditionalLanguages() {
-        return additionalLanguages;
+    public long getProfessionId() {
+        return professionId;
     }
 
-    public void setAdditionalLanguages(String[] additionalLanguages) {
-        this.additionalLanguages = additionalLanguages;
+    public void setProfessionId(long professionId) {
+        this.professionId = professionId;
     }
 
-    @JsonProperty("additional_languages")
-    private String[] additionalLanguages;
+    public long getAdditionalLanguageId() {
+        return additionalLanguageId;
+    }
+
+    public void setAdditionalLanguageId(long additionalLanguageId) {
+        this.additionalLanguageId = additionalLanguageId;
+    }
+
+    @JsonProperty("profession_id")
+    private long professionId;
+
+    @JsonProperty("additional_language_id")
+    private long additionalLanguageId;
+
     @JsonProperty("limit")
     private int limit;
 
@@ -29,8 +38,8 @@ public class SearchRequest {
     private String SortType;
     @JsonProperty("is_auto")
     private boolean isAuto;
-    @JsonProperty("are_languages_match")
-    private boolean areLanguagesMatch;
+    @JsonProperty("are_languages_matched")
+    private boolean areLanguagesMatched;
 
     public boolean isMultivacancyAllowed() {
         return isMultivacancyAllowed;
@@ -63,14 +72,6 @@ public class SearchRequest {
         SortType = sortType;
     }
 
-    public String getProfessionName() {
-        return professionName;
-    }
-
-    public void setProfessionName(String professionName) {
-        this.professionName = professionName;
-    }
-
     public int getLimit() {
         return limit;
     }
@@ -87,12 +88,12 @@ public class SearchRequest {
         isAuto = auto;
     }
 
-    public boolean isAreLanguagesMatch() {
-        return areLanguagesMatch;
+    public boolean isAreLanguagesMatched() {
+        return areLanguagesMatched;
     }
 
-    public void setAreLanguagesMatch(boolean areLanguagesMatch) {
-        this.areLanguagesMatch = areLanguagesMatch;
+    public void setAreLanguagesMatched(boolean areLanguagesMatched) {
+        this.areLanguagesMatched = areLanguagesMatched;
     }
 
     public int getInRadiusOf() {

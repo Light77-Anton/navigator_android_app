@@ -131,7 +131,7 @@
     <string name="saved_persons">Saved persons</string>
     <string name="contacted_persons">Contacted persons</string>
     <string name="show_extended_info">Show extended info</string>
-    <string name="additional_languages">Additional languages +</string>
+    <string name="additional_languages">You can choose the language that employees should know(if it is not your communication language)</string>
     <string name="additional_languages_content_description" translatable="false">additional languages</string>
     <string name="create_new_vacancy">Create new vacancy</string>
     <string name="choose_vacancy_from_my_list">Choose vacancy from my list</string>
@@ -180,4 +180,5 @@
     <string name="or_set_separately">Or set separately: </string>
     <string name="address_is_not_exist">Address is not exist</string>
     <string name="additional_info_is_too_long">Additional info is too long</string>
+    <string name="employer_vacancies_settings_info">You can add, delete or add a new vacancy based on an existing vacancy</string>
 </resources>

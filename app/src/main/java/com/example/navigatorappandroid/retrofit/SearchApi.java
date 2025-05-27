@@ -27,10 +27,10 @@ public interface SearchApi {
     Call<ResultErrorsResponse> setVacancy(@Body VacancyRequest vacancyRequest);
 
     @GET("api/search/vacancy/{id}/get")
-    Call<VacancyInfoResponse> getVacancyById(@Path("id") String id);
+    Call<VacancyInfoResponse> getVacancyById(@Path("id") long id);
 
     @DELETE("api/search/vacancy/{id}/delete")
-    Call<ResultErrorsResponse> deleteVacancyById(@Body String id);
+    Call<ResultErrorsResponse> deleteVacancyById(@Body long id);
 
     @GET("api/search/employees")
     Call<SearchResponse> getEmployeesOfChosenProfession(@Body SearchRequest searchRequest);

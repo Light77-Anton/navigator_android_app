@@ -15,7 +15,7 @@
         android:orientation="vertical">
         <android.widget.Button
             android:id="@+id/back"
-            android:onClick="onBackClick"
+            android:onClick="onBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -24,6 +24,13 @@
             android:textColor="@color/white"
             android:textSize="40sp"
             android:drawableStart="@drawable/ic_arrow_back"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/employer_vacancies_settings_info"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
         <android.widget.Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

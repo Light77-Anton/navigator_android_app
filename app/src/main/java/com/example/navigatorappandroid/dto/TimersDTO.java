@@ -32,20 +32,20 @@ public class TimersDTO {
         this.address = address;
     }
 
-    public String getProfession() {
-        return profession;
-    }
-
-    public void setProfession(String profession) {
-        this.profession = profession;
-    }
-
     public long getMillisInFuture() {
         return millisInFuture;
     }
 
     public void setMillisInFuture(long millisInFuture) {
         this.millisInFuture = millisInFuture;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
     }
 
     private String profession;

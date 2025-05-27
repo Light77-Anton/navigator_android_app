@@ -3,11 +3,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.retrofit.response.TextListResponse;
-import com.jaredrummler.materialspinner.MaterialSpinner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,18 +18,32 @@ import retrofit2.Response;
 
 public class ChooseAdditionalLanguagesActivity extends BaseActivity {
 
-    private MaterialSpinner additionalLanguagesSpinner;
+    private Spinner additionalLanguagesSpinner;
+    private String languageEndonym;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_additional_languages);
         setCurrentActivity(this);
-        ArrayList<String> languagesList = new ArrayList<>();
+        additionalLanguagesSpinner = findViewById(R.id.additional_languages_spinner);
         generalApi.getLanguagesList().enqueue(new Callback<TextListResponse>() {
             @Override
             public void onResponse(Call<TextListResponse> call, Response<TextListResponse> response) {
-                languagesList.addAll(response.body().getList());
+                ArrayAdapter<String> languagesAdapter = new ArrayAdapter
+                        (((View) findViewById(android.R.id.content)).getContext(),
+                                android.R.layout.simple_spinner_item, response.body().getList());
+                languagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                additionalLanguagesSpinner.setAdapter(languagesAdapter);
+                AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        languageEndonym = (String)parent.getItemAtPosition(position);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                };
+                additionalLanguagesSpinner.setOnItemSelectedListener(itemSelectedListener);
             }
             @Override
             public void onFailure(Call<TextListResponse> call, Throwable t) {
@@ -36,28 +51,19 @@ public class ChooseAdditionalLanguagesActivity extends BaseActivity {
                         "method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-        ArrayAdapter<String> languagesAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, languagesList);
-        languagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        additionalLanguagesSpinner = findViewById(R.id.additional_languages_spinner);
-        additionalLanguagesSpinner.setAdapter(languagesAdapter);
-        additionalLanguagesSpinner.setBackground(ContextCompat.getDrawable(this, R.drawable.spinner));
     }
 
     public void onConfirmClick(View view) {
-        List<String> list = additionalLanguagesSpinner.getItems().stream().map(Object::toString).collect(Collectors.toList());
-        int size = additionalLanguagesSpinner.getItems().size();
-        String[] languagesArray = new String[size];
-        for (int i = 0; i < size; i++) {
-            languagesArray[i] = list.get(i);
+        if (languageEndonym != null) {
+            onBackClick(languageEndonym);
         }
-        onBackClick(languagesArray);
     }
 
-    public void onBackClick(String[] languagesArray) {
+    public void onBackClick(String languageEndonym) {
         Activity lastActivity = getLastActivity();
         if (lastActivity != null) {
             Intent intent = new Intent(this, lastActivity.getClass());
-            intent.putExtra("languages_array", languagesArray);
+            intent.putExtra("additional_language", languageEndonym);
             removeActivityFromQueue();
             finish();
             startActivity(intent);

@@ -29,6 +29,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private RetrofitService retrofitService;
     private GeneralApi generalApi;
     private AuthApi authApi;
+    Spinner languagesSpinner;
+    RegistrationRequest registrationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +39,27 @@ public class RegistrationActivity extends AppCompatActivity {
         retrofitService = new RetrofitService();
         authApi = retrofitService.getRetrofit().create(AuthApi.class);
         generalApi = retrofitService.getRetrofit().create(GeneralApi.class);
+        registrationRequest = new RegistrationRequest();
         generalApi.getLanguagesList().enqueue(new Callback<TextListResponse>() {
             @Override
             public void onResponse(Call<TextListResponse> call, Response<TextListResponse> response) {
-                Spinner languagesSpinner = findViewById(R.id.spinner);
+                languagesSpinner = findViewById(R.id.spinner);
                 ArrayAdapter<String> adapter = new ArrayAdapter<>
                         (((View) findViewById(android.R.id.content)).getContext(), android.R.layout.simple_spinner_item,
                                 response.body().getList());
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 languagesSpinner.setAdapter(adapter);
+                AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String language_endonym = (String)parent.getItemAtPosition(position);
+                        registrationRequest.setInterfaceLanguage(language_endonym);
+                        registrationRequest.setCommunicationLanguage(language_endonym);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                };
+                languagesSpinner.setOnItemSelectedListener(itemSelectedListener);
                 setCaptcha();
             }
             @Override
@@ -62,7 +76,6 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public void OnConfirm(View view) {
-        RegistrationRequest registrationRequest = new RegistrationRequest();
         EditText firstAndLastNameEditText = findViewById(R.id.first_edit_text);
         registrationRequest.setName(firstAndLastNameEditText.getText().toString());
         EditText emailEditText = findViewById(R.id.second_edit_text);
@@ -85,19 +98,6 @@ public class RegistrationActivity extends AppCompatActivity {
         registrationRequest.setRole(role);
         EditText textFromThePictureEditText = findViewById(R.id.seventh_edit_text);
         registrationRequest.setCode(textFromThePictureEditText.getText().toString());
-        Spinner languagesSpinner = findViewById(R.id.spinner);
-        AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String language_endonym = (String)parent.getItemAtPosition(position);
-                registrationRequest.setInterfaceLanguage(language_endonym);
-                registrationRequest.setCommunicationLanguage(language_endonym);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        };
-        languagesSpinner.setOnItemSelectedListener(itemSelectedListener);
         authApi.registration(registrationRequest).enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {

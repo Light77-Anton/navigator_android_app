@@ -18,6 +18,7 @@ import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
+import com.example.navigatorappandroid.retrofit.response.IdResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
 import java.time.Instant;
@@ -44,7 +45,7 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
         changeSortRequestFieldCondition();
         if (arguments != null && arguments.get("profession") != null) {
             executeSearchForEmployees(arguments.getString("profession"),
-                    arguments.getStringArray("languages_array"));
+                    arguments.getString("additional_language"));
         }
     }
 
@@ -66,13 +67,12 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
                     @Override
                     public void onCheckedChanged(RadioGroup radioGroup, int i) {
                         executeSearchForEmployees(arguments.getString("profession")
-                                , arguments.getStringArray("languages_array"));
+                                , arguments.getString("additional_language"));
                     }
                 });
                 for (int i = 0; i < 3; i++) {
                     RadioButton radioButton = new RadioButton(searchResultsLayout.getContext());
                     radioButton.setId(View.generateViewId());
-                    radioButton.setText(getResources().getString(R.string.sort_by_persons_name));
                     radioButton.setBackground(ContextCompat.getDrawable(this, R.color.custom_gray_blue));
                     LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(
@@ -81,14 +81,17 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
                     switch (i) {
                         case 1:
                             viewMap.put("rating", radioButton);
+                            radioButton.setText(getResources().getString(R.string.sort_by_reputation));
                             radioButton.setContentDescription("rating");
                             break;
                         case 2:
                             viewMap.put("location", radioButton);
+                            radioButton.setText(getResources().getString(R.string.sort_by_location));
                             radioButton.setContentDescription("location");
                             break;
                         default:
                             viewMap.put("name", radioButton);
+                            radioButton.setText(getResources().getString(R.string.sort_by_persons_name));
                             radioButton.setContentDescription("name");
                     }
                     radioGroup.addView(radioButton);
@@ -116,7 +119,7 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                         executeSearchForEmployees(arguments.getString("profession"),
-                                arguments.getStringArray("languages_array"));
+                                arguments.getString("additional_language"));
                     }
 
                     @Override
@@ -142,7 +145,7 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     executeSearchForEmployees(arguments.getString("profession"),
-                            arguments.getStringArray("languages_array"));
+                            arguments.getString("additional_language"));
                 }
             });
             viewMap.put("is_auto", isAutoCheckbox);
@@ -155,7 +158,7 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     executeSearchForEmployees(arguments.getString("profession"),
-                            arguments.getStringArray("languages_array"));
+                            arguments.getString("additional_language"));
                 }
             });
             viewMap.put("show_temporarily_inactive", showTemporarilyInactiveCheckbox);
@@ -257,11 +260,31 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
         startActivity(intent);
     }
 
-    private void executeSearchForEmployees(String profession, String[] additionalLanguages) {
+    private void executeSearchForEmployees(String profession, String additionalLanguage) {
         searchResultsLayout.removeAllViews();
         SearchRequest searchRequest = new SearchRequest();
-        searchRequest.setProfessionName(profession);
-        searchRequest.setAdditionalLanguages(additionalLanguages);
+        generalApi.getProfessionIdByName(profession).enqueue(new Callback<IdResponse>() {
+            @Override
+            public void onResponse(Call<IdResponse> call, Response<IdResponse> response) {
+                searchRequest.setProfessionId(response.body().getId());
+            }
+            @Override
+            public void onFailure(Call<IdResponse> call, Throwable t) {
+                Toast.makeText(WorkListEmployerActivity.this, "Error " +
+                        "'getProfessionIdByName' method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+        generalApi.getLanguageIdByName(additionalLanguage).enqueue(new Callback<IdResponse>() {
+            @Override
+            public void onResponse(Call<IdResponse> call, Response<IdResponse> response) {
+                searchRequest.setAdditionalLanguageId(response.body().getId());
+            }
+            @Override
+            public void onFailure(Call<IdResponse> call, Throwable t) {
+                Toast.makeText(WorkListEmployerActivity.this, "Error " +
+                        "'getLanguageIdByName' method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
         RadioGroup radioGroup = (RadioGroup) viewMap.get("radio_group");
         int checkedButtonId = radioGroup.getCheckedRadioButtonId();
         if (checkedButtonId != -1) {
@@ -278,7 +301,7 @@ public class WorkListEmployerActivity extends MainDisplayActivity {
         CheckBox showTemporarilyInactiveEmployeescheckBox = (CheckBox) viewMap.get("show_temporarily_inactive");
         searchRequest.setShowTemporarilyInactiveEmployees(showTemporarilyInactiveEmployeescheckBox.isChecked());
         searchRequest.setLimit(userInfoResponse.getLimitForTheSearch());
-        searchRequest.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
+        searchRequest.setAreLanguagesMatched(userInfoResponse.isAreLanguagesMatched());
         searchApi.getEmployeesOfChosenProfession(searchRequest).enqueue(new Callback<SearchResponse>() {
             @Override
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {

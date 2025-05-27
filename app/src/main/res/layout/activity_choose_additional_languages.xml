@@ -17,7 +17,7 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="40sp" />
-    <com.jaredrummler.materialspinner.MaterialSpinner
+    <Spinner
         android:id="@+id/additional_languages_spinner"
         android:contentDescription="."
         android:layout_width="match_parent"

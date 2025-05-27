@@ -18,6 +18,7 @@ import com.example.navigatorappandroid.model.User;
 import com.example.navigatorappandroid.retrofit.request.LocationsRequest;
 import com.example.navigatorappandroid.retrofit.request.SearchRequest;
 import com.example.navigatorappandroid.retrofit.response.DistanceResponse;
+import com.example.navigatorappandroid.retrofit.response.IdResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import com.example.navigatorappandroid.retrofit.response.SearchResponse;
 import com.google.android.gms.maps.GoogleMap;
@@ -81,7 +82,7 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
         getDeviceLocation();
         if (arguments != null && arguments.get("profession") != null) {
             executeSearchForEmployees(arguments.getString("profession"),
-                    arguments.getStringArray("languages_array"));
+                    arguments.getString("additional_language"));
         }
     }
 
@@ -201,13 +202,12 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
                     @Override
                     public void onCheckedChanged(RadioGroup radioGroup, int i) {
                         executeSearchForEmployees(arguments.getString("profession")
-                                , arguments.getStringArray("languages_array"));
+                                , arguments.getString("additional_language"));
                     }
                 });
                 for (int i = 0; i < 3; i++) {
                     RadioButton radioButton = new RadioButton(searchResultsLayout.getContext());
                     radioButton.setId(View.generateViewId());
-                    radioButton.setText(getResources().getString(R.string.sort_by_persons_name));
                     radioButton.setBackground(ContextCompat.getDrawable(this, R.color.custom_gray_blue));
                     LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(
@@ -216,14 +216,17 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
                     switch (i) {
                         case 1:
                             radioButton.setContentDescription("rating");
+                            radioButton.setText(getResources().getString(R.string.sort_by_reputation));
                             viewMap.put("rating", radioButton);
                             break;
                         case 2:
                             radioButton.setContentDescription("location");
+                            radioButton.setText(getResources().getString(R.string.sort_by_location));
                             viewMap.put("location", radioButton);
                             break;
                         default:
                             radioButton.setContentDescription("name");
+                            radioButton.setText(getResources().getString(R.string.sort_by_persons_name));
                             viewMap.put("name", radioButton);
                     }
                     radioGroup.addView(radioButton);
@@ -251,7 +254,7 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                         executeSearchForEmployees(arguments.getString("profession"),
-                                arguments.getStringArray("languages_array"));
+                                arguments.getString("additional_language"));
                     }
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -294,11 +297,31 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
         }
     }
 
-    private void executeSearchForEmployees(String profession, String[] additionalLanguages) {
+    private void executeSearchForEmployees(String profession, String additionalLanguage) {
         googleMap.clear();
         SearchRequest searchRequest = new SearchRequest();
-        searchRequest.setProfessionName(profession);
-        searchRequest.setAdditionalLanguages(additionalLanguages);
+        generalApi.getProfessionIdByName(profession).enqueue(new Callback<IdResponse>() {
+            @Override
+            public void onResponse(Call<IdResponse> call, Response<IdResponse> response) {
+                searchRequest.setProfessionId(response.body().getId());
+            }
+            @Override
+            public void onFailure(Call<IdResponse> call, Throwable t) {
+                Toast.makeText(WorkMapEmployerActivity.this, "Error " +
+                        "'getProfessionIdByName' method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+        generalApi.getLanguageIdByName(additionalLanguage).enqueue(new Callback<IdResponse>() {
+            @Override
+            public void onResponse(Call<IdResponse> call, Response<IdResponse> response) {
+                searchRequest.setAdditionalLanguageId(response.body().getId());
+            }
+            @Override
+            public void onFailure(Call<IdResponse> call, Throwable t) {
+                Toast.makeText(WorkMapEmployerActivity.this, "Error " +
+                        "'getLanguageIdByName' method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
         RadioGroup radioGroup = (RadioGroup) viewMap.get("radio_group");
         int checkedButtonId = radioGroup.getCheckedRadioButtonId();
         if (checkedButtonId != -1) {
@@ -311,7 +334,7 @@ public class WorkMapEmployerActivity extends MainDisplayActivity implements OnMa
         searchRequest.setInRadiusOf(seekBar.getProgress());
         searchRequest.setMultivacancyAllowed(userInfoResponse.getEmployeeData().isMultivacancyAllowed());
         searchRequest.setLimit(userInfoResponse.getLimitForTheSearch());
-        searchRequest.setAreLanguagesMatch(userInfoResponse.isAreLanguagesMatched());
+        searchRequest.setAreLanguagesMatched(userInfoResponse.isAreLanguagesMatched());
         if (viewMap.containsKey("is_auto")) {
             CheckBox isAutoCheckbox = (CheckBox) viewMap.get("is_auto");
             searchRequest.setAuto(isAutoCheckbox.isChecked());

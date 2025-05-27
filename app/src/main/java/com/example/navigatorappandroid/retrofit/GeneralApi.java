@@ -190,4 +190,7 @@ public interface GeneralApi {
 
     @GET("api/user/timers/list/get")
     Call<TimersListResponse> getTimersList( );
+
+    @GET("api/language/get/by/name")
+    Call<IdResponse> getLanguageIdByName(String name);
 }

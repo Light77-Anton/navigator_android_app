@@ -28,7 +28,7 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
         TextView vacancyStartDateTime = findViewById(R.id.start_date_time);
         TextView vacancyAvailability = findViewById(R.id.vacancy_availability);
         TextView vacancyInfo = findViewById(R.id.payment_and_additional_info);
-        searchApi.getVacancyById(arguments.getString("vacancy_id")).enqueue(new Callback<VacancyInfoResponse>() {
+        searchApi.getVacancyById(Long.parseLong(arguments.getString("vacancy_id"))).enqueue(new Callback<VacancyInfoResponse>() {
             @Override
             public void onResponse(Call<VacancyInfoResponse> call, Response<VacancyInfoResponse> response) {
                 vacancyProfession.setText(response.body().getProfessionName());

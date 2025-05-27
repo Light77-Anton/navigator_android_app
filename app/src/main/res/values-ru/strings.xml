@@ -120,7 +120,7 @@
     <string name="saved_persons">Сохраненные контакты</string>
     <string name="contacted_persons">Contacted persons</string>
     <string name="show_extended_info">Показать расширенную информацию</string>
-    <string name="additional_languages">Дополнительные языки +</string>
+    <string name="additional_languages">Вы можете выбрать дополнительный язык, что должны знать рабочие(если вы не обладаете сами этим языком)</string>
     <string name="create_new_vacancy">Создать новою вакансию</string>
     <string name="choose_vacancy_from_my_list">Выберите вакансию из списка</string>
     <string name="set_waiting_date_time">Установить время и дату ожидания для ответа</string>
@@ -168,4 +168,5 @@
     <string name="or_set_separately">Или установить отдельно: </string>
     <string name="address_is_not_exist">Такой адрес не существует</string>
     <string name="additional_info_is_too_long">Дополнительная информация слишком длинная</string>
+    <string name="employer_vacancies_settings_info">Вы можете добавлять, удалять или добавить новую вакансию основанную на существующей вакансии</string>
 </resources>
