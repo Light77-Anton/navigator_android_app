@@ -38,7 +38,7 @@
         android:textSize="40sp"
         android:inputType="textEmailAddress"
         android:paddingStart="15dp"
-        app:layout_constraintTop_toBottomOf="@id/app_name_logo"  />
+        app:layout_constraintTop_toBottomOf="@id/app_name_logo"/>
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
@@ -53,6 +53,43 @@
         android:paddingStart="15dp"
         app:layout_constraintTop_toBottomOf="@id/login" />
     <android.widget.Button
+        android:id="@+id/restore_password"
+        android:onClick="onRestorePassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_button"
+        android:text="@string/restore_password"
+        android:textColor="@color/red"
+        android:layout_marginTop="75dp"
+        app:layout_constraintTop_toBottomOf="@id/password"
+        android:textSize="30sp"/>
+    <TextView
+        android:id="@+id/recovery_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:clickable="false"
+        android:padding="10dp"
+        android:labelFor="@id/recovery_email"
+        android:text="@string/restore_password_hint"
+        android:textColor="@color/white"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/restore_password"
+        android:textSize="30sp"/>
+    <EditText
+        android:id="@+id/recovery_email"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="invisible"
+        android:clickable="false"
+        android:padding="10dp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/rectangle_button"
+        android:textColor="@color/white"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/recovery_label"
+        android:textSize="30sp"/>
+    <android.widget.Button
         android:id="@+id/confirm"
         android:onClick="onConfirm"
         android:layout_width="match_parent"
@@ -60,8 +97,8 @@
         android:background="@drawable/rectangle_button"
         android:text="@string/login_text_button"
         android:textColor="@color/red"
-        android:layout_marginTop="400dp"
-        app:layout_constraintTop_toBottomOf="@id/password"
+        android:layout_marginTop="300dp"
+        app:layout_constraintTop_toBottomOf="@id/restore_password"
         android:textSize="40sp"/>
     <android.widget.Button
         android:id="@+id/back"

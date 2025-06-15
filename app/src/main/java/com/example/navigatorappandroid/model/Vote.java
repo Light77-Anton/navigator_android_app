@@ -57,4 +57,14 @@ public class Vote {
     private User recipient;
 
     private Comment initialComment;
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    private Comment comment;
 }

@@ -15,6 +15,7 @@ import com.example.navigatorappandroid.model.Language;
 import com.example.navigatorappandroid.model.ProfessionName;
 import com.example.navigatorappandroid.retrofit.request.EmployeeInfoForEmployersRequest;
 import com.example.navigatorappandroid.retrofit.request.ProfessionToUserRequest;
+import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.response.ProfessionNamesListResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import java.util.ArrayList;
@@ -25,17 +26,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import android.widget.AdapterView;
-import androidx.core.content.ContextCompat;
 
 public class EmployeeProfessionListActivity extends BaseActivity {
 
     private List<ProfessionName> professionNamesList;
     private List<String> professionNamesSpinner;
+    private EditText infoEditText;
     private LinearLayout layout;
-    private String[] languages;
     private List<Language> languagesList;
     private List<EditText> editTextList;
     private HashMap<String, String> hashMap;
+    private boolean isCleared = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class EmployeeProfessionListActivity extends BaseActivity {
         setContentView(R.layout.activity_professions_list);
         setCurrentActivity(this);
         layout = findViewById(R.id.layout);
+        infoEditText = findViewById(R.id.info_from_employee);
+        infoEditText.setText(userInfoResponse.getEmployeeData().getInfoFromEmployee());
         professionNamesList = new ArrayList<>();
         professionNamesSpinner = new ArrayList<>();
         generalApi.getProfessionsNamesInSpecifiedLanguage().enqueue(new Callback<ProfessionNamesListResponse>() {
@@ -124,85 +127,50 @@ public class EmployeeProfessionListActivity extends BaseActivity {
                 }
             }
         }
-        languagesList = new ArrayList<>();
-        editTextList = new ArrayList<>();
-        languages = getResources().getStringArray(R.array.languages);
-        for (Language lang : userInfoResponse.getCommunicationLanguages()) {
-            EditText editText = new EditText(this);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            params.setMargins(0, 30, 0, 0);
-            editText.setPadding(15, 15, 15, 15);
-            editText.setLayoutParams(params);
-            editText.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_text));
-            editText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-            editText.setTextColor(getResources().getColor(R.color.white));
-            editText.setHintTextColor(getResources().getColor(R.color.white));
-            for (String language : languages) {
-                if (language.equals(lang.getLanguageEndonym())) {
-                    switch (language) {
-                        case "English":
-                            editText.setHint(getResources().getString(R.string.info_from_employee_for_employers_hint_english));
-                            break;
-                        case "Русский":
-                            editText.setHint(getResources().getString(R.string.info_from_employee_for_employers_hint_russian));
-                            break;
-                        default:
-                            break;
-                    }
-                    editText.setContentDescription(language);
-                    languagesList.add(lang);
-                }
-            }
-            for (InfoFromEmployee infoFromEmployee : userInfoResponse.getEmployeeData().getInfoFromEmployee()) {
-                if (infoFromEmployee.getLanguage().getLanguageEndonym().equals(lang.getLanguageEndonym())) {
-                    editText.setText(infoFromEmployee.getText());
-                }
-            }
-            layout.addView(editText);
-            editTextList.add(editText);
-        }
     }
 
     private void setProfessionsToEmployee() {
-        for (String currentProfessionName : hashMap.values()) {
-            for (ProfessionName professionName : professionNamesList) {
-                if (professionName.getProfessionName().equals(currentProfessionName)) {
-                    ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
-                    professionToUserRequest.setId(professionName.getProfession().getId());
-                    generalApi.postProfessionToUser(professionToUserRequest).enqueue(new Callback<ResultErrorsResponse>() { // по идее должно сначало удалить старые связи
-                        @Override
-                        public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
-
-                        @Override
-                        public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                            Toast.makeText(EmployeeProfessionListActivity.this, "Error " +
-                                    "'postProfessionToUser' method is failure", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+        generalApi.clearProfessionsToUser().enqueue(new Callback<ResultErrorsResponse>() {
+            @Override
+            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                isCleared = true;
+            }
+            @Override
+            public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
+                Toast.makeText(EmployeeProfessionListActivity.this, "Error " +
+                        "'clearProfessionsToUser' method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+        if (isCleared) {
+            for (String currentProfessionName : hashMap.values()) {
+                for (ProfessionName professionName : professionNamesList) {
+                    if (professionName.getProfessionName().equals(currentProfessionName)) {
+                        ProfessionToUserRequest professionToUserRequest = new ProfessionToUserRequest();
+                        professionToUserRequest.setId(professionName.getProfession().getId());
+                        generalApi.postProfessionToUser(professionToUserRequest).enqueue(new Callback<ResultErrorsResponse>() { // по идее должно сначало удалить старые связи
+                            @Override
+                            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {}
+                            @Override
+                            public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
+                                Toast.makeText(EmployeeProfessionListActivity.this, "Error " +
+                                        "'postProfessionToUser' method is failure", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
             }
         }
     }
 
-    private void setInfoFromEmployee(View view) {
-        HashMap<Language, String> map = new HashMap<>();
-        for (EditText editText : editTextList) {
-            for (Language lang : languagesList) {
-                if (lang.getLanguageEndonym().equals(editText.getContentDescription().toString())
-                        && !editText.getText().toString().isEmpty()) {
-                    map.put(lang, editText.getText().toString());
-                }
-            }
-        }
-        EmployeeInfoForEmployersRequest employeeInfoForEmployersRequest = new EmployeeInfoForEmployersRequest();
-        employeeInfoForEmployersRequest.setMap(map);
-        generalApi.changeInfoFromEmployeeForEmployers(employeeInfoForEmployersRequest).enqueue(new Callback<ResultErrorsResponse>() {
+    public void onConfirmClick(View view) {
+        setProfessionsToEmployee();
+        StringRequest stringRequest = new StringRequest();
+        stringRequest.setString(infoEditText.getText().toString());
+        generalApi.changeInfoFromEmployeeForEmployers(stringRequest).enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
-               onBack(view);
+                Toast.makeText(EmployeeProfessionListActivity.this, getResources().getString
+                        (R.string.info_about_your_professions_is_set), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
@@ -210,11 +178,6 @@ public class EmployeeProfessionListActivity extends BaseActivity {
                         "'changeInfoFromEmployeeForEmployers' method is failure", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void onConfirmClick(View view) {
-        setProfessionsToEmployee();
-        setInfoFromEmployee(view);
     }
 
     public void onBack(View view) {

@@ -32,7 +32,7 @@ public class ChatSettingsActivity extends BaseActivity {
         userId = arguments.getString("user_id");
         userName = arguments.getString("user_name");
         extendedInfoButton.setText(R.string.show_extended_info);
-        generalApi.getRelationshipStatus(userId).enqueue(new Callback<RelationshipStatusResponse>() {
+        generalApi.getRelationshipStatus(Long.parseLong(userId)).enqueue(new Callback<RelationshipStatusResponse>() {
             @Override
             public void onResponse(Call<RelationshipStatusResponse> call, Response<RelationshipStatusResponse> response) {
                 if (response.body().isFavorite()) {
@@ -70,7 +70,7 @@ public class ChatSettingsActivity extends BaseActivity {
     }
 
     public void onFavorite(View view) {
-        generalApi.favorite(userId, favoriteOptionalDecision).enqueue(new Callback<ResultErrorsResponse>() {
+        generalApi.favorite(Long.parseLong(userId), favoriteOptionalDecision).enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
                 if (favoriteOptionalDecision.equals("add")) {
@@ -92,7 +92,7 @@ public class ChatSettingsActivity extends BaseActivity {
     }
 
     public void onBlackList(View view) {
-        generalApi.blacklist(userId, blackListOptionalDecision).enqueue(new Callback<ResultErrorsResponse>() {
+        generalApi.blacklist(Long.parseLong(userId), blackListOptionalDecision).enqueue(new Callback<ResultErrorsResponse>() {
             @Override
             public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
                 if (blackListOptionalDecision.equals("add")) {

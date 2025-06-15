@@ -5,6 +5,7 @@ import com.example.navigatorappandroid.retrofit.request.CommentRequest;
 import com.example.navigatorappandroid.retrofit.request.EmployeeInfoForEmployersRequest;
 import com.example.navigatorappandroid.retrofit.request.InProgramMessageRequest;
 import com.example.navigatorappandroid.retrofit.request.StatusRequest;
+import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.request.LocationRequest;
 import com.example.navigatorappandroid.retrofit.request.ModeratorDecision;
@@ -94,29 +95,29 @@ public interface GeneralApi {
     @POST("api/password")
     Call<ResultErrorsResponse> changePassword(@Body PasswordRequest passwordRequest);
 
-    @POST("api/like")
-    Call<VoteResponse> like(@Body VoteRequest voteRequest);
-
-    @POST("api/dislike")
-    Call<VoteResponse> dislike(@Body VoteRequest voteRequest);
+    @POST("api/vote")
+    Call<VoteResponse> vote(@Body VoteRequest voteRequest);
 
     @POST("api/comment")
     Call<ResultErrorsResponse> comment(@Body CommentRequest commentRequest);
 
-    @GET("api/get/{id}/comments")
-    Call<CommentsListResponse> getCommentsListByUserId(@Query("id") String id);
+    @POST("api/reply/{id}")
+    Call<ResultErrorsResponse> reply(@Path("id") long id, @Body CommentRequest commentRequest);
+
+    @GET("get/{id}/comments/{sort}")
+    Call<CommentsListResponse> getCommentsListByUserId(@Path("id") long id, @Path("sort") Byte sort);
 
     @POST("api/employer/search/passive")
     Call<ResultErrorsResponse> setPassiveSearch(@Body VacancyRequest vacancyRequest);
 
     @POST("api/user/{id}/favorite/{decision}")
-    Call<ResultErrorsResponse> favorite(@Query("id") String id, @Query("decision") String decision);
+    Call<ResultErrorsResponse> favorite(@Path("id") long id, @Path("decision") String decision);
 
     @POST("api/user/{id}/blacklist/{decision}")
-    Call<ResultErrorsResponse> blacklist(@Query("id") String id, @Query("decision") String decision);
+    Call<ResultErrorsResponse> blacklist(@Path("id") long id, @Query("decision") String decision);
 
     @GET("api/user/{id}/relationship/status")
-    Call<RelationshipStatusResponse> getRelationshipStatus(@Query("id") String id);
+    Call<RelationshipStatusResponse> getRelationshipStatus(@Path("id") long id);
 
     @GET("api/user/sender/get")
     Call<User> getSender(Principal principal);
@@ -142,8 +143,8 @@ public interface GeneralApi {
     @GET("api/professions/names/list/get")
     Call<ProfessionNamesListResponse> getProfessionsNamesInSpecifiedLanguage();
 
-    @GET("api/profession/get/by/name")
-    Call<IdResponse> getProfessionIdByName(@Body String professionName);
+    @GET("api/profession/get/by/name/{profession}")
+    Call<IdResponse> getProfessionIdByName(@Path("profession") String professionName);
 
     @GET("api/vacancy/info/get")
     Call<StringResponse> getAdditionalInfoAboutVacancyInSpecifiedLanguage(@Body ProfessionToUserRequest professionToUserRequest);
@@ -163,8 +164,8 @@ public interface GeneralApi {
     @POST("api/profession/to/user/post")
     Call<ResultErrorsResponse> postProfessionToUser(@Body ProfessionToUserRequest professionToUserRequest);
 
-    @DELETE("api/profession/to/user/delete")
-    Call<ResultErrorsResponse> deleteProfessionToUser(@Body ProfessionToUserRequest professionToUserRequest);
+    @DELETE("api/professions/to/user/clear")
+    Call<ResultErrorsResponse> clearProfessionsToUser();
 
     @GET("api/system/message/get")
     Call<StringResponse> getMessageInSpecifiedLanguage(@Body InProgramMessageRequest inProgramMessageRequest);
@@ -182,15 +183,22 @@ public interface GeneralApi {
     Call<ResultErrorsResponse> changeWorkDisplay(); // добавить на backend!
 
     @PUT("api/user/employee/work/info/change")
-    Call<ResultErrorsResponse> changeInfoFromEmployeeForEmployers
-            (@Body EmployeeInfoForEmployersRequest employeeInfoForEmployersRequest); // добавить на backend!
+    Call<ResultErrorsResponse> changeInfoFromEmployeeForEmployers(@Body StringRequest stringRequest); // добавить на backend!
 
     @PUT("api/status")
     Call<ResultErrorsResponse> employeeStatus(@Body StatusRequest statusRequest);
 
     @GET("api/user/timers/list/get")
-    Call<TimersListResponse> getTimersList( );
+    Call<TimersListResponse> getTimersList();
 
     @GET("api/language/get/by/name")
     Call<IdResponse> getLanguageIdByName(String name);
+
+    @GET("api/employee/{employeeId}/to/employer/{employerId}/votes/count/get")
+    Call<IdResponse> getAvailableVotesCount(@Path("employeeId") long employeeId,
+                                            @Path("employerId") long employerId);
+
+    @GET("api/get/average/vote/from/sender/{senderId}/to/recipient/{recipientId}")
+    Call<IdResponse> getAverageVoteFromSenderToRecipient(@Path("recipientId") long senderId,
+                                                         @Path("recipientId") long recipientId);
 }

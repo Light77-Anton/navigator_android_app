@@ -77,46 +77,59 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void OnConfirm(View view) {
         EditText firstAndLastNameEditText = findViewById(R.id.first_edit_text);
-        registrationRequest.setName(firstAndLastNameEditText.getText().toString());
+        String name = firstAndLastNameEditText.getText().toString();
         EditText emailEditText = findViewById(R.id.second_edit_text);
-        registrationRequest.setEmail(emailEditText.getText().toString());
+        String email = emailEditText.getText().toString();
         EditText phoneEditText = findViewById(R.id.third_edit_text);
-        registrationRequest.setPhone(phoneEditText.getText().toString());
+        String phone = phoneEditText.getText().toString();
         EditText socialNetworksLinksEditText = findViewById(R.id.fourth_edit_text);
-        registrationRequest.setSocialNetworksLinks(socialNetworksLinksEditText.getText().toString());
+        String socialNetworksLinks = socialNetworksLinksEditText.getText().toString();
         EditText passwordEditText = findViewById(R.id.fifth_edit_text);
-        registrationRequest.setPassword(passwordEditText.getText().toString());
+        String password = passwordEditText.getText().toString();
         EditText repeatPasswordEditText = findViewById(R.id.sixth_edit_text);
-        registrationRequest.setRepeatedPassword(repeatPasswordEditText.getText().toString());
-        String role;
-        CheckBox employeeCheckBox = findViewById(R.id.first_checkbox);
-        if (employeeCheckBox.isChecked()) {
-            role = "Employee";
-        } else {
-            role = "Employer";
-        }
-        registrationRequest.setRole(role);
+        String repeatPassword = repeatPasswordEditText.getText().toString();
         EditText textFromThePictureEditText = findViewById(R.id.seventh_edit_text);
-        registrationRequest.setCode(textFromThePictureEditText.getText().toString());
-        authApi.registration(registrationRequest).enqueue(new Callback<ResultErrorsResponse>() {
-            @Override
-            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
-                if (response.body().isResult()) {
-                    Intent intent = new Intent(view.getContext(), RegistrationSuccessActivity.class);
-                    intent.putExtra("language", registrationRequest.getInterfaceLanguage());
-                    startActivity(intent);
-                } else {
-                    StringBuilder sb = new StringBuilder();
-                    response.body().getErrors().stream().map(e -> sb.append(e).append("\n"));
-                    Toast.makeText(RegistrationActivity.this, sb.toString(), Toast.LENGTH_LONG).show();
+        String textFromThePicture = textFromThePictureEditText.getText().toString();
+        if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || socialNetworksLinks.isEmpty() ||
+                password.isEmpty() || repeatPassword.isEmpty() || textFromThePicture.isEmpty()) {
+            Toast.makeText(RegistrationActivity.this,
+                    "You have to fill all fields marked with *", Toast.LENGTH_SHORT).show();
+        } else {
+            registrationRequest.setName(name);
+            registrationRequest.setEmail(email);
+            registrationRequest.setPhone(phone);
+            registrationRequest.setSocialNetworksLinks(socialNetworksLinks);
+            registrationRequest.setPassword(password);
+            registrationRequest.setRepeatedPassword(repeatPassword);
+            String role;
+            CheckBox employeeCheckBox = findViewById(R.id.first_checkbox);
+            if (employeeCheckBox.isChecked()) {
+                role = "Employee";
+            } else {
+                role = "Employer";
+            }
+            registrationRequest.setRole(role);
+            registrationRequest.setCode(textFromThePicture);
+            authApi.registration(registrationRequest).enqueue(new Callback<ResultErrorsResponse>() {
+                @Override
+                public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                    if (response.body().isResult()) {
+                        Intent intent = new Intent(view.getContext(), RegistrationSuccessActivity.class);
+                        intent.putExtra("language", registrationRequest.getInterfaceLanguage());
+                        startActivity(intent);
+                    } else {
+                        StringBuilder sb = new StringBuilder();
+                        response.body().getErrors().stream().map(e -> sb.append(e).append("\n"));
+                        Toast.makeText(RegistrationActivity.this, sb.toString(), Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-            @Override
-            public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                Toast.makeText(RegistrationActivity.this, "Error: 'registration'" +
-                        " method is failure", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
+                    Toast.makeText(RegistrationActivity.this, "Error: 'registration'" +
+                            " method is failure", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void setCaptcha() {

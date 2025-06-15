@@ -25,6 +25,16 @@ public class CommentRequest {
         this.content = content;
     }
 
+    public long getRepliedCommentId() {
+        return repliedCommentId;
+    }
+
+    public void setRepliedCommentId(long repliedCommentId) {
+        this.repliedCommentId = repliedCommentId;
+    }
+
+    @JsonProperty("replied_comment_id")
+    private long repliedCommentId;
     @JsonProperty("user_id")
     private long userId;
     @JsonProperty("content")

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:tag="Chat list activity"
     android:id="@+id/chat_list_layout"
+    tools:context=".ChatListActivity"
     android:orientation="vertical"
     android:background="@drawable/chat_background"
     android:layout_width="match_parent"
@@ -85,6 +87,19 @@
                 android:padding="10dp"
                 android:onClick="onBlackListClick"
                 android:drawableRight="@drawable/inactive"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="30sp"/>
+            <android.widget.Button
+                android:id="@+id/public_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rectangle_button"
+                android:text="@string/public_comments"
+                android:padding="10dp"
+                android:onClick="onPublicCommentsClick"
+                android:drawableRight="@drawable/message_sign"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="30sp"/>

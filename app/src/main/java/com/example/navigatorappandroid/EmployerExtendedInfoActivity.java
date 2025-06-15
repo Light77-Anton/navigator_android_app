@@ -51,7 +51,7 @@ public class EmployerExtendedInfoActivity extends BaseActivity {
         TextView email = findViewById(R.id.email);
         TextView phone = findViewById(R.id.phone);
         TextView socialNetworksLinks = findViewById(R.id.social_networks_links);
-        searchApi.getEmployerInfo(arguments.getString("employer_id")).enqueue(new Callback<ExtendedUserInfoResponse>() {
+        searchApi.getEmployerInfo(Long.parseLong(arguments.getString("employer_id"))).enqueue(new Callback<ExtendedUserInfoResponse>() {
             @Override
             public void onResponse(Call<ExtendedUserInfoResponse> call, Response<ExtendedUserInfoResponse> response) {
                 ExtendedUserInfoResponse eui = response.body();

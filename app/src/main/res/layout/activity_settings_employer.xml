@@ -59,7 +59,7 @@
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:textSize="40sp"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:paddingStart="15dp"
                 app:drawableEndCompat="@drawable/ic_star"/>
             <Button
@@ -71,7 +71,7 @@
                 android:textColor="@color/white"
                 android:textSize="30sp"
                 android:text="@string/my_company"
-                android:onClick="onChangePasswordClick"
+                android:onClick="onMyCompanyClick"
                 android:paddingStart="15dp"/>
             <Button
                 android:id="@+id/password"
@@ -124,7 +124,7 @@
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:textSize="40sp"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:paddingStart="15dp" />
             <TextView
                 android:layout_width="wrap_content"

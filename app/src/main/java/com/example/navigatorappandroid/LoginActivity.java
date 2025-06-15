@@ -2,7 +2,9 @@ package com.example.navigatorappandroid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.navigatorappandroid.retrofit.AuthApi;
@@ -15,11 +17,19 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private Button restoreButton;
+    private TextView recoveryLabel;
+    private EditText recoveryEmail;
+    private boolean isRecoveryFieldActivated;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getIntent().getExtras();
         setContentView(R.layout.activity_login);
+        recoveryLabel = findViewById(R.id.recovery_label);
+        recoveryEmail = findViewById(R.id.recovery_email);
+        restoreButton = findViewById(R.id.restore_password);
         if (arguments != null && arguments.getBoolean("is_auth_error")) {
             Toast.makeText(LoginActivity.this, "Authentication error: you " +
                     "have to login again", Toast.LENGTH_SHORT).show();
@@ -70,6 +80,24 @@ public class LoginActivity extends AppCompatActivity {
                         " method is failure", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void onRestorePassword(View view) {
+        if (!isRecoveryFieldActivated) {
+            isRecoveryFieldActivated = true;
+            recoveryLabel.setClickable(true);
+            recoveryLabel.setVisibility(View.VISIBLE);
+            recoveryEmail.setClickable(true);
+            recoveryEmail.setVisibility(View.VISIBLE);
+            restoreButton.setText("Confirm recovery email");
+            restoreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Toast.makeText(LoginActivity.this, "A recovery mail has been sent", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     public void onBack(View view) {

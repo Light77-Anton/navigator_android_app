@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".CommentsListActivity"
     android:tag="Comments list activity"
     android:orientation="vertical"
     android:background="@color/custom_gray_blue"
@@ -33,26 +35,16 @@
         android:layout_marginBottom="30dp"
         android:background="@drawable/spinner"
         android:textAlignment="center"/>
-    <EditText
+    <Button
         android:id="@+id/my_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:onClick="onLeaveComment"
         android:background="@drawable/rectangle_button"
         android:padding="10dp"
         android:textSize="30sp"
-        android:text="@string/leave_own_comment"/>
-    <Button
-        android:id="@+id/leave_own_comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/rectangle_button"
-        android:padding="10dp"
-        android:onClick="leaveComment"
-        android:textSize="30sp"
-        android:textColor="@color/red"
-        android:text="@string/confirm"/>
+        android:text="@string/leave_or_edit_your_own_comment"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

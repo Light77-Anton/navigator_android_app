@@ -14,5 +14,4 @@
         android:textSize="50sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

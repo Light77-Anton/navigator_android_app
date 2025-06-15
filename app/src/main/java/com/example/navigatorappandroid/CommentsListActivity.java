@@ -7,9 +7,9 @@ import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -42,8 +42,7 @@ public class CommentsListActivity extends BaseActivity {
     private Map<Comment, TreeSet<Comment>> commentsMap;
     private List<Comment> initialCommentsList = new ArrayList<>();
     private List<Comment> repliesList  = new ArrayList<>();
-    private EditText ownComment;
-    private Button confirm;
+    private Button ownComment;
     private String userId;
 
     @Override
@@ -57,23 +56,55 @@ public class CommentsListActivity extends BaseActivity {
             userId = arguments.getString("employer_id");
         }
         ownComment = findViewById(R.id.my_comment);
-        confirm = findViewById(R.id.leave_own_comment);
+        commentsLayout = findViewById(R.id.comments_layout);
         sortTypesSpinner = findViewById(R.id.sort_spinner);
         ArrayList<String> sortTypes = new ArrayList<>();
         sortTypes.add(getResources().getString(R.string.all));
-        sortTypes.add(getResources().getString(R.string.positive_only));
-        sortTypes.add(getResources().getString(R.string.negative_only));
+        sortTypes.add(getResources().getString(R.string.positive_first));
+        sortTypes.add(getResources().getString(R.string.negative_first));
         ArrayAdapter<String> sortTypeAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sortTypes);
         sortTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortTypesSpinner.setAdapter(sortTypeAdapter);
-        commentsLayout = findViewById(R.id.comments_layout);
-        generalApi.getCommentsListByUserId(userId).enqueue(new Callback<CommentsListResponse>() {
+        sortTypesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                generalApi.getCommentsListByUserId(Long.parseLong(userId), (byte) i).enqueue(new Callback<CommentsListResponse>() {
+                    @Override
+                    public void onResponse(Call<CommentsListResponse> call, Response<CommentsListResponse> response) {
+                        commentList = response.body().getList().stream().filter(Comment::isInitialComment)
+                                .collect(Collectors.toList());
+                        commentsMap = new TreeMap<>(getCommentsComparator((byte) i));
+                        TreeSet<Comment> set = new TreeSet<>(getCommentsComparator(null));
+                        for (Comment initialComment : commentList) {
+                            if (initialComment.getReplies().isEmpty()) {
+                                commentsMap.put(initialComment, null);
+                            } else {
+                                set.addAll(initialComment.getReplies());
+                                commentsMap.put(initialComment, set);
+                                set.clear();
+                            }
+                        }
+                        if (!commentsMap.isEmpty()) {
+                            showComments(commentsMap, null);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<CommentsListResponse> call, Throwable t) {
+                        Toast.makeText(CommentsListActivity.this, "error: 'getCommentsListByUserId' " +
+                                "method is failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+        generalApi.getCommentsListByUserId(Long.parseLong(userId), null).enqueue(new Callback<CommentsListResponse>() {
             @Override
             public void onResponse(Call<CommentsListResponse> call, Response<CommentsListResponse> response) {
                 commentList = response.body().getList().stream().filter(Comment::isInitialComment)
                         .collect(Collectors.toList());
-                commentsMap = new TreeMap<>(getCommentsComparator());
-                TreeSet<Comment> set = new TreeSet<>(getCommentsComparator());
+                commentsMap = new TreeMap<>(getCommentsComparator(null));
+                TreeSet<Comment> set = new TreeSet<>(getCommentsComparator(null));
                 for (Comment initialComment : commentList) {
                     if (initialComment.getReplies().isEmpty()) {
                         commentsMap.put(initialComment, null);
@@ -105,18 +136,19 @@ public class CommentsListActivity extends BaseActivity {
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(0 , 20 , 0 , 0);
             commentLayout.setLayoutParams(params);
-            ImageView voteIconView = new ImageView(commentLayout.getContext());
-            voteIconView.setId(View.generateViewId());
-            if (entrySet.getKey().getVote().getValue() == 1) {
-                voteIconView.setImageResource(R.drawable.like);
-            } else {
-                voteIconView.setImageResource(R.drawable.dislike);
-            }
-            RelativeLayout.LayoutParams voteIconParams = new RelativeLayout.LayoutParams(50, 50);
-            voteIconParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            voteIconParams.addRule(RelativeLayout.ALIGN_PARENT_START);
-            voteIconView.setLayoutParams(voteIconParams);
-            commentLayout.addView(voteIconView);
+            TextView ratingNumberView = new TextView(commentLayout.getContext());
+            ratingNumberView.setId(View.generateViewId());
+            StringBuilder sb = new StringBuilder();
+            sb.append(entrySet.getKey().getAverageVote());
+            sb.append("/10");
+            ratingNumberView.setText(sb);
+            ratingNumberView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+            ratingNumberView.setTextColor(getResources().getColor(R.color.dark_yellow));
+            RelativeLayout.LayoutParams ratingNumberParams = new RelativeLayout.LayoutParams(110, 50);
+            ratingNumberParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            ratingNumberParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+            ratingNumberView.setLayoutParams(ratingNumberParams);
+            commentLayout.addView(ratingNumberView);
             ImageView userAvatarView = new ImageView(commentLayout.getContext());
             userAvatarView.setId(View.generateViewId());
             if (entrySet.getKey().getSender().getAvatar() != null) {
@@ -127,7 +159,7 @@ public class CommentsListActivity extends BaseActivity {
             }
             RelativeLayout.LayoutParams userAvatarParams = new RelativeLayout.LayoutParams(50, 50);
             userAvatarParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            userAvatarParams.addRule(RelativeLayout.END_OF, voteIconView.getId());
+            userAvatarParams.addRule(RelativeLayout.END_OF, ratingNumberView.getId());
             userAvatarParams.setMargins(10, 0, 10, 0);
             userAvatarView.setLayoutParams(userAvatarParams);
             commentLayout.addView(userAvatarView);
@@ -169,7 +201,7 @@ public class CommentsListActivity extends BaseActivity {
             viewList.add(commentLayout);
             if (showRepliesId != null && entrySet.getValue() != null &&
                     Long.parseLong(commentLayout.getContentDescription().toString()) == showRepliesId ) {
-                Comment earliestReply = entrySet.getValue().stream().max(getCommentsComparator()).get();
+                Comment earliestReply = entrySet.getValue().stream().max(getCommentsComparator(null)).get();
                 for (Comment reply : entrySet.getValue()) {
                     RelativeLayout replyLayout = new RelativeLayout(commentsLayout.getContext());
                     replyLayout.setLayoutParams(params);
@@ -182,8 +214,8 @@ public class CommentsListActivity extends BaseActivity {
                         replyUserAvatarView.setImageDrawable(getResources().getDrawable(R.drawable.default_user_avatar));
                     }
                     RelativeLayout.LayoutParams replyUserAvatarParams = new RelativeLayout.LayoutParams(50, 50);
-                    voteIconParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                    voteIconParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+                    replyUserAvatarParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                    replyUserAvatarParams.addRule(RelativeLayout.ALIGN_PARENT_START);
                     replyUserAvatarParams.setMargins(10, 0, 10, 0);
                     replyUserAvatarView.setLayoutParams(replyUserAvatarParams);
                     replyLayout.addView(replyUserAvatarView);
@@ -274,38 +306,51 @@ public class CommentsListActivity extends BaseActivity {
         }
     }
 
-    private Comparator<Comment> getCommentsComparator() {
-        return new Comparator<Comment>() {
-            @Override
-            public int compare(Comment comment, Comment t1) {
-                if (comment.getDateTime().isAfter(t1.getDateTime())) {
-                    return -1;
-                } else if (comment.getDateTime().isBefore(t1.getDateTime())) {
-                    return 1;
+    private Comparator<Comment> getCommentsComparator(Byte sortType) {
+        if (sortType == null || sortType == 0) {
+            return new Comparator<Comment>() {
+                @Override
+                public int compare(Comment comment, Comment t1) {
+                    if (comment.getDateTime().isAfter(t1.getDateTime())) {
+                        return -1;
+                    } else if (comment.getDateTime().isBefore(t1.getDateTime())) {
+                        return 1;
+                    }
+                    return 0;
                 }
-                return 0;
-            }
-        };
+            };
+        } else if (sortType == 2) {
+            return new Comparator<Comment>() {
+                @Override
+                public int compare(Comment comment, Comment t1) {
+                    if (comment.getAverageVote() < t1.getAverageVote()) {
+                        return -1;
+                    } else if (comment.getAverageVote() > t1.getAverageVote()) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            };
+        } else {
+            return new Comparator<Comment>() {
+                @Override
+                public int compare(Comment comment, Comment t1) {
+                    if (comment.getAverageVote() > t1.getAverageVote()) {
+                        return -1;
+                    } else if (comment.getAverageVote() < t1.getAverageVote()) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            };
+        }
     }
 
-    public void leaveComment(View view) {
-        CommentRequest commentRequest = new CommentRequest();
-        commentRequest.setUserId(Long.parseLong(userId));
-        commentRequest.setContent(ownComment.getText().toString());
-        generalApi.comment(commentRequest).enqueue(new Callback<ResultErrorsResponse>() {
-            @Override
-            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
-                Intent intent = getIntent();
-                intent.putExtras(arguments);
-                finish();
-                startActivity(intent);
-            }
-            @Override
-            public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                Toast.makeText(CommentsListActivity.this, "error: 'comment' " +
-                        "method is failure", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void onLeaveComment(View view) {
+        Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtras(arguments);
+        finish();
+        startActivity(intent);
     }
 
     public void onBack(View view) {

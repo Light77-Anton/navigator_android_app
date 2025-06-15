@@ -17,19 +17,19 @@ public class SearchRequest {
         this.professionId = professionId;
     }
 
-    public long getAdditionalLanguageId() {
-        return additionalLanguageId;
-    }
-
-    public void setAdditionalLanguageId(long additionalLanguageId) {
-        this.additionalLanguageId = additionalLanguageId;
-    }
-
     @JsonProperty("profession_id")
     private long professionId;
 
+    public Long getAdditionalLanguageId() {
+        return additionalLanguageId;
+    }
+
+    public void setAdditionalLanguageId(Long additionalLanguageId) {
+        this.additionalLanguageId = additionalLanguageId;
+    }
+
     @JsonProperty("additional_language_id")
-    private long additionalLanguageId;
+    private Long additionalLanguageId;
 
     @JsonProperty("limit")
     private int limit;

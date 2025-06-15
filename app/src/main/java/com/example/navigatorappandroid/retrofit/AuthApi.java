@@ -1,6 +1,7 @@
 package com.example.navigatorappandroid.retrofit;
 import com.example.navigatorappandroid.retrofit.request.LoginRequest;
 import com.example.navigatorappandroid.retrofit.request.RegistrationRequest;
+import com.example.navigatorappandroid.retrofit.request.StringRequest;
 import com.example.navigatorappandroid.retrofit.response.CaptchaResponse;
 import com.example.navigatorappandroid.retrofit.response.DeleteAccountResponse;
 import com.example.navigatorappandroid.retrofit.response.LoginResponse;
@@ -31,4 +32,6 @@ public interface AuthApi {
     @DELETE("api/auth/delete")
     Call<DeleteAccountResponse> deleteAccount();
 
+    @POST("api/auth/request/company/set")
+    Call<ResultErrorsResponse> makeRequestForCompanySetting(@Body StringRequest stringRequest);
 }

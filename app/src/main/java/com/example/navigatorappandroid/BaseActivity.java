@@ -76,23 +76,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void startTimers() {
-        for (TimersDTO timersDTO : getTimers()) {
-            new CountDownTimer(timersDTO.getMillisInFuture(), 1000) {
-                @Override
-                public void onTick(long l) {}
-                @Override
-                public void onFinish() {
-                    if (!isQueueLocked) {
-                        isQueueLocked = true;
-                        activeNotificationData = timersDTO;
-                        rootView = findViewById(android.R.id.content).getRootView();
-                        //activityTag = (String) rootView.getTag();
-                        showNotification(rootView.getContext(), getResources().getString(R.string.notification)
-                                , getResources().getString(R.string.agreed_time_has_come),
-                                timersDTO.getContactedPersonId(), timersDTO.getName());
+        if (!userInfoResponse.getRole().equals("Moderator")) {
+            for (TimersDTO timersDTO : getTimers()) {
+                new CountDownTimer(timersDTO.getMillisInFuture(), 1000) {
+                    @Override
+                    public void onTick(long l) {}
+                    @Override
+                    public void onFinish() {
+                        if (!isQueueLocked) {
+                            isQueueLocked = true;
+                            activeNotificationData = timersDTO;
+                            rootView = findViewById(android.R.id.content).getRootView();
+                            //activityTag = (String) rootView.getTag();
+                            showNotification(rootView.getContext(), getResources().getString(R.string.notification)
+                                    , getResources().getString(R.string.agreed_time_has_come),
+                                    timersDTO.getContactedPersonId(), timersDTO.getName());
+                        }
                     }
-                }
-            }.start();
+                }.start();
+            }
         }
     }
 

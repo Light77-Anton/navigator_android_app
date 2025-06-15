@@ -35,17 +35,17 @@ public class EmployeeStatusActivity extends BaseActivity {
             RadioButton radio = findViewById(id);
             switch (radio.getContentDescription().toString()) {
                 case "active":
-                    statusRequest.setStatus("active");
+                    statusRequest.setStatus((byte) 1);
                     datePicker.setClickable(false);
                     datePicker.setVisibility(View.INVISIBLE);
                     break;
                 case "inactive":
-                    statusRequest.setStatus("inactive");
+                    statusRequest.setStatus((byte) 0);
                     datePicker.setClickable(false);
                     datePicker.setVisibility(View.INVISIBLE);
                     break;
                 default:
-                    statusRequest.setStatus("custom");
+                    statusRequest.setStatus((byte) -1);
                     long timestamp = System.currentTimeMillis();
                     LocalDate currentDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate();
                     statusRequest.setTimestamp(currentDate.atStartOfDay(ZoneId.systemDefault())
@@ -101,25 +101,23 @@ public class EmployeeStatusActivity extends BaseActivity {
     }
 
     public void onBackClick(View view) {
-        if (statusRequest.getStatus() != null) {
-            generalApi.employeeStatus(statusRequest).enqueue(new Callback<ResultErrorsResponse>() {
-                @Override
-                public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
-                    Activity lastActivity = getLastActivity();
-                    if (lastActivity != null) {
-                        Intent intent = new Intent(getCurrentActivity(), lastActivity.getClass());
-                        intent.putExtras(arguments);
-                        removeActivityFromQueue();
-                        finish();
-                        startActivity(intent);
-                    }
+        generalApi.employeeStatus(statusRequest).enqueue(new Callback<ResultErrorsResponse>() {
+            @Override
+            public void onResponse(Call<ResultErrorsResponse> call, Response<ResultErrorsResponse> response) {
+                Activity lastActivity = getLastActivity();
+                if (lastActivity != null) {
+                    Intent intent = new Intent(getCurrentActivity(), lastActivity.getClass());
+                    intent.putExtras(arguments);
+                    removeActivityFromQueue();
+                    finish();
+                    startActivity(intent);
                 }
-                @Override
-                public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
-                    Toast.makeText(EmployeeStatusActivity.this, "error: 'employeeStatus' " +
-                            "method is failure", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            }
+            @Override
+            public void onFailure(Call<ResultErrorsResponse> call, Throwable t) {
+                Toast.makeText(EmployeeStatusActivity.this, "error: 'employeeStatus' " +
+                        "method is failure", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

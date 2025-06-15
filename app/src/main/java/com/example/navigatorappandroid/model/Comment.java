@@ -82,14 +82,6 @@ public class Comment {
         this.content = content;
     }
 
-    public Vote getVote() {
-        return vote;
-    }
-
-    public void setVote(Vote vote) {
-        this.vote = vote;
-    }
-
     private boolean isResponseForAnotherComment;
 
     private List<Comment> replies;
@@ -108,5 +100,33 @@ public class Comment {
 
     private LocalDateTime dateTime;
 
-    private Vote vote;
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
+    private List<Vote> votes;
+
+    public byte getAverageVote() {
+        return averageVote;
+    }
+
+    public void setAverageVote(byte averageVote) {
+        this.averageVote = averageVote;
+    }
+
+    private byte averageVote;
+
+    public boolean isViewedByRecipient() {
+        return isViewedByRecipient;
+    }
+
+    public void setViewedByRecipient(boolean viewedByRecipient) {
+        isViewedByRecipient = viewedByRecipient;
+    }
+
+    private boolean isViewedByRecipient;
 }

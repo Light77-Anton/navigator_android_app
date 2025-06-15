@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/rectangle_button"
-            android:onClick="onBackClick"
+            android:onClick="onBack"
             android:text="@string/back"
             android:textColor="@color/white"
             android:textSize="40sp"
@@ -34,6 +34,17 @@
             android:onClick="onConfirmClick"
             android:textColor="@color/red"
             android:textSize="40sp"/>
+        <EditText
+            android:id="@+id/info_from_employee"
+            android:inputType="textMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="50dp"
+            android:padding="10dp"
+            android:background="@drawable/rectangle_button"
+            android:hint="@string/info_from_employee_to_employers_field_hint"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
         <Spinner
             android:id="@+id/first_profession"
             android:contentDescription="1"

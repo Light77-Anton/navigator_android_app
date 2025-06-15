@@ -62,7 +62,7 @@
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:textSize="40sp"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:paddingStart="15dp"
                 app:drawableEndCompat="@drawable/ic_star"/>
             <Button
@@ -86,7 +86,7 @@
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:textSize="40sp"
-                android:inputType="text"
+                android:inputType="phone"
                 android:paddingStart="15dp" />
             <CheckBox
                 android:id="@+id/is_phone_hidden"
@@ -116,7 +116,7 @@
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:textSize="40sp"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:paddingStart="15dp" />
             <CheckBox
                 android:id="@+id/drivers_license"

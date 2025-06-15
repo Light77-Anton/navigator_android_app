@@ -46,4 +46,24 @@ public class EmployeeToEmployer {
     }
 
     private long employerId;
+
+    private int availableVotesCountFromEmployee;
+
+    public int getAvailableVotesCountFromEmployee() {
+        return availableVotesCountFromEmployee;
+    }
+
+    public void setAvailableVotesCountFromEmployee(int availableVotesCountFromEmployee) {
+        this.availableVotesCountFromEmployee = availableVotesCountFromEmployee;
+    }
+
+    public int getAvailableVotesCountFromEmployer() {
+        return availableVotesCountFromEmployer;
+    }
+
+    public void setAvailableVotesCountFromEmployer(int availableVotesCountFromEmployer) {
+        this.availableVotesCountFromEmployer = availableVotesCountFromEmployer;
+    }
+
+    private int availableVotesCountFromEmployer;
 }

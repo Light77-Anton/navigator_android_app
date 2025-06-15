@@ -39,8 +39,8 @@ public interface SearchApi {
     Call<SearchResponse> getVacanciesByProfession(@Body SearchRequest searchRequest);
 
     @GET("api/search/employee/{id}/info")
-    Call<ExtendedUserInfoResponse> getEmployeeInfo(@Path("id") String id);
+    Call<ExtendedUserInfoResponse> getEmployeeInfo(@Path("id") long id);
 
     @GET("api/search/employer/{id}/info")
-    Call<ExtendedUserInfoResponse> getEmployerInfo(@Path("id") String id);
+    Call<ExtendedUserInfoResponse> getEmployerInfo(@Path("id") long id);
 }

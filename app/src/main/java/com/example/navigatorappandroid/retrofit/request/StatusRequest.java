@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 public class StatusRequest {
 
     @JsonProperty("status")
-    private String status;
+    private byte status;
 
-    public String getStatus() {
+    public byte getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(byte status) {
         this.status = status;
     }
 

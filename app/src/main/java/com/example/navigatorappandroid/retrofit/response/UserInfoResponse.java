@@ -4,6 +4,7 @@ import com.example.navigatorappandroid.model.Comment;
 import com.example.navigatorappandroid.model.EmployeeData;
 import com.example.navigatorappandroid.model.EmployerRequests;
 import com.example.navigatorappandroid.model.Language;
+import com.example.navigatorappandroid.model.LastRequest;
 import com.example.navigatorappandroid.model.UserLocation;
 import com.example.navigatorappandroid.model.User;
 import java.time.LocalDateTime;
@@ -38,6 +39,17 @@ public class UserInfoResponse {
     private String phone;
     private boolean isPhoneHidden;
 
+    public boolean isShowTemporarilyInactiveEmployees() {
+        return showTemporarilyInactiveEmployees;
+    }
+
+    public void setShowTemporarilyInactiveEmployees(boolean showTemporarilyInactiveEmployees) {
+        this.showTemporarilyInactiveEmployees = showTemporarilyInactiveEmployees;
+    }
+
+    private boolean showTemporarilyInactiveEmployees;
+
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -63,7 +75,7 @@ public class UserInfoResponse {
     private int limitForTheSearch;
 
     private boolean areLanguagesMatched;
-    private String lastRequest;
+    private LastRequest lastRequest;
     private EmployeeData employeeData;
     private EmployerRequests employerRequests;
 
@@ -191,11 +203,11 @@ public class UserInfoResponse {
         this.phone = phone;
     }
 
-    public String getLastRequest() {
+    public LastRequest getLastRequest() {
         return lastRequest;
     }
 
-    public void setLastRequest(String lastRequest) {
+    public void setLastRequest(LastRequest lastRequest) {
         this.lastRequest = lastRequest;
     }
 

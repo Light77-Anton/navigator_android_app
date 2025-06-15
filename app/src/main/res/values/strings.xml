@@ -3,8 +3,6 @@
         <item>English</item>
         <item>Русский</item>
     </string-array>
-    <string name="info_from_employee_for_employers_hint_english" translatable="false">Additional info for employers in English (optional)</string>
-    <string name="info_from_employee_for_employers_hint_russian" translatable="false">Дополнительная информация для работодателей на русском (опционально)</string>
     <string name="app_name">NavigatorAppAndroid</string>
     <string name="app_name_logo"><u>Navigator App</u></string>
     <string name="login_text_button">Log In</string>
@@ -35,6 +33,7 @@
     <string name="text_from_the_picture">Text from the picture</string>
     <string name="text_from_the_picture_java">TEXT_FROM_THE_PICTURE</string>
     <string name="confirm"><u>Confirm</u></string>
+    <string name="add_vote"><u>Add the vote</u></string>
     <string name="confirm_java">CONFIRM</string>
     <string name="back">Back</string>
     <string name="back_java">BACK</string>
@@ -146,8 +145,8 @@
     <string name="multivacancy_is_allowed">Allow accept many vacancies in the same time</string>
     <string name="waiting">Waiting...</string>
     <string name="all">All</string>
-    <string name="positive_only">Positive only</string>
-    <string name="negative_only">Negative only</string>
+    <string name="positive_first">Positive first</string>
+    <string name="negative_first">Negative first</string>
     <string name="notification">Notification</string>
     <string name="add_to_favorites">Add to favorites</string>
     <string name="add_to_black_list">Add to black list</string>
@@ -175,10 +174,26 @@
     <string name="email_view">Email: </string>
     <string name="show_replies">Show replies</string>
     <string name="hide_replies">Hide replies</string>
-    <string name="leave_own_comment">Leave own comment...</string>
+    <string name="leave_or_edit_your_own_comment">Leave or edit your own comment...</string>
     <string name="firm">Firm: </string>
     <string name="or_set_separately">Or set separately: </string>
     <string name="address_is_not_exist">Address is not exist</string>
     <string name="additional_info_is_too_long">Additional info is too long</string>
     <string name="employer_vacancies_settings_info">You can add, delete or add a new vacancy based on an existing vacancy</string>
+    <string name="available_votes_count">Available votes count: </string>
+    <string name="your_current_total_vote">Your current vote(total): </string>
+    <string name="your_current_comment">Your current comment: </string>
+    <string name="you_can_vote_no_more">You can vote no more</string>
+    <string name="info_about_company_setting">You can make request for a company setting.
+        After getting the permission from company - you will be affiliated with the specified company(in your info about you)</string>
+    <string name="info_about_company_setting_hint">Write a company name and the additional info about this(contacts)</string>
+    <string name="company_setting_request_has_been_sent">Company setting request has been sent</string>
+    <string name="you_have_to_write_password_and_repeat_this">You have to write your new password and repeat this</string>
+    <string name="info_from_employee_to_employers_field_hint">You can provide additional info for employers about your profession if it is needed</string>
+    <string name="info_about_your_professions_is_set">Info about your professions is set</string>
+    <string name="contacted_person_leave_public_comment_about_you"> leaved public comment about you: </string>
+    <string name="you_can_write_reply">You can write the reply or leave the field blank if you do not want do this</string>
+    <string name="public_comments">Public comments</string>
+    <string name="restore_password">Forgot the password?</string>
+    <string name="restore_password_hint">Enter your email where we will send the mail for a subsequent recovery</string>
 </resources>

@@ -1,4 +1,5 @@
 package com.example.navigatorappandroid;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import androidx.core.content.ContextCompat;
 import com.example.navigatorappandroid.dto.KeyValuePairDTO;
 import com.example.navigatorappandroid.model.ChatMessage;
+import com.example.navigatorappandroid.model.Comment;
 import com.example.navigatorappandroid.model.EmployeeData;
 import com.example.navigatorappandroid.model.EmployerRequests;
 import com.example.navigatorappandroid.model.User;
@@ -74,7 +76,7 @@ public class ChatListActivity extends BaseActivity {
             int unreadMessagesCount = 0;
             for (ChatMessage chatMessage : receivedMessages) {
                 if (chatMessage.getSender().getId().equals(employerRequests.getId())) {
-                    if (chatMessage.getStatus().equals("Sent")) {
+                    if (chatMessage.getStatus().equals("SENT")) {
                         unreadMessagesCount++;
                     }
                 }
@@ -92,7 +94,7 @@ public class ChatListActivity extends BaseActivity {
             int unreadMessagesCount = 0;
             for (ChatMessage chatMessage : receivedMessages) {
                 if (chatMessage.getSender().getId().equals(employeeData.getId())) {
-                    if (chatMessage.getStatus().equals("Sent")) {
+                    if (chatMessage.getStatus().equals("SENT")) {
                         unreadMessagesCount++;
                     }
                 }
@@ -203,5 +205,51 @@ public class ChatListActivity extends BaseActivity {
             findAllChatsWithEmployees(bannedEmployees);
         } else {}
         changeButtonsColors((Button) view);
+    }
+
+    public void onPublicCommentsClick(View view) {
+        List<Comment> comments = userInfoResponse.getCommentsToUsers().stream().
+                filter(c -> !c.isViewedByRecipient()).collect(Collectors.toList());
+        for (Comment comment : comments) {
+            Button button = new Button(insideLayout.getContext());
+            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams
+                    (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            buttonParams.setMargins(0, 30, 0, 0);
+            button.setLayoutParams(buttonParams);
+            button.setPadding(5, 5, 5, 5);
+            button.setBackground(ContextCompat.getDrawable(this, R.drawable.gray_blue_rectangle));
+            button.setCompoundDrawablesWithIntrinsicBounds(
+                    ContextCompat.getDrawable(this, R.drawable.message_sign),
+                    null, null, null);
+            button.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            button.setTextColor(getResources().getColor(R.color.white));
+            button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+            String text = comment.getSender().getName() + getResources().getString(R.string.contacted_person_leave_public_comment_about_you);
+            button.setText(text);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addActivityToQueue(getCurrentActivity());
+                    Intent intent = new Intent(getCurrentActivity(), ReplyActivity.class);
+                    intent.putExtra("sender_name", comment.getSender().getName());
+                    intent.putExtra("comment_id", comment.getId());
+                    intent.putExtra("comment_text", comment.getContent());
+                    finish();
+                    startActivity(intent);
+                }
+            });
+            insideLayout.addView(button);
+        }
+    }
+
+    public void onBack(View view) {
+        Activity lastActivity = getLastActivity();
+        if (lastActivity != null) {
+            Intent intent = new Intent(this, lastActivity.getClass());
+            intent.putExtras(arguments);
+            removeActivityFromQueue();
+            finish();
+            startActivity(intent);
+        }
     }
 }

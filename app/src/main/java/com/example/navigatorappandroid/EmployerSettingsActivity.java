@@ -2,9 +2,11 @@ package com.example.navigatorappandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -68,6 +70,13 @@ public class EmployerSettingsActivity extends BaseActivity {
                 }
             }
         });
+        String avatar = userInfoResponse.getAvatar();
+        if (avatar != null) {
+            byte[] decodedBytes = Base64.decode(avatar, Base64.DEFAULT);
+            avatarImageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.length));
+        } else {
+            avatarImageView.setImageDrawable(getResources().getDrawable(R.drawable.default_user_avatar));
+        }
         String name = userInfoResponse.getName();
         nameEditText = findViewById(R.id.first_and_last_name);
         nameEditText.setText(name);
@@ -172,6 +181,13 @@ public class EmployerSettingsActivity extends BaseActivity {
     public void onChangePasswordClick(View view) {
         addActivityToQueue(getCurrentActivity());
         Intent intent = new Intent(this, ChangePasswordActivity.class);
+        finish();
+        startActivity(intent);
+    }
+
+    public void onMyCompanyClick(View view) {
+        addActivityToQueue(getCurrentActivity());
+        Intent intent = new Intent(this, CompanySettingActivity.class);
         finish();
         startActivity(intent);
     }

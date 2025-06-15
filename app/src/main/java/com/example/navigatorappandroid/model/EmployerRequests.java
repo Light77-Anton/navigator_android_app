@@ -72,4 +72,14 @@ public class EmployerRequests {
     public void setEmployer(User employer) {
         this.employer = employer;
     }
+
+    public RequestForCompanySetting getRequestForCompanySetting() {
+        return requestForCompanySetting;
+    }
+
+    public void setRequestForCompanySetting(RequestForCompanySetting requestForCompanySetting) {
+        this.requestForCompanySetting = requestForCompanySetting;
+    }
+
+    private RequestForCompanySetting requestForCompanySetting;
 }

@@ -4,6 +4,7 @@ import com.example.navigatorappandroid.retrofit.request.DecisionRequest;
 import com.example.navigatorappandroid.retrofit.request.VacancyRequest;
 import com.example.navigatorappandroid.retrofit.response.AnswerToOfferResponse;
 import com.example.navigatorappandroid.retrofit.response.ChatMessageResponse;
+import com.example.navigatorappandroid.retrofit.response.CommentsListResponse;
 import com.example.navigatorappandroid.retrofit.response.ExtendedUserInfoResponse;
 import com.example.navigatorappandroid.retrofit.response.ResultErrorsResponse;
 import retrofit2.Call;
@@ -40,4 +41,7 @@ public interface ChatApi {
 
     @POST("api/chat/offer/decision")
     Call<AnswerToOfferResponse> giveDecisionToOffer(@Body DecisionRequest decision);
+
+    @GET("api/chat/comment/{id}/get")
+    Call<CommentsListResponse> getCommentById(@Path("id") long id);
 }

@@ -118,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="30dp"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:background="@drawable/rectangle_button"
             android:textColor="@color/white"
             android:textSize="30sp"/>
@@ -191,7 +191,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginTop="30dp"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:background="@drawable/rectangle_button"
             android:textColor="@color/white"
             android:textSize="30sp"/>

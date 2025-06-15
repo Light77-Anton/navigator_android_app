@@ -29,6 +29,7 @@
     <string name="text_from_the_picture">Текст с картинки</string>
     <string name="text_from_the_picture_java">TEXT_FROM_THE_PICTURE</string>
     <string name="confirm"><u>Подтвердить</u></string>
+    <string name="add_vote"><u>добавить оценку</u></string>
     <string name="confirm_java">CONFIRM</string>
     <string name="back">Назад</string>
     <string name="back_java">BACK</string>
@@ -134,8 +135,8 @@
     <string name="multivacancy_is_allowed">Разрешить принимать множество вакансий одновременно</string>
     <string name="waiting">Ожидание...</string>
     <string name="all">Все</string>
-    <string name="positive_only">Только положительные</string>
-    <string name="negative_only">Только отрицательные</string>
+    <string name="positive_first">Сначало положительные</string>
+    <string name="negative_first">Сначало отрицательные</string>
     <string name="notification">Оповещение</string>
     <string name="add_to_favorites">Добавить в избранное</string>
     <string name="add_to_black_list">Добавить в черный список</string>
@@ -163,10 +164,26 @@
     <string name="email_view">Почта: </string>
     <string name="show_replies">Показать ответы</string>
     <string name="hide_replies">Скрыть ответы</string>
-    <string name="leave_own_comment">Оставить свой комметарий...</string>
+    <string name="leave_or_edit_your_own_comment">Оставить или редактировать свой комметарий...</string>
     <string name="firm">Фирма: </string>
     <string name="or_set_separately">Или установить отдельно: </string>
     <string name="address_is_not_exist">Такой адрес не существует</string>
     <string name="additional_info_is_too_long">Дополнительная информация слишком длинная</string>
     <string name="employer_vacancies_settings_info">Вы можете добавлять, удалять или добавить новую вакансию основанную на существующей вакансии</string>
+    <string name="available_votes_count">Количество доступных оценок: </string>
+    <string name="your_current_total_vote">Ваша текущая оценка(общая): </string>
+    <string name="your_current_comment">Ваш текущий коммент: </string>
+    <string name="you_can_vote_no_more">Вы не можете больше ставить оценки</string>
+    <string name="info_about_company_setting">Вы можете сделать запрос на установку компании. После получения разрешения от компании -
+        вы будете связяны с указанной компанией(в вашей информации)</string>
+    <string name="info_about_company_setting_hint">Напишите название компании и дополнительную информацию о ней(контакты)</string>
+    <string name="company_setting_request_has_been_sent">Запрос на установку компании был отправлен</string>
+    <string name="you_have_to_write_password_and_repeat_this">Вы должны вписать ваш новый пароль и повторить его</string>
+    <string name="info_from_employee_to_employers_field_hint">Вы можете предоставить дополнительную информацию, если это необходимо</string>
+    <string name="info_about_your_professions_is_set">Информация о ваших профессиях установлена</string>
+    <string name="contacted_person_leave_public_comment_about_you"> оставил(а) публичный комментарий о вас: </string>
+    <string name="you_can_write_reply">Вы можете написать ответ или оставить поле пустым, если не хотите отвечать</string>
+    <string name="public_comments">Публичные комментарии</string>
+    <string name="restore_password">Забыли пароль?</string>
+    <string name="restore_password_hint">Введите эмэйл, куда мы вышлем письмо для последующего восстановления пароля</string>
 </resources>

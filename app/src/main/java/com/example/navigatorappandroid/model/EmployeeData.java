@@ -22,7 +22,7 @@ public class EmployeeData {
 
     private List<Vacancy> acceptedVacancies;
     private boolean isMultivacancyAllowed;
-    private List<InfoFromEmployee> infoFromEmployee;
+    private String infoFromEmployee;
     private byte status;
     private Long activeStatusStartDate;
     private User employee;
@@ -48,11 +48,11 @@ public class EmployeeData {
         isMultivacancyAllowed = multivacancyAllowed;
     }
 
-    public List<InfoFromEmployee> getInfoFromEmployee() {
+    public String getInfoFromEmployee() {
         return infoFromEmployee;
     }
 
-    public void setInfoFromEmployee(List<InfoFromEmployee> infoFromEmployee) {
+    public void setInfoFromEmployee(String infoFromEmployee) {
         this.infoFromEmployee = infoFromEmployee;
     }
 
